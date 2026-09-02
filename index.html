@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Van</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Van">
+<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAACM0lEQVR4nO3cMUpDQRRAUSNCdpA6pRAIlq4mtSCuRgRrV2MpVm7Fzg14Q8ifz0/gnD6PKS6vGDJ/tdnubuA/t0sfgMslDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYN0N33Een+YPoQ5/H5/TPm5zUESB0kcJHGQxEESB0kcJHGQBlyCHTHxEoZTzHcJaXOQxEESB0kcJHGQxEESB0kcJHGQxEESB0kcJHGQxEESB0kcJHGQxEESB0kcJHGQxEEa92mCT3dcNZuDJA6SOEjiIImDJA6SOEjiIPk+x7Gbums//0Q2B0kcJHGQxEESB0kcJHGQxEESB0kcJHGQxEESB0kcJHGQxEESB0kcJHGQxEGa9w/GJ/r5+hw16v7hcdSo8zw9v4wa9f72OmrUeWwOkjhI4iCJgyQOkjhI4iCJgyQOkjhI4iCJgyQOkjhI4iCJgyQOkjhI4iCJgyQOkjhI4iCJg3QRj5oWf4k00OIvkQayOUjiIImDJA6SOEjiIImDJA6SOEjiIImDJA6SOEjiIImDJA6SOEjiIImDJA6SOEjiIImDJA7SvI+a1vvDrPPndu3nn8jmIImDJA6SOEjiIImDJA6SOEirzXa39Bm4UDYHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQfoDUoIYQLug2hcAAAAASUVORK5CYII=">
+<style>
+:root{
+  --bg:#F2F2F7;--card:#FFFFFF;--card2:#F7F7FA;
+  --ink:#000000;--ink2:#6C6C70;--ink3:#8E8E93;
+  --line:#D8D8DC;--line2:#E8E8ED;
+  --blue:#0A62C4;--bluebg:#E8F0FB;
+  --red:#D62B20;--redbg:#FDECEA;--redsolid:#D93A2E;
+  --amber:#A96400;--amberbg:#FDF2E0;--ambersolid:#E8890B;
+  --green:#1E8A45;--greenbg:#E7F5EC;--greensolid:#22A153;
+  --grey:#8E8E93;--greybg:#EFEFF2;
+  --dark:#22262B;--darkink:#FFFFFF;
+  --sys:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,monospace;
+  --top:calc(100px + env(safe-area-inset-top));
+  --bot:calc(56px + env(safe-area-inset-bottom));
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#000000;--card:#1C1C1E;--card2:#2C2C2E;
+  --ink:#FFFFFF;--ink2:#AEAEB2;--ink3:#8E8E93;
+  --line:#38383A;--line2:#2C2C2E;
+  --blue:#57A6FF;--bluebg:#132A44;
+  --red:#FF6B5E;--redbg:#3A1B18;--redsolid:#C7382C;
+  --amber:#F0A93B;--amberbg:#3A2A10;--ambersolid:#B87209;
+  --green:#4CD07D;--greenbg:#13301F;--greensolid:#1C8746;
+  --grey:#8E8E93;--greybg:#2C2C2E;
+  --dark:#3A3F45;--darkink:#FFFFFF;
+}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sys);
+  font-size:17px;line-height:1.4;padding-top:var(--top);padding-bottom:var(--bot);
+  overscroll-behavior-y:none}
+button,input,select,textarea{font:inherit;color:inherit}
+input,select,textarea{font-size:16px}
+
+.hdr{position:fixed;top:0;left:0;right:0;z-index:40;background:var(--card);
+  border-bottom:.5px solid var(--line);padding:env(safe-area-inset-top) 16px 12px}
+.titlerow{display:flex;align-items:center;gap:10px;margin:8px 0 10px}
+.hdr h1{font-size:28px;font-weight:700;letter-spacing:-.022em;margin:0;flex:1;min-width:0;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#gear{background:none;border:0;color:var(--blue);padding:4px;flex:0 0 auto}
+#gear svg{width:23px;height:23px;display:block}
+.sbox{display:flex;align-items:center;gap:8px;background:var(--card2);
+  border:.5px solid var(--line2);border-radius:10px;padding:9px 12px}
+.sbox input{border:0;background:none;outline:none;flex:1;padding:0;font-size:16px}
+.sbox input::placeholder{color:var(--ink3)}
+.sbox svg{width:17px;height:17px;color:var(--ink3);flex:0 0 auto}
+.sbox button{background:none;border:0;color:var(--blue);font-size:15px;padding:0 2px}
+
+.tabs{position:fixed;bottom:0;left:0;right:0;z-index:40;background:var(--card);
+  border-top:.5px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);
+  padding-bottom:env(safe-area-inset-bottom)}
+.tabs button{background:none;border:0;padding:7px 1px 8px;color:var(--ink3);
+  font-size:10px;display:flex;flex-direction:column;align-items:center;gap:3px}
+.tabs button[aria-current=true]{color:var(--blue)}
+.g{width:22px;height:22px;display:block}
+
+.side{display:none}
+.view{display:none;padding:14px 16px 30px}
+.view.on{display:block}
+
+@media (min-width:820px){
+  body{padding:0;display:grid;grid-template-columns:100px minmax(0,1fr);min-height:100vh}
+  .tabs{display:none}
+  .hdr{position:sticky;padding:calc(14px + env(safe-area-inset-top)) 28px 14px;grid-column:2}
+  .titlerow{margin:6px 0 12px}
+  .hdr h1{font-size:30px}
+  .side{display:flex;flex-direction:column;gap:2px;background:var(--card);
+    border-right:.5px solid var(--line);padding:calc(20px + env(safe-area-inset-top)) 0 20px;
+    position:sticky;top:0;height:100vh}
+  .side button{background:none;border:0;color:var(--ink3);padding:12px 4px;
+    font-size:11px;display:flex;flex-direction:column;align-items:center;gap:5px}
+  .side button[aria-current=true]{color:var(--blue)}
+  .side .g{width:24px;height:24px}
+  .view{padding:6px 28px 60px;grid-column:2}
+  .demobar{grid-column:2}
+}
+
+/* ---------- priority strip ---------- */
+.strip{display:flex;flex-direction:column;gap:10px}
+@media (min-width:820px){.strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}}
+.pcard{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:0;
+  border-radius:14px;padding:15px 16px;color:#fff}
+.pcard:active{opacity:.9}
+.pcard .n{font-size:21px;font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.pcard .s{font-size:13.5px;opacity:.92;margin-top:2px}
+.pcard .ch{margin-left:auto;font-size:20px;opacity:.85}
+.pcard svg{width:22px;height:22px;flex:0 0 auto}
+.p-red{background:var(--redsolid)}
+.p-amber{background:var(--ambersolid)}
+.p-dark{background:var(--dark);color:var(--darkink)}
+.p-green{background:var(--greensolid)}
+@media (min-width:820px){
+  .pcard{flex-direction:column;align-items:flex-start;gap:6px;padding:18px;min-height:118px}
+  .pcard .n{font-size:34px}
+  .pcard .ch{display:none}
+  .pcard svg{width:24px;height:24px;margin-bottom:2px}
+}
+
+.sect{font-size:13px;font-weight:600;color:var(--ink2);margin:24px 2px 9px}
+.qf{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.qf button{background:var(--card);border:.5px solid var(--line2);border-radius:12px;
+  padding:12px 11px;text-align:left;min-height:84px;display:flex;flex-direction:column}
+.qf .nm{font-size:14px;font-weight:600;line-height:1.25;letter-spacing:-.01em}
+.qf .lc{font-size:13px;color:var(--blue);font-weight:600;margin-top:auto;padding-top:8px}
+
+/* ---------- rows ---------- */
+.rows{background:var(--card);border-radius:12px;border:.5px solid var(--line2);overflow:hidden}
+.row{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:none;
+  border:0;border-bottom:.5px solid var(--line2);padding:13px 14px}
+.row:last-child{border-bottom:0}
+.row:active{background:var(--card2)}
+.row .code{font-size:16.5px;font-weight:600;letter-spacing:-.01em;display:block}
+.row .desc{font-size:13.5px;color:var(--ink2);margin-top:1px;display:block}
+.row .rt{margin-left:auto;display:flex;align-items:center;gap:9px;flex:0 0 auto}
+.badge{font-size:12.5px;font-weight:600;padding:3px 9px;border-radius:20px;white-space:nowrap}
+.b-action{background:var(--redbg);color:var(--red)}
+.b-attn{background:var(--amberbg);color:var(--amber)}
+.b-good{background:var(--greenbg);color:var(--green)}
+.b-unchecked{background:var(--greybg);color:var(--grey)}
+.chev{color:var(--ink3);font-size:16px}
+
+/* ---------- van walls ---------- */
+.wall{background:var(--card);border:.5px solid var(--line2);border-radius:16px;
+  padding:14px;margin-bottom:14px}
+.whead{display:flex;align-items:baseline;gap:10px;margin-bottom:8px}
+.whead b{font-size:16px;font-weight:700;letter-spacing:-.01em}
+.whead span{font-size:12.5px;color:var(--ink3)}
+.vanwrap{position:relative;height:212px;margin-bottom:4px}
+.vanbody{position:absolute;left:0;right:0;top:0;height:184px;background:var(--ink3);
+  clip-path:polygon(0% 92%,0% 60%,4% 34%,20% 30%,30% 0%,100% 0%,100% 92%)}
+.vaninner{position:absolute;inset:0;background:var(--card2);
+  clip-path:polygon(1% 90%,1% 61%,5% 35.5%,20.6% 31.5%,30.7% 1.6%,99% 1.6%,99% 90%)}
+.wheel{position:absolute;border-radius:50%;background:var(--card2);
+  border:2.5px solid var(--ink3);width:42px;height:42px;top:150px}
+.wheel.f{left:14%}.wheel.r{left:72%}
+.cargo{position:absolute;left:40%;right:2.5%;top:9%;bottom:15%;display:grid;gap:3px}
+.slot{border-radius:6px;padding:4px 5px;text-align:left;border:.5px solid transparent;
+  overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;min-width:0}
+.slot .code{font-size:11.5px;font-weight:700;letter-spacing:-.01em;display:block;line-height:1.15}
+.slot .dsc{font-size:10px;opacity:.8;display:block;line-height:1.2;margin-top:1px}
+.slot .st{font-size:10px;font-weight:600;display:block;line-height:1.2}
+.s-action{background:var(--redbg);color:var(--red);border-color:var(--red)}
+.s-attn{background:var(--amberbg);color:var(--amber);border-color:var(--amber)}
+.s-good{background:var(--greenbg);color:var(--green);border-color:var(--green)}
+.s-unchecked{background:var(--greybg);color:var(--grey);border-color:var(--line)}
+.slot.sel{outline:2.5px solid var(--blue);outline-offset:1px}
+.orient{display:flex;justify-content:space-between;font-size:11px;color:var(--ink3);margin:0 2px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin:4px 2px 16px;font-size:12.5px;color:var(--ink2)}
+.legend span{display:flex;align-items:center;gap:6px}
+.legend i{width:9px;height:9px;border-radius:50%;display:block}
+.demobar{background:var(--amberbg);color:var(--amber);padding:10px 16px;font-size:13px;
+  display:flex;align-items:center;gap:10px;line-height:1.35}
+.demobar button{margin-left:auto;background:var(--amber);color:var(--card);border:0;
+  border-radius:8px;padding:7px 12px;font-size:13px;font-weight:600;flex:0 0 auto}
+.cdhead{background:var(--card);border:.5px solid var(--line2);border-radius:14px;padding:16px;margin-bottom:14px}
+.cdhead h2{margin:0;font-size:24px;font-weight:700;letter-spacing:-.02em}
+.cdhead .sub{font-size:14.5px;color:var(--ink2);margin-top:2px}
+.cdstats{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.back{background:none;border:0;color:var(--blue);font-size:16px;padding:0;margin-bottom:12px;font-weight:500}
+.acts{display:flex;gap:8px;margin-bottom:16px}
+.acts button{flex:1;padding:12px 8px;border-radius:11px;border:.5px solid var(--line);
+  background:var(--card);color:var(--blue);font-size:14.5px;font-weight:600}
+.ph{background:var(--bluebg);color:var(--blue);border-radius:10px;padding:11px 13px;
+  font-size:13px;line-height:1.5;margin-bottom:12px}
+.editbar{display:flex;gap:8px;margin-bottom:12px}
+.editbar button{flex:1;padding:10px;border-radius:10px;border:.5px solid var(--line);
+  background:var(--card);color:var(--blue);font-size:14.5px;font-weight:600}
+.editbar button.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.epanel{background:var(--card);border:.5px solid var(--line2);border-radius:12px;
+  padding:14px;margin-bottom:14px}
+.epanel h4{margin:0 0 10px;font-size:15px;font-weight:700}
+.four{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.four label{display:block}
+.four span{display:block;font-size:11px;font-weight:600;color:var(--ink2);margin-bottom:4px}
+.four input{width:100%;padding:9px 6px;text-align:center;background:var(--card2);
+  border:.5px solid var(--line);border-radius:8px;color:var(--ink)}
+@media (min-width:820px){
+  .walls{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+  .vanwrap{height:300px}
+  .vanbody{height:262px}
+  .wheel{width:58px;height:58px;top:214px}
+  .slot .code{font-size:13px}
+  .slot .dsc,.slot .st{font-size:11px}
+}
+
+.empty{border:1px dashed var(--line);border-radius:12px;padding:30px 20px;text-align:center;color:var(--ink2)}
+.empty strong{display:block;font-size:17px;color:var(--ink);margin-bottom:6px;font-weight:600}
+.empty p{margin:0 auto;max-width:36ch;font-size:14.5px;line-height:1.5}
+.btn{display:block;width:100%;max-width:320px;margin:16px auto 0;padding:13px;border:0;
+  border-radius:11px;background:var(--blue);color:#fff;font-size:16px;font-weight:600}
+.btn:active{opacity:.85}
+.btn.sec{background:var(--card);color:var(--blue);border:.5px solid var(--line)}
+.fld{display:block;margin-bottom:14px}
+.fld>span{display:block;font-size:13px;font-weight:600;color:var(--ink2);margin-bottom:5px}
+input[type=text],input[type=date],select,textarea{width:100%;padding:11px 12px;background:var(--card);
+  border:.5px solid var(--line);border-radius:10px;appearance:none;color:var(--ink)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.card{background:var(--card);border:.5px solid var(--line2);border-radius:12px;padding:14px;max-width:600px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.chips button{font-size:15px;font-weight:600;background:var(--card);border:.5px solid var(--line);
+  border-radius:9px;padding:9px 12px;color:var(--ink)}
+.chips button.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.42);z-index:60;display:none}
+.scrim.on{display:block}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:61;background:var(--bg);
+  border-radius:16px 16px 0 0;max-height:88vh;overflow-y:auto;
+  padding:14px 16px calc(20px + env(safe-area-inset-bottom));
+  transform:translateY(100%);transition:transform .2s ease-out}
+.sheet.on{transform:translateY(0)}
+@media (min-width:820px){.sheet{left:50%;right:auto;bottom:auto;top:50%;width:520px;
+  border-radius:14px;transform:translate(-50%,-50%) scale(.97);opacity:0}
+  .sheet.on{transform:translate(-50%,-50%) scale(1);opacity:1}}
+@media (prefers-reduced-motion:reduce){.sheet{transition:none}}
+.sheet h3{margin:2px 0 14px;font-size:19px;font-weight:700;letter-spacing:-.01em}
+.grab{width:36px;height:5px;background:var(--line);border-radius:3px;margin:0 auto 12px}
+@media (min-width:820px){.grab{display:none}}
+.chip{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.05em;
+  background:var(--bluebg);color:var(--blue);padding:4px 9px;border-radius:6px;text-transform:uppercase}
+.idtitle{font-size:26px;font-weight:700;letter-spacing:-.025em;margin:10px 0 0;line-height:1.15}
+.idsub{font-size:15px;color:var(--ink2);margin-top:2px}
+.star{background:none;border:0;font-size:24px;color:var(--ink3);padding:0 4px;line-height:1}
+.star.on{color:#E8A317}
+.idsect{font-size:17px;font-weight:700;letter-spacing:-.01em;margin:22px 2px 9px}
+.loc{display:grid;grid-template-columns:1fr auto;background:var(--card);
+  border:.5px solid var(--line2);border-radius:12px;overflow:hidden}
+.loc .lft{padding:13px 14px}
+.loc .cd{font-size:18px;font-weight:700;letter-spacing:-.01em}
+.loc .ds{font-size:13.5px;color:var(--ink2);margin-top:1px}
+.loc .rgt{padding:13px 16px;border-left:.5px solid var(--line2);text-align:center;
+  background:var(--card2);display:flex;flex-direction:column;justify-content:center;min-width:88px}
+.loc .qn{font-size:22px;font-weight:700;letter-spacing:-.02em;line-height:1.1}
+.loc .ql{font-size:11.5px;color:var(--ink2)}
+.parrow{display:flex;gap:16px;padding:10px 3px 0;font-size:14px;color:var(--ink2)}
+.parrow b{color:var(--ink);font-weight:600}
+.steps{background:var(--card);border:.5px solid var(--line2);border-radius:12px;padding:6px 4px}
+.step{display:flex;gap:11px;padding:9px 11px;align-items:flex-start}
+.step i{flex:0 0 auto;width:22px;height:22px;border-radius:50%;background:var(--bluebg);
+  color:var(--blue);font-style:normal;font-size:12px;font-weight:700;display:flex;
+  align-items:center;justify-content:center;margin-top:1px}
+.step p{margin:0;font-size:14.5px;line-height:1.45}
+.kv{background:var(--card);border:.5px solid var(--line2);border-radius:12px;overflow:hidden}
+.kv div{display:flex;justify-content:space-between;gap:14px;padding:11px 14px;
+  border-bottom:.5px solid var(--line2);font-size:14.5px}
+.kv div:last-child{border-bottom:0}
+.kv dt{color:var(--ink2);flex:0 0 auto}
+.kv dd{margin:0;text-align:right;font-weight:500}
+.actbar{position:sticky;bottom:8px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
+  margin-top:22px;background:var(--card);border:.5px solid var(--line2);border-radius:14px;padding:6px}
+.actbar button{padding:12px 4px;border:0;border-radius:10px;background:none;color:var(--blue);
+  font-size:14px;font-weight:600}
+.actbar button:active{background:var(--card2)}
+.actbar button.primary{background:var(--blue);color:#fff}
+.unver{background:var(--amberbg);color:var(--amber);border-radius:10px;padding:10px 12px;
+  font-size:13px;line-height:1.45;margin-top:9px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(var(--bot) + 16px);
+  background:var(--ink);color:var(--bg);padding:11px 18px;border-radius:10px;z-index:70;
+  font-size:15px;font-weight:500;opacity:0;pointer-events:none;transition:opacity .15s;max-width:88%}
+.toast.on{opacity:1}
+</style>
+</head>
+<body>
+
+<aside class="side" id="side"></aside>
+
+<header class="hdr">
+  <div class="sbox">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+    <input type="text" id="q" placeholder="Search items, compartments, guides" autocomplete="off">
+    <button id="qclear" style="display:none">Clear</button>
+  </div>
+  <div class="titlerow"><h1 id="title">Van</h1>
+    <button id="gear" aria-label="Data and backup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.8v2.4M12 18.8v2.4M4.5 4.5l1.7 1.7M17.8 17.8l1.7 1.7M2.8 12h2.4M18.8 12h2.4M4.5 19.5l1.7-1.7M17.8 6.2l1.7-1.7"/></svg></button></div>
+</header>
+
+<main class="main">
+<div id="demobar" class="demobar" style="display:none"></div>
+<section class="view on" id="v-home"></section>
+<section class="view" id="v-compartments"></section>
+<section class="view" id="v-inventory"></section>
+<section class="view" id="v-sweep"></section>
+<section class="view" id="v-guide"></section>
+<section class="view" id="v-compdetail"></section>
+<section class="view" id="v-itemdetail"></section>
+<section class="view" id="v-data"></section>
+<section class="view" id="v-search"></section>
+</main>
+
+<nav class="tabs" id="tabs"></nav>
+<div class="scrim" id="scrim"></div>
+<div class="sheet" id="sheet"><div class="grab"></div><div id="sheetbody"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+const CATS=[["A","Scene control & safety"],["B","Documentation"],["C","Latent prints"],
+["D","Biological / DNA"],["E","Trace"],["F","Impressions"],["G","Firearms / trajectory"],
+["H","Packaging & sealing"],["I","Tools & access"],["J","Digital / electronics"],["K","Van infrastructure"]];
+const CLASSES=["Consumable","Durable","Reagent","Regulated"];
+const STATUSES=["Stocked","Low","Out","Expired","Service due","Not carried"];
+const SIDES=["Driver side","Passenger side","Rear doors","Cab"];
+const WALLDEF={"Driver side":{cols:24,rows:12},"Passenger side":{cols:24,rows:12},
+ "Rear doors":{cols:12,rows:12},"Cab":{cols:12,rows:8}};
+const TABS=[["home","Home"],["compartments","Compartments"],["inventory","Inventory"],["sweep","Sweep"],["guide","Guide"]];
+const ICONS={home:"M3 11l9-8 9 8v9a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1z",
+ compartments:"M3 4h7v7H3zM14 4h7v7h-7zM3 13h7v7H3zM14 13h7v7h-7z",
+ inventory:"M4 6h16M4 12h16M4 18h16",
+ sweep:"M12 5v14M5 12h14",
+ guide:"M4 5a2 2 0 012-2h11a1 1 0 011 1v15a1 1 0 01-1 1H6a2 2 0 01-2-2zM8 7h7M8 11h7"};
+
+let MEM=null;
+const store={get(){if(MEM)return MEM;
+   try{const r=localStorage.getItem("van3")||localStorage.getItem("vaninv2")||localStorage.getItem("vaninv");
+     return r?JSON.parse(r):null}catch(e){return null}},
+ set(v){if(MEM){MEM=v;return}try{localStorage.setItem("van3",JSON.stringify(v))}catch(e){MEM=v}}};
+try{localStorage.setItem("__t","1");localStorage.removeItem("__t")}catch(e){MEM={items:[],comps:[]}}
+
+const S=Object.assign({items:[],comps:[],locs:[],lastCat:"A",lastCls:"Consumable",curLoc:""},store.get()||{});
+if(!S.comps)S.comps=[];
+(S.locs||[]).forEach(c=>{if(c&&!S.comps.some(x=>x.code===c))S.comps.push({code:c,desc:"",side:"",x:null,y:null,w:6,h:4})});
+if(!S.walls)S.walls=JSON.parse(JSON.stringify(WALLDEF));
+S.comps.forEach(c=>{if(c.zone&&!c.side)c.side=(c.zone==="Rear")?"Rear doors":(c.zone==="Interior")?"":c.zone;
+  if(c.w==null){c.w=6;c.h=4}
+  if(c.x==null||c.y==null){c.x=null;c.y=null}});
+S.items.forEach(i=>{if(i.date&&/^\d{4}-\d{2}$/.test(i.date))i.date=i.date+"-01";
+  if(!i.uses)i.uses=[];
+  if(i.loc&&!S.comps.some(x=>x.code===i.loc))S.comps.push({code:i.loc,desc:"",side:"",x:null,y:null,w:6,h:4})});
+const save=()=>{store.set(S);if(typeof queuePush==='function')queuePush()};
+
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const n=v=>+v||0;
+const catName=c=>(CATS.find(x=>x[0]===c)||["","Uncategorised"])[1];
+const ic=(k,cls)=>`<svg class="${cls||"g"}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="${ICONS[k]}"/></svg>`;
+let toastT; const toast=m=>{const t=$("#toast");t.textContent=m;t.classList.add("on");
+  clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove("on"),1900)};
+
+const newId=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const live=()=>S.items.filter(i=>i.status!=="Not carried");
+const daysOut=d=>{if(!d)return null;const t=Date.parse(d);if(isNaN(t))return null;
+  return Math.round((t-Date.now())/86400000)};
+const isLow=i=>i.par!==""&&i.par!=null&&n(i.qty)<n(i.par);
+const isOut=i=>i.status==="Out"||n(i.qty)===0;
+const isExpired=i=>{const d=daysOut(i.date);return i.status==="Expired"||(i.cls!=="Durable"&&d!==null&&d<0)};
+const isExpiring=i=>{const d=daysOut(i.date);return i.cls!=="Durable"&&d!==null&&d>=0&&d<=90};
+const isService=i=>{const d=daysOut(i.date);return i.status==="Service due"||(i.cls==="Durable"&&d!==null&&d<=30)};
+const gaps=()=>S.items.filter(i=>i.status==="Not carried"&&i.gapType!=="deliberate");
+
+function compState(code){
+  const it=live().filter(i=>i.loc===code);
+  const rec=S.comps.find(c=>c.code===code);
+  if(!it.length)return rec&&rec.checked?{k:"good",label:"Empty",items:it}
+    :{k:"unchecked",label:"Not checked",items:it};
+  const bad=i=>isOut(i)||isExpired(i);
+  const out=it.filter(isOut).length, exp=it.filter(i=>isExpired(i)&&!isOut(i)).length;
+  const low=it.filter(i=>isLow(i)&&!bad(i)).length;
+  const soon=it.filter(i=>isExpiring(i)&&!bad(i)).length, svc=it.filter(i=>isService(i)&&!bad(i)).length;
+  const p=[];
+  if(out)p.push(out+" out"); if(exp)p.push(exp+" expired");
+  if(low)p.push(low+" low"); if(soon)p.push(soon+" expiring"); if(svc)p.push(svc+" service");
+  if(out||exp)return{k:"action",label:p.join(", "),items:it};
+  if(low||soon||svc)return{k:"attn",label:p.join(", "),items:it};
+  return{k:"good",label:it.length+(it.length===1?" item":" items"),items:it};
+}
+const comps=()=>S.comps.slice().sort((a,b)=>a.code.localeCompare(b.code,undefined,{numeric:true}));
+
+
+/* ---------- sample van ---------- */
+const DEMO_COMPS=[
+ ["D1","Camera case","Driver side",0,0,6,5],["D2","Photo accessories","Driver side",6,0,6,5],
+ ["D3","Latent print kit","Driver side",12,0,6,5],["D4","Powders and brushes","Driver side",18,0,6,5],
+ ["D5","Drawer bank","Driver side",0,5,12,4],["D6","Lifters and tape","Driver side",12,5,6,4],
+ ["D7","Scales and rulers","Driver side",18,5,6,4],["D8","Floor bin","Driver side",0,9,10,3],
+ ["D9","Long shelf","Driver side",10,9,14,3],
+ ["P1","DNA and biological","Passenger side",0,0,5,6],["P2","Swab storage","Passenger side",5,0,5,6],
+ ["P3","Presumptive tests","Passenger side",10,0,5,6],["P4","Trace and GSR","Passenger side",15,0,9,6],
+ ["P5","Packaging, paper","Passenger side",0,6,8,4],["P6","Packaging, rigid","Passenger side",8,6,8,4],
+ ["P7","Seals and tape","Passenger side",16,6,8,4],["P8","PPE locker","Passenger side",0,10,6,2],
+ ["P9","Sharps and biohazard","Passenger side",6,10,6,2],["P10","Respirators","Passenger side",12,10,6,2],
+ ["R1","Rear door pouch","Rear doors",0,0,12,4]];
+const DEMO_ITEMS=[
+ ["DSLR body, Nikon D850","D1","B","Durable",1,1,"2027-03-01"],
+ ["Macro lens, 60 mm","D1","B","Durable",1,1,""],
+ ["Ring flash","D1","B","Durable",1,1,""],
+ ["Spare camera batteries","D1","B","Consumable",6,4,""],
+ ["SD cards, 64 GB","D2","B","Consumable",12,6,""],
+ ["Tripod, aluminium","D2","B","Durable",1,1,""],
+ ["Photo scale placards, set","D2","B","Durable",3,2,""],
+ ["Black magnetic powder, 1 lb","D3","C","Consumable",2,4,"2026-06-30"],
+ ["White latent powder, 8 oz","D3","C","Consumable",3,2,"2027-01-31"],
+ ["Fibreglass brushes","D3","C","Consumable",4,4,""],
+ ["Magnetic applicator","D3","C","Durable",2,1,""],
+ ["Bi-chromatic powder, 8 oz","D4","C","Consumable",1,2,"2026-05-15"],
+ ["Fluorescent powder, 2 oz","D4","C","Consumable",2,2,"2027-06-30"],
+ ["Ninhydrin spray","D4","C","Reagent",2,2,"2026-11-20"],
+ ["Screwdriver set","D5","I","Durable",1,1,""],
+ ["Bolt cutters","D5","I","Durable",1,1,""],
+ ["Extension cord, 50 ft","D5","I","Durable",2,2,""],
+ ["Work light, LED","D5","I","Durable",2,2,""],
+ ["Hinge lifters, 2 in","D6","C","Consumable",18,10,""],
+ ["Rubber lifters, black","D6","C","Consumable",14,10,""],
+ ["Lifting tape, 2 in","D6","C","Consumable",6,4,""],
+ ["ABFO No. 2 scales","D7","B","Durable",4,2,""],
+ ["Tape measure, 25 ft","D7","B","Durable",2,2,""],
+ ["Laser measure","D7","B","Durable",1,1,"2026-09-20"],
+ ["Traffic cones","D8","A","Durable",6,6,""],
+ ["Barrier tape, 1000 ft","D8","A","Consumable",2,4,""],
+ ["Blood collection kit","P1","D","Reagent",4,3,"2026-10-12"],
+ ["Sterile water vials","P1","D","Reagent",10,8,"2026-11-05"],
+ ["DNA swab boxes","P1","D","Consumable",22,15,""],
+ ["Sterile swabs, long handle","P2","D","Consumable",8,50,"2027-04-30"],
+ ["Swab drying rack","P2","D","Durable",1,1,""],
+ ["Phenolphthalein kit","P3","D","Reagent",3,4,"2026-08-10"],
+ ["Leucomalachite green","P3","D","Reagent",5,4,"2027-02-28"],
+ ["Presumptive drug test pouches","P3","D","Reagent",12,10,"2026-10-30"],
+ ["GSR collection stubs","P4","E","Consumable",14,10,"2027-08-31"],
+ ["Tape lifts, trace","P4","E","Consumable",30,20,""],
+ ["Forceps, fine point","P4","E","Durable",4,3,""],
+ ["Paper bags, large","P5","H","Consumable",45,30,""],
+ ["Paper bags, small","P5","H","Consumable",60,40,""],
+ ["Manila envelopes","P5","H","Consumable",50,30,""],
+ ["Evidence boxes, medium","P6","H","Consumable",14,10,""],
+ ["Paint cans, quart","P6","H","Consumable",9,8,""],
+ ["Evidence tape, red","P7","H","Consumable",7,5,""],
+ ["Tamper-evident seals","P7","H","Consumable",40,25,""],
+ ["Tyvek suits, XL","P8","A","Consumable",0,4,""],
+ ["Nitrile gloves, box","P8","A","Consumable",3,6,"2027-05-31"],
+ ["Shoe covers","P8","A","Consumable",20,15,""],
+ ["Sharps container","P9","A","Regulated",2,2,""],
+ ["Biohazard bags","P9","A","Consumable",25,15,""],
+ ["Half-mask respirator","P10","A","Durable",2,2,"2026-09-14"],
+ ["P100 cartridges","P10","A","Consumable",6,4,"2027-01-31"],
+ ["First aid kit","R1","K","Durable",1,1,"2026-12-01"],
+ ["Fire extinguisher","R1","K","Durable",1,1,"2027-02-01"]];
+const DEMO_STEPS={
+ "Black magnetic powder, 1 lb":[["Load the applicator by dipping the magnetic tip into the powder jar.",
+   "Pass over the surface without touching it, letting the powder beard do the work.",
+   "Photograph with a scale in frame before lifting.",
+   "Lift with a hinge lifter, working from one edge to avoid trapping air."],
+   "Sample text, not verified"],
+ "Phenolphthalein kit":[["Collect a small sample on a clean swab tip.",
+   "Add the reagent drops in the order printed on the kit.",
+   "Read the result within the time window on the packaging.",
+   "Record a negative control alongside every test."],"Sample text, not verified"],
+ "Tyvek suits, XL":[["Put on over uniform, boots first, before entering the scene perimeter.",
+   "Tape cuffs to gloves if handling wet biological material.",
+   "Remove inside out at the perimeter and bag as contaminated waste."],"Sample text, not verified"]};
+const DEMO_GAPS=[["Electrostatic dust lifter","F","gap","Roughly $900. Ask about next budget cycle."],
+ ["Snow print wax","F","deliberate","Not needed in this climate."],
+ ["Alternate light source, portable","J","gap","Borrowing the lab unit currently."]];
+
+function loadDemo(){
+  DEMO_COMPS.forEach(([code,desc,side,x,y,w,hh])=>{
+    if(!S.comps.some(c=>c.code===code))
+      S.comps.push({code,desc,side,x,y,w,h:hh,checked:"2026-08-28",demo:true})});
+  DEMO_ITEMS.forEach(([name,loc,cat,cls,qty,par,date])=>{
+    const g=DEMO_STEPS[name];
+    S.items.push({id:newId(),name,loc,cat,cls,qty,par:String(par),date,
+      status:"Stocked",gapType:"",note:"",steps:g?g[0]:[],source:g?g[1]:"",verified:"",
+      uses:[],fav:false,demo:true})});
+  DEMO_GAPS.forEach(([name,cat,gt,note])=>{
+    S.items.push({id:newId(),name,loc:"",cat,cls:"Consumable",qty:0,par:"",date:"",
+      status:"Not carried",gapType:gt,note,steps:[],source:"",verified:"",uses:[],demo:true})});
+  S.demo=true;save();
+}
+function clearDemo(){
+  S.items=S.items.filter(i=>!i.demo);
+  S.comps=S.comps.filter(c=>!c.demo);
+  if(S.curLoc&&!S.comps.some(c=>c.code===S.curLoc))S.curLoc="";
+  S.demo=false;save();
+}
+function renderDemoBar(){
+  const b=$("#demobar");
+  if(!S.demo){b.style.display="none";b.innerHTML="";return}
+  b.style.display="";
+  b.innerHTML=`<span>Sample van loaded. Clear it before the real sweep.</span>
+    <button id="cleardemo">Clear sample</button>`;
+}
+
+
+/* ---------- github sync ---------- */
+if(!S.gh)S.gh={owner:"",repo:"",path:"data.json",token:"",sha:"",last:""};
+let dirty=false, pushT=null, conflict=false;
+
+const b64enc=s=>{const b=new TextEncoder().encode(s);let out="";
+  for(let i=0;i<b.length;i+=8192)out+=String.fromCharCode.apply(null,b.subarray(i,i+8192));
+  return btoa(out)};
+const b64dec=s=>new TextDecoder().decode(Uint8Array.from(atob(s.replace(/\s/g,"")),c=>c.charCodeAt(0)));
+const ghOn=()=>!!(S.gh.owner&&S.gh.repo&&S.gh.token);
+const ghURL=()=>`https://api.github.com/repos/${S.gh.owner}/${S.gh.repo}/contents/${S.gh.path||"data.json"}`;
+const ghHead=()=>({Authorization:"Bearer "+S.gh.token,Accept:"application/vnd.github+json",
+  "X-GitHub-Api-Version":"2022-11-28"});
+const payload=()=>({items:S.items,comps:S.comps,walls:S.walls,demo:S.demo,
+  lastCat:S.lastCat,lastCls:S.lastCls,savedAt:new Date().toISOString()});
+
+async function ghPull(silent){
+  if(!ghOn())return;
+  try{
+    const r=await fetch(ghURL()+"?ref=HEAD&t="+Date.now(),{headers:ghHead(),cache:"no-store"});
+    if(r.status===404){S.gh.sha="";store.set(S);if(!silent)toast("No data file yet — push to create it");return"empty"}
+    if(!r.ok)throw new Error(r.status===401?"Token rejected":r.status===403?"No access to that repo":"GitHub error "+r.status);
+    const j=await r.json(), o=JSON.parse(b64dec(j.content));
+    S.items=o.items||[];S.comps=o.comps||[];if(o.walls)S.walls=o.walls;S.demo=!!o.demo;
+    S.gh.sha=j.sha;S.gh.last=new Date().toISOString();dirty=false;conflict=false;
+    clearTimeout(pushT);store.set(S);
+    if(!silent)toast("Pulled "+S.items.length+" items");render();return"ok";
+  }catch(e){if(!silent)toast(e.message||"Pull failed");return"error"}
+}
+async function ghPush(force){
+  if(!ghOn())return;
+  try{
+    const body={message:"Van inventory — "+new Date().toISOString().slice(0,16).replace("T"," "),
+      content:b64enc(JSON.stringify(payload(),null,1))};
+    if(S.gh.sha&&!force)body.sha=S.gh.sha;
+    else if(force){const r0=await fetch(ghURL(),{headers:ghHead(),cache:"no-store"});
+      if(r0.ok){const j0=await r0.json();body.sha=j0.sha}}
+    const r=await fetch(ghURL(),{method:"PUT",headers:Object.assign({"Content-Type":"application/json"},ghHead()),
+      body:JSON.stringify(body)});
+    if(r.status===409||r.status===422){conflict=true;store.set(S);renderData();
+      return toast("Someone else changed the data — see Sync")}
+    if(!r.ok)throw new Error(r.status===401?"Token rejected":r.status===403?"No write access":"GitHub error "+r.status);
+    const j=await r.json();S.gh.sha=j.content.sha;S.gh.last=new Date().toISOString();
+    dirty=false;conflict=false;store.set(S);renderData();return"ok";
+  }catch(e){toast(e.message||"Push failed")}
+}
+function queuePush(){ if(!ghOn())return; dirty=true;
+  clearTimeout(pushT); pushT=setTimeout(()=>ghPush(false),2500); renderSyncPill(); }
+function renderSyncPill(){
+  const el=$("#syncpill"); if(!el)return;
+  el.textContent=conflict?"Conflict":dirty?"Saving…":S.gh.last?"Synced "+S.gh.last.slice(11,16):"Not synced";
+  el.className="syncpill"+(conflict?" bad":dirty?" busy":"");
+}
+
+/* ---------- nav ---------- */
+let view="home", query="";
+function buildTabs(){
+  const h=TABS.map(([v,l])=>`<button data-v="${v}" aria-current="${v===view}">${ic(v)}<span>${l}</span></button>`).join("");
+  $("#tabs").innerHTML=h; $("#side").innerHTML=h;
+}
+function go(v){view=v;query="";$("#q").value="";$("#qclear").style.display="none";
+  $$(".view").forEach(s=>s.classList.toggle("on",s.id==="v-"+v));
+  window.scrollTo&&window.scrollTo(0,0);render()}
+document.addEventListener("click",e=>{const b=e.target.closest("#tabs button,#side button");if(b)go(b.dataset.v)});
+$("#q").addEventListener("input",e=>{query=e.target.value.trim();
+  $("#qclear").style.display=query?"":"none";
+  $$(".view").forEach(s=>s.classList.toggle("on",query?s.id==="v-search":s.id==="v-"+view));render()});
+$("#qclear").onclick=()=>{$("#q").value="";query="";$("#qclear").style.display="none";
+  $$(".view").forEach(s=>s.classList.toggle("on",s.id==="v-"+view));render()};
+
+/* ---------- home: priority strip ---------- */
+function renderHome(){
+  $("#title").textContent="Van";
+  const L=live();
+  if(!L.length&&!S.comps.length){
+    $("#v-home").innerHTML=`<div class="empty"><strong>Nothing logged yet</strong>
+      <p>Add your first compartment, then log what's inside it. One compartment at a time.</p>
+      <button class="btn" data-go="sweep">Start a sweep</button>
+      <button class="btn sec" id="loaddemo">Load a sample van</button></div>`;return;
+  }
+  const bad=L.filter(i=>isOut(i)||isLow(i));
+  const soon=L.filter(i=>(isExpiring(i)||isExpired(i)||isService(i)));
+  const gp=gaps();
+  const cards=[];
+  if(bad.length)cards.push(["red","alert",bad.length+(bad.length===1?" item low or out":" items low or out"),"Tap to review","low"]);
+  if(soon.length)cards.push(["amber","clock",soon.length+(soon.length===1?" item expiring":" items expiring"),"Within 90 days","expiring"]);
+  if(gp.length)cards.push(["dark","gap",gp.length+(gp.length===1?" gap to decide":" gaps to decide"),"Not in the van","gaps"]);
+  if(!cards.length)cards.push(["green","ok","Van is ready",L.length+" items, nothing outstanding","all"]);
+
+  const glyph={alert:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3L1.8 20h20.4z"/><path d="M12 9v5M12 17.2v.1"/></svg>',
+   clock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5.3l3.4 2"/></svg>',
+   gap:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="4 3"><rect x="3.5" y="3.5" width="17" height="17" rx="3"/></svg>',
+   ok:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M8 12.4l2.7 2.7L16 9.5"/></svg>'};
+
+  const strip=cards.map(([c,g,t,s,key])=>`<button class="pcard p-${c}" data-list="${key}">
+    ${glyph[g]}<span><span class="n">${esc(t)}</span><span class="s">${esc(s)}</span></span>
+    <span class="ch">&#8250;</span></button>`).join("");
+
+  const pop=L.slice().sort((a,b)=>((b.fav?1e6:0)+(b.uses||[]).length)-((a.fav?1e6:0)+(a.uses||[]).length)).slice(0,3);
+  const qf=pop.length?`<div class="sect">Quick find</div><div class="qf">`
+    +pop.map(i=>`<button data-item="${i.id}"><span class="nm">${esc(i.name)}</span>
+      <span class="lc">${esc(i.loc||"—")}</span></button>`).join("")+`</div>`
+    +`<p class="empty" style="border:0;padding:10px 2px 0;text-align:left;font-size:13px">Ordered by how often you log use. It'll sharpen as you use it.</p>`:"";
+  $("#v-home").innerHTML=`<div class="strip">${strip}</div>${qf}`;
+}
+
+/* ---------- compartments ---------- */
+function autoPlace(side){
+  const W=S.walls[side]||{cols:24,rows:12};
+  const mine=S.comps.filter(c=>c.side===side);
+  const grid=[];for(let r=0;r<W.rows;r++)grid.push(new Array(W.cols).fill(false));
+  const mark=(c)=>{for(let r=c.y;r<Math.min(W.rows,c.y+c.h);r++)
+    for(let x=c.x;x<Math.min(W.cols,c.x+c.w);x++)grid[r][x]=true};
+  const fits=(x,y,w,hh)=>{if(x+w>W.cols||y+hh>W.rows)return false;
+    for(let r=y;r<y+hh;r++)for(let q=x;q<x+w;q++)if(grid[r][q])return false;return true};
+  mine.filter(c=>c.x!=null&&c.y!=null).forEach(mark);
+  mine.filter(c=>c.x==null||c.y==null).forEach(c=>{
+    outer:for(let y=0;y<W.rows;y++)for(let x=0;x<W.cols;x++)
+      if(fits(x,y,c.w,c.h)){c.x=x;c.y=y;mark(c);break outer}
+    if(c.x==null){c.x=0;c.y=0}});
+}
+
+let editing=false, editSel=null;
+
+function renderComps(){
+  $("#title").textContent="Compartments";
+  const cs=comps();
+  if(!cs.length){
+    $("#v-compartments").innerHTML=`<div class="empty"><strong>No compartments yet</strong>
+      <p>Add a code for each drawer, bin, and cabinet, say which side it's on, and how big it is.</p>
+      <button class="btn" data-go="sweep">Add the first one</button></div>`;return;
+  }
+  SIDES.forEach(autoPlace);
+
+  const slotFor=c=>{const s=compState(c.code);
+    const big=c.w>=5&&c.h>=3, mid=c.h>=2;
+    return `<button class="slot s-${s.k}${editSel===c.code?" sel":""}" data-comp="${esc(c.code)}"
+      style="grid-column:${c.x+1}/span ${c.w};grid-row:${c.y+1}/span ${c.h}">
+      <span><span class="code">${esc(c.code)}</span>${big&&c.desc?`<span class="dsc">${esc(c.desc)}</span>`:""}</span>
+      ${mid?`<span class="st">${esc(s.label)}</span>`:""}</button>`};
+
+  const wall=side=>{
+    const W=S.walls[side]||{cols:24,rows:12};
+    const mine=cs.filter(c=>c.side===side);
+    return `<section class="wall">
+      <div class="whead"><b>${esc(side)}</b><span>${mine.length} compartment${mine.length===1?"":"s"}</span></div>
+      <div class="vanwrap">
+        <div class="vanbody"><div class="vaninner"></div>
+          <div class="cargo" style="grid-template-columns:repeat(${W.cols},1fr);grid-template-rows:repeat(${W.rows},1fr)">
+            ${mine.map(slotFor).join("")}</div></div>
+        <div class="wheel f"></div><div class="wheel r"></div></div>
+      <div class="orient"><span>Front</span><span>Rear doors</span></div></section>`;
+  };
+
+  const overlaps=c=>S.comps.filter(o=>o.side===c.side&&o.code!==c.code&&o.x!=null&&
+    c.x<o.x+o.w&&o.x<c.x+c.w&&c.y<o.y+o.h&&o.y<c.y+c.h).map(o=>o.code);
+  const sel=editSel?cs.find(c=>c.code===editSel):null;
+  const ov=sel?overlaps(sel):[];
+  const panel=sel?`<div class="epanel">
+      <h4>${esc(sel.code)}${sel.desc?" · "+esc(sel.desc):""}</h4>
+      <div class="four">
+        <label><span>From front</span><input type="text" id="ex" inputmode="numeric" value="${sel.x}"></label>
+        <label><span>From roof</span><input type="text" id="ey" inputmode="numeric" value="${sel.y}"></label>
+        <label><span>Width</span><input type="text" id="ew" inputmode="numeric" value="${sel.w}"></label>
+        <label><span>Height</span><input type="text" id="eh" inputmode="numeric" value="${sel.h}"></label></div>
+      ${ov.length?`<p style="margin:10px 0 0;font-size:13px;color:var(--red);line-height:1.45">Overlaps ${esc(ov.join(", "))}. Two compartments can't share the same space on the wall.</p>`:""}
+      <button class="btn" id="esave" style="margin:12px 0 0;max-width:none">Save size</button>
+      <button class="btn sec" id="eclose" style="margin:8px 0 0;max-width:none">Done</button></div>`:"";
+
+  const unplaced=cs.filter(c=>!SIDES.includes(c.side));
+  $("#v-compartments").innerHTML=
+    `<div class="ph">Placeholder proportions. Each wall is ${S.walls["Driver side"].cols} units long and ${S.walls["Driver side"].rows} tall — set each compartment to its real size, or send photos and I'll set them.</div>
+     <div class="editbar">
+       <button data-edit="${editing?"off":"on"}" class="${editing?"on":""}">${editing?"Done editing":"Edit layout"}</button></div>
+     ${panel}
+     <div class="legend">
+       <span><i style="background:var(--green)"></i>Good</span>
+       <span><i style="background:var(--amber)"></i>Attention</span>
+       <span><i style="background:var(--red)"></i>Action needed</span>
+       <span><i style="background:var(--grey)"></i>Not checked</span></div>
+     <div class="walls">${wall("Driver side")}${wall("Passenger side")}</div>
+     ${cs.some(c=>c.side==="Rear doors")?wall("Rear doors"):""}
+     ${cs.some(c=>c.side==="Cab")?wall("Cab"):""}
+     ${unplaced.length?`<div class="sect">Not placed on a side yet — ${unplaced.length}</div>
+       <div class="rows">`+unplaced.map(c=>{const s=compState(c.code);
+         return `<button class="row" data-comp="${esc(c.code)}">
+           <span><span class="code">${esc(c.code)}</span><span class="desc">${esc(c.desc||"No location set")}</span></span>
+           <span class="rt"><span class="badge b-${s.k}">${esc(s.label)}</span><span class="chev">&#8250;</span></span></button>`
+         }).join("")+`</div>`:""}`;
+}
+
+
+/* ---------- compartment detail ---------- */
+let curComp=null;
+function renderCompDetail(){
+  const c=S.comps.find(x=>x.code===curComp);
+  if(!c){view="compartments";return renderComps()}
+  $("#title").textContent=c.code;
+  const s=compState(c.code), it=s.items;
+  const flag=i=>isOut(i)?["action","Out"]:isExpired(i)?["action","Expired"]
+    :isLow(i)?["attn","Below par"]:isService(i)?["attn","Service due"]
+    :isExpiring(i)?["attn",daysOut(i.date)+" days"]:["good","OK"];
+  const counts=[["action",it.filter(i=>isOut(i)||isExpired(i)).length,"need action"],
+    ["attn",it.filter(i=>(isLow(i)||isExpiring(i)||isService(i))&&!isOut(i)&&!isExpired(i)).length,"to check"],
+    ["good",it.length,"in total"]].filter(x=>x[1]);
+  const sorted=it.slice().sort((a,b)=>{
+    const r=i=>isOut(i)||isExpired(i)?0:(isLow(i)||isExpiring(i)||isService(i))?1:2;
+    return r(a)-r(b)||a.name.localeCompare(b.name)});
+  $("#v-compdetail").innerHTML=`
+    <button class="back" data-go="compartments">&#8249; Compartments</button>
+    <div class="cdhead">
+      <h2>${esc(c.code)}</h2>
+      <div class="sub">${esc(c.desc||"No description")}${c.side?" · "+esc(c.side):""}</div>
+      <div class="cdstats">${counts.map(([k,v,l])=>
+        `<span class="badge b-${k}">${v} ${l}</span>`).join("")}
+        ${c.checked?`<span class="badge b-unchecked">Swept ${esc(c.checked)}</span>`:""}</div>
+    </div>
+    <div class="acts">
+      <button data-addhere="${esc(c.code)}">Add an item</button>
+      <button data-check="${esc(c.code)}">${c.checked?"Mark swept again":"Mark swept"}</button>
+    </div>
+    ${sorted.length?`<div class="rows">`+sorted.map(i=>{const f=flag(i);
+      return `<button class="row" data-item="${i.id}">
+        <span><span class="code">${esc(i.name)}</span>
+        <span class="desc">${esc(i.qty)} in stock${i.par?" · par "+esc(i.par):""}${i.date?" · "+esc(i.date):""}</span></span>
+        <span class="rt"><span class="badge b-${f[0]}">${esc(f[1])}</span><span class="chev">&#8250;</span></span></button>`
+      }).join("")+`</div>`
+    :`<div class="empty"><strong>Nothing logged here</strong>
+       <p>${c.checked?"Swept and confirmed empty.":"Open it, log what's inside, then mark it swept."}</p></div>`}`;
+}
+
+
+/* ---------- item detail ---------- */
+let curItem=null, prevView="home";
+function openSheet(html){$("#sheetbody").innerHTML=html;$("#scrim").classList.add("on");
+  const f=()=>$("#sheet").classList.add("on");
+  typeof requestAnimationFrame==="function"?requestAnimationFrame(f):setTimeout(f,16)}
+function closeSheet(){$("#sheet").classList.remove("on");$("#scrim").classList.remove("on")}
+$("#scrim").onclick=closeSheet;
+const today=()=>new Date().toISOString().slice(0,10);
+
+function itemStatus(i){
+  if(isOut(i))return["action","Out of stock"];
+  if(isExpired(i))return["action","Expired"];
+  if(isLow(i))return["attn","Below par"];
+  if(isService(i))return["attn","Service due"];
+  if(isExpiring(i))return["attn","Expires in "+daysOut(i.date)+" days"];
+  return["good","Good"];
+}
+function renderItemDetail(){
+  const i=S.items.find(x=>x.id===curItem);
+  if(!i){view=prevView;return render()}
+  $("#title").textContent="Item";
+  const c=S.comps.find(x=>x.code===i.loc);
+  const st=itemStatus(i), steps=i.steps||[], uses=(i.uses||[]).slice(-5).reverse();
+  const backLabel={compdetail:i.loc||"Compartment",compartments:"Compartments",
+    home:"Home",sweep:"Sweep",search:"Search"}[prevView]||"Back";
+  $("#v-itemdetail").innerHTML=`
+    <button class="back" data-back="1">&#8249; ${esc(backLabel)}</button>
+    <div style="display:flex;align-items:flex-start;gap:10px">
+      <div style="flex:1;min-width:0">
+        <span class="chip">${esc(catName(i.cat))}</span>
+        <h2 class="idtitle">${esc(i.name)}</h2>
+        <div class="idsub">${esc(i.cls)}${i.par?" · par level "+esc(i.par):""}</div>
+      </div>
+      <button class="star ${i.fav?"on":""}" data-fav="${i.id}" aria-label="Favourite">${i.fav?"&#9733;":"&#9734;"}</button>
+    </div>
+
+    <div class="idsect">Where it is</div>
+    <div class="loc">
+      <div class="lft"><div class="cd">${esc(i.loc||"Not placed")}</div>
+        <div class="ds">${esc(c?(c.desc||c.side||"No description"):"No compartment set")}</div></div>
+      <div class="rgt"><div class="qn">${esc(i.qty)}</div><div class="ql">in stock</div></div>
+    </div>
+    <div class="parrow"><span>Par level <b>${esc(i.par||"not set")}</b></span>
+      <span>Status <b style="color:var(--${st[0]==="action"?"red":st[0]==="attn"?"amber":"green"})">${esc(st[1])}</b></span></div>
+
+    <div class="idsect">How to use</div>
+    ${steps.length?`<div class="steps">${steps.map((s,x)=>
+      `<div class="step"><i>${x+1}</i><p>${esc(s)}</p></div>`).join("")}</div>
+      ${!i.verified?`<div class="unver">No verified date on these instructions. Check them against the manufacturer sheet or your SOP before relying on them at a scene.</div>`:""}`
+    :`<div class="empty" style="padding:20px 16px"><strong>No instructions yet</strong>
+       <p>Paste the steps from the manufacturer sheet or your SOP, and record where they came from.</p>
+       <button class="btn sec" data-editsteps="${i.id}" style="margin-top:12px">Add instructions</button></div>`}
+    ${steps.length?`<button class="btn sec" data-editsteps="${i.id}" style="margin:10px 0 0;max-width:none">Edit instructions</button>`:""}
+
+    <div class="idsect">Details</div>
+    <div class="kv">
+      <div><dt>Class</dt><dd>${esc(i.cls)}</dd></div>
+      <div><dt>${i.cls==="Durable"?"Service due":"Expires"}</dt><dd>${esc(i.date||"—")}</dd></div>
+      <div><dt>Category</dt><dd>${esc(i.cat)} · ${esc(catName(i.cat))}</dd></div>
+      <div><dt>Instructions verified</dt><dd>${esc(i.verified||"—")}</dd></div>
+      <div><dt>Source</dt><dd>${esc(i.source||"—")}</dd></div>
+    </div>
+    ${i.note?`<div class="idsect">Notes</div><div class="kv"><div style="display:block">${esc(i.note).replace(/\n/g,"<br>")}</div></div>`:""}
+    ${uses.length?`<div class="idsect">Recent use</div><div class="kv">${uses.map(u=>
+      `<div><dt>${esc(u.d)}</dt><dd>used ${esc(u.n)}</dd></div>`).join("")}</div>`:""}
+
+    <div class="actbar">
+      <button class="primary" data-loguse="${i.id}">Log use</button>
+      <button data-adjust="${i.id}">Adjust qty</button>
+      <button data-edititem="${i.id}">Edit</button>
+    </div>`;
+}
+
+function openItem(id,from){curItem=id;prevView=from||(query?"search":view);view="itemdetail";
+  $$(".view").forEach(v=>v.classList.toggle("on",v.id==="v-itemdetail"));
+  window.scrollTo&&window.scrollTo(0,0);render()}
+
+document.addEventListener("click",e=>{
+  const bk=e.target.closest("[data-back]");
+  if(bk){view=prevView;$$(".view").forEach(v=>v.classList.toggle("on",v.id==="v-"+view));
+    window.scrollTo&&window.scrollTo(0,0);return render()}
+  const fv=e.target.closest("[data-fav]");
+  if(fv){const i=S.items.find(x=>x.id===fv.dataset.fav);
+    if(i){i.fav=!i.fav;save();renderItemDetail();toast(i.fav?"Added to quick find":"Removed from quick find")}return}
+  const lu=e.target.closest("[data-loguse]");
+  if(lu){const i=S.items.find(x=>x.id===lu.dataset.loguse);if(!i)return;
+    openSheet(`<h3>Log use</h3>
+      <p style="margin:0 0 14px;color:var(--ink2);font-size:14.5px">${esc(i.name)} — ${esc(i.qty)} in stock now.</p>
+      <label class="fld"><span>How many used</span><input type="text" id="un" inputmode="numeric" value="1"></label>
+      <button class="btn" id="usave" style="max-width:none;margin:0">Log it</button>
+      <button class="btn sec" id="ucancel" style="max-width:none">Cancel</button>`);
+    $("#ucancel").onclick=closeSheet;
+    $("#usave").onclick=()=>{const q=n($("#un").value);
+      if(q<=0){closeSheet();return toast("Nothing logged")}
+      i.qty=Math.max(0,n(i.qty)-q); (i.uses=i.uses||[]).push({d:today(),n:q});
+      save();closeSheet();renderItemDetail();
+      toast(isLow(i)?i.name+" is now below par":"Logged — "+i.qty+" left")};
+    return}
+  const aj=e.target.closest("[data-adjust]");
+  if(aj){const i=S.items.find(x=>x.id===aj.dataset.adjust);if(!i)return;
+    openSheet(`<h3>Adjust quantity</h3>
+      <p style="margin:0 0 14px;color:var(--ink2);font-size:14.5px">Set the true count after a recount or restock. This doesn't record as use.</p>
+      <div class="two"><label class="fld"><span>Quantity</span><input type="text" id="aq" inputmode="numeric" value="${esc(i.qty)}"></label>
+      <label class="fld"><span>Par level</span><input type="text" id="ap" inputmode="numeric" value="${esc(i.par)}" placeholder="Not set"></label></div>
+      <button class="btn" id="asave" style="max-width:none;margin:0">Save</button>
+      <button class="btn sec" id="acancel" style="max-width:none">Cancel</button>`);
+    $("#acancel").onclick=closeSheet;
+    $("#asave").onclick=()=>{i.qty=n($("#aq").value);i.par=$("#ap").value.trim();
+      save();closeSheet();renderItemDetail();toast("Updated")};
+    return}
+  const es=e.target.closest("[data-editsteps]");
+  if(es){const i=S.items.find(x=>x.id===es.dataset.editsteps);if(!i)return;
+    openSheet(`<h3>Instructions</h3>
+      <label class="fld"><span>Steps, one per line</span>
+        <textarea id="ss" rows="7" placeholder="Apply with a magnetic applicator, gentle even motion">${esc((i.steps||[]).join("\n"))}</textarea></label>
+      <label class="fld"><span>Where these came from</span>
+        <input type="text" id="sc" value="${esc(i.source)}" placeholder="Manufacturer IFU, or SOP section"></label>
+      <label class="fld"><span>Date you checked them</span>
+        <input type="date" id="sv" value="${esc(i.verified)}"></label>
+      <button class="btn" id="ssave" style="max-width:none;margin:0">Save instructions</button>
+      <button class="btn sec" id="scancel" style="max-width:none">Cancel</button>`);
+    $("#scancel").onclick=closeSheet;
+    $("#ssave").onclick=()=>{i.steps=$("#ss").value.split("\n").map(s=>s.trim()).filter(Boolean);
+      i.source=$("#sc").value.trim();i.verified=$("#sv").value;
+      save();closeSheet();renderItemDetail();toast("Instructions saved")};
+    return}
+  const ei=e.target.closest("[data-edititem]");
+  if(ei){const i=S.items.find(x=>x.id===ei.dataset.edititem);if(!i)return;
+    openSheet(`<h3>Edit item</h3>
+      <label class="fld"><span>Name</span><input type="text" id="in" value="${esc(i.name)}"></label>
+      <div class="two"><label class="fld"><span>Compartment</span><input type="text" id="il" value="${esc(i.loc)}" autocapitalize="characters"></label>
+        <label class="fld"><span>${i.cls==="Durable"?"Service due":"Expires"}</span><input type="date" id="id" value="${esc(i.date)}"></label></div>
+      <div class="two"><label class="fld"><span>Category</span><select id="ic">${CATS.map(c=>`<option value="${c[0]}"${c[0]===i.cat?" selected":""}>${c[0]} · ${c[1]}</option>`).join("")}</select></label>
+        <label class="fld"><span>Class</span><select id="ik">${CLASSES.map(c=>`<option${c===i.cls?" selected":""}>${c}</option>`).join("")}</select></label></div>
+      <label class="fld"><span>Note</span><textarea id="io" rows="3">${esc(i.note)}</textarea></label>
+      <button class="btn" id="isave" style="max-width:none;margin:0">Save</button>
+      <button class="btn sec" id="idel" style="max-width:none;color:var(--red);border-color:var(--red)">Delete item</button>
+      <button class="btn sec" id="icancel" style="max-width:none">Cancel</button>`);
+    $("#icancel").onclick=closeSheet;
+    $("#idel").onclick=()=>{if(!confirm("Delete "+i.name+"?"))return;
+      S.items=S.items.filter(x=>x.id!==i.id);save();closeSheet();
+      view=prevView;$$(".view").forEach(v=>v.classList.toggle("on",v.id==="v-"+view));render();toast("Deleted")};
+    $("#isave").onclick=()=>{
+      Object.assign(i,{name:$("#in").value.trim()||i.name,loc:$("#il").value.trim().toUpperCase(),
+        date:$("#id").value,cat:$("#ic").value,cls:$("#ik").value,note:$("#io").value.trim()});
+      if(i.loc&&!S.comps.some(c=>c.code===i.loc))S.comps.push({code:i.loc,desc:"",side:"",x:null,y:null,w:6,h:4});
+      save();closeSheet();renderItemDetail();toast("Saved")};
+    return}
+});
+
+
+/* ---------- inventory ---------- */
+let invGroup="loc";
+function renderInventory(){
+  $("#title").textContent="Inventory";
+  const L=live();
+  if(!L.length){$("#v-inventory").innerHTML=`<div class="empty"><strong>Nothing logged yet</strong>
+    <p>Log some items in Sweep and they all show up here.</p></div>`;return}
+  const keyOf=i=>invGroup==="loc"?(i.loc||"Unassigned")
+    :invGroup==="cat"?(i.cat+" · "+catName(i.cat))
+    :invGroup==="cls"?i.cls
+    :isOut(i)?"Out of stock":isExpired(i)?"Expired":isLow(i)?"Below par"
+    :isService(i)?"Service due":isExpiring(i)?"Expiring soon":"Good";
+  const g={};L.forEach(i=>{(g[keyOf(i)]=g[keyOf(i)]||[]).push(i)});
+  const opts=[["loc","Compartment"],["cat","Category"],["cls","Class"],["status","Status"],["az","A–Z"]];
+  const flag=i=>{const s=itemStatus(i);return `<span class="badge b-${s[0]}">${esc(s[1])}</span>`};
+  const rowOf=i=>`<button class="row" data-item="${i.id}">
+    <span><span class="code">${esc(i.name)}</span>
+    <span class="desc">${esc(i.loc||"—")} · ${esc(i.qty)} in stock${i.par?" · par "+esc(i.par):""}</span></span>
+    <span class="rt">${flag(i)}<span class="chev">&#8250;</span></span></button>`;
+  const body=invGroup==="az"
+    ? `<div class="rows">`+L.slice().sort((a,b)=>a.name.localeCompare(b.name)).map(rowOf).join("")+`</div>`
+    : Object.keys(g).sort().map(k=>`<div class="sect">${esc(k)} — ${g[k].length}</div>`
+        +`<div class="rows">`+g[k].slice().sort((a,b)=>a.name.localeCompare(b.name)).map(rowOf).join("")+`</div>`).join("");
+  $("#v-inventory").innerHTML=`<div class="filters">${opts.map(([k,l])=>
+    `<button data-invg="${k}" class="${invGroup===k?"sel":""}">${l}</button>`).join("")}</div>
+    <div class="sect">${L.length} items</div>${body}`;
+}
+
+/* ---------- guide ---------- */
+function renderGuide(){
+  $("#title").textContent="Guide";
+  const L=live(), withS=L.filter(i=>(i.steps||[]).length), without=L.length-withS.length;
+  if(!withS.length){$("#v-guide").innerHTML=`<div class="empty"><strong>No instructions yet</strong>
+    <p>Open any item and add the steps from its manufacturer sheet or your SOP. They show up here, browsable by name.</p></div>`;return}
+  const g={};withS.forEach(i=>{const k=i.cat+" · "+catName(i.cat);(g[k]=g[k]||[]).push(i)});
+  $("#v-guide").innerHTML=Object.keys(g).sort().map(k=>
+    `<div class="sect">${esc(k)}</div><div class="rows">`+g[k].sort((a,b)=>a.name.localeCompare(b.name)).map(i=>
+      `<button class="row" data-item="${i.id}">
+        <span><span class="code">${esc(i.name)}</span>
+        <span class="desc">${(i.steps||[]).length} steps · ${esc(i.loc||"—")}</span></span>
+        <span class="rt">${i.verified?`<span class="badge b-good">Verified ${esc(i.verified.slice(0,7))}</span>`
+          :`<span class="badge b-attn">Unverified</span>`}<span class="chev">&#8250;</span></span></button>`).join("")+`</div>`).join("")
+    +(without?`<p class="hint">${without} item${without===1?"":"s"} have no instructions. Open one and add them and it appears here.</p>`:"");
+}
+
+/* ---------- gaps ---------- */
+function gapSheet(existing){
+  const i=existing;
+  openSheet(`<h3>${i?"Edit gap":"Something we don't carry"}</h3>
+    <label class="fld"><span>Item</span><input type="text" id="gn" value="${i?esc(i.name):""}" placeholder="Electrostatic dust lifter"></label>
+    <label class="fld"><span>Category</span><select id="gc">${CATS.map(c=>
+      `<option value="${c[0]}"${i&&c[0]===i.cat?" selected":""}>${c[0]} · ${c[1]}</option>`).join("")}</select></label>
+    <label class="fld"><span>Why not carried</span><select id="gt">
+      <option value="gap"${i&&i.gapType!=="deliberate"?" selected":""}>Gap — we should have it</option>
+      <option value="deliberate"${i&&i.gapType==="deliberate"?" selected":""}>Deliberate — we don't need it</option></select></label>
+    <label class="fld"><span>Note</span><textarea id="go" rows="3" placeholder="Cost, who to ask, why not">${i?esc(i.note):""}</textarea></label>
+    <button class="btn" id="gsave" style="max-width:none;margin:0">${i?"Save":"Log it"}</button>
+    ${i?`<button class="btn sec" id="gdel" style="max-width:none;color:var(--red);border-color:var(--red)">Delete</button>`:""}
+    <button class="btn sec" id="gcancel" style="max-width:none">Cancel</button>`);
+  $("#gcancel").onclick=closeSheet;
+  if(i)$("#gdel").onclick=()=>{if(!confirm("Delete "+i.name+"?"))return;
+    S.items=S.items.filter(x=>x.id!==i.id);save();closeSheet();view="home";renderList("gaps");toast("Deleted")};
+  $("#gsave").onclick=()=>{
+    const nm=$("#gn").value.trim(); if(!nm)return toast("Needs a name");
+    if(i)Object.assign(i,{name:nm,cat:$("#gc").value,gapType:$("#gt").value,note:$("#go").value.trim()});
+    else S.items.push({id:newId(),name:nm,loc:"",cat:$("#gc").value,cls:"Consumable",qty:0,par:"",
+      date:"",status:"Not carried",gapType:$("#gt").value,note:$("#go").value.trim(),
+      steps:[],source:"",verified:"",uses:[],fav:false});
+    save();closeSheet();view="home";renderList("gaps");toast(i?"Saved":"Logged")};
+}
+
+/* ---------- data and backup ---------- */
+const COLS=["name","loc","cat","cls","qty","par","date","status","gapType","note","source","verified"];
+const HEAD=["Item","Compartment","Category","Class","Qty","Par","Date","Status","Gap type","Note","Source","Verified"];
+const cell=v=>{v=String(v??"");return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};
+const toCSV=()=>[HEAD.concat("Instructions").join(",")].concat(
+  S.items.map(i=>COLS.map(c=>cell(i[c])).concat(cell((i.steps||[]).join(" | "))).join(","))).join("\n");
+function parseCSV(t){const rows=[];let row=[],f="",q=false;
+  for(let x=0;x<t.length;x++){const c=t[x];
+    if(q){if(c==='"'){if(t[x+1]==='"'){f+='"';x++}else q=false}else f+=c}
+    else if(c==='"')q=true; else if(c===","){row.push(f);f=""}
+    else if(c==="\n"||c==="\r"){if(c==="\r"&&t[x+1]==="\n")x++;row.push(f);f="";
+      if(row.some(v=>v!==""))rows.push(row);row=[]}
+    else f+=c}
+  row.push(f);if(row.some(v=>v!==""))rows.push(row);return rows}
+function download(text,name,type){
+  try{const b=new Blob([text],{type});const u=URL.createObjectURL(b);
+    const a=document.createElement("a");a.href=u;a.download=name;
+    document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1000);
+    S.lastBackup=today();save();return true}catch(e){return false}}
+function ingest(text,replace){
+  text=(text||"").trim(); if(!text)return toast("Nothing pasted");
+  if(text[0]==="{"){let o;try{o=JSON.parse(text)}catch(e){return toast("That backup didn't parse")}
+    if(!o.items)return toast("No items in that file");
+    if(replace){S.items=o.items;S.comps=o.comps||[];if(o.walls)S.walls=o.walls;S.demo=!!o.demo}
+    else o.items.forEach(x=>{x.id=newId();S.items.push(x)});
+    save();renderData();return toast(o.items.length+" items "+(replace?"restored":"added"))}
+  const rows=parseCSV(text); if(rows.length<2)return toast("Nothing to import");
+  const add=[];
+  rows.slice(1).forEach(r=>{if(!r[0]||!r[0].trim())return;
+    const o={id:newId(),uses:[],fav:false};
+    COLS.forEach((c,j)=>o[c]=(r[j]??"").trim());
+    o.qty=n(o.qty); o.steps=(r[COLS.length]||"").split(" | ").map(s=>s.trim()).filter(Boolean);
+    if(!STATUSES.includes(o.status))o.status="Stocked";
+    if(!CATS.some(c=>c[0]===o.cat))o.cat="A";
+    if(!CLASSES.includes(o.cls))o.cls="Consumable";
+    add.push(o)});
+  if(replace)S.items=add; else S.items=S.items.concat(add);
+  add.forEach(o=>{if(o.loc&&!S.comps.some(c=>c.code===o.loc))
+    S.comps.push({code:o.loc,desc:"",side:"",x:null,y:null,w:6,h:4})});
+  save();renderData();toast(add.length+" rows "+(replace?"loaded":"added"));
+}
+function renderData(){
+  $("#title").textContent="Data";
+  const L=live(), gp=S.items.filter(i=>i.status==="Not carried");
+  const stale=!S.lastBackup||(Date.now()-Date.parse(S.lastBackup))/86400000>7;
+  $("#v-data").innerHTML=`
+    <div class="kv" style="margin-bottom:6px">
+      <div><dt>Items</dt><dd>${L.length}</dd></div>
+      <div><dt>Compartments</dt><dd>${S.comps.length}</dd></div>
+      <div><dt>Gaps logged</dt><dd>${gp.length}</dd></div>
+      <div><dt>Last export</dt><dd>${esc(S.lastBackup||"never")}</dd></div>
+    </div>
+    ${L.length&&stale?`<div class="unver">Everything lives in Safari on this device only. Download a backup — if the browser clears its data, there's no other copy.</div>`:""}
+    <div class="idsect">Sync</div>
+    ${ghOn()?`
+      <div class="kv" style="margin-bottom:9px">
+        <div><dt>Repository</dt><dd>${esc(S.gh.owner)}/${esc(S.gh.repo)}</dd></div>
+        <div><dt>File</dt><dd>${esc(S.gh.path||"data.json")}</dd></div>
+        <div><dt>Last synced</dt><dd><span id="syncpill" class="syncpill"></span></dd></div>
+      </div>
+      ${conflict?`<div class="unver" style="background:var(--redbg);color:var(--red)">Another device saved changes after yours. Pull to take their version and lose what you changed here, or push to overwrite theirs. There is no automatic merge.</div>`:""}
+      <div class="stackb">
+        <button class="btn" id="ghpush" style="max-width:none;margin:0">${conflict?"Push over theirs":"Push now"}</button>
+        <button class="btn sec" id="ghpull" style="max-width:none">Pull from GitHub</button>
+        <button class="btn sec" id="ghoff" style="max-width:none">Disconnect this device</button></div>
+      <p class="hint">Changes push automatically a couple of seconds after you make them. Every push is a commit, so the repo keeps the full history.</p>`
+    :`<p class="hint" style="margin-top:0">Store the inventory in a private GitHub repo so every device reads the same list. You need a fine-grained token with read and write on Contents for that one repo.</p>
+      <div class="two"><label class="fld"><span>Owner</span><input type="text" id="gho" placeholder="your-username" autocapitalize="off"></label>
+        <label class="fld"><span>Repository</span><input type="text" id="ghr" placeholder="van-data" autocapitalize="off"></label></div>
+      <label class="fld"><span>File path</span><input type="text" id="ghp" value="data.json" autocapitalize="off"></label>
+      <label class="fld"><span>Access token</span><input type="password" id="ght" placeholder="github_pat_..." autocapitalize="off"></label>
+      <button class="btn" id="ghconnect" style="max-width:none;margin:0">Connect</button>
+      <p class="hint">The token is stored in this browser only. It never leaves the device except to talk to GitHub, and it is left out of backup files.</p>`}
+    <div class="idsect">Back up</div>
+    <div class="stackb">
+      <button class="btn" id="dlj" style="max-width:none;margin:0">Download backup file</button>
+      <button class="btn sec" id="dlc" style="max-width:none">Download CSV</button>
+      <button class="btn sec" id="cpc" style="max-width:none">Copy CSV</button></div>
+    <p class="hint">The backup file holds everything — items, compartments, wall layout. The CSV is items only, for opening in a spreadsheet.</p>
+    <div class="idsect">Restore or import</div>
+    <textarea id="imp" rows="4" placeholder="Paste a backup file or CSV here"></textarea>
+    <div class="stackb" style="margin-top:10px">
+      <button class="btn sec" id="impadd" style="max-width:none;margin:0">Add rows</button>
+      <button class="btn sec" id="imprep" style="max-width:none">Replace everything</button></div>
+    <div class="idsect">Reset</div>
+    <div class="stackb">
+      ${S.demo?`<button class="btn sec" id="cleardemo2" style="max-width:none;margin:0">Clear sample data</button>`:""}
+      <button class="btn sec" id="wipe" style="max-width:none;color:var(--red);border-color:var(--red)">Erase everything</button></div>`;
+  renderSyncPill();
+}
+
+/* ---------- filtered lists from the strip ---------- */
+let listKey=null;
+function renderList(key){
+  const L=live();
+  const map={low:["Low or out",L.filter(i=>isOut(i)||isLow(i))],
+    expiring:["Expiring",L.filter(i=>isExpiring(i)||isExpired(i)||isService(i))],
+    gaps:["Gaps to decide",gaps()],all:["All items",L]};
+  const [t,arr]=map[key]||map.all;
+  $("#title").textContent=t;
+  listKey=key;
+  $("#v-home").innerHTML=`<button class="btn sec" data-go="home" style="margin:0 0 14px;max-width:200px">&#8249; Home</button>`
+    +(key==="gaps"?`<button class="btn sec" id="addgap" style="margin:0 0 14px;max-width:none">Log something we don't carry</button>`:"")
+    +(arr.length?`<div class="rows">`+arr.map(i=>{
+      const s=isOut(i)?["action","Out"]:isExpired(i)?["action","Expired"]:isLow(i)?["attn","Below par"]
+        :isService(i)?["attn","Service due"]:isExpiring(i)?["attn",daysOut(i.date)+" days"]:["good","OK"];
+      return `<button class="row" data-item="${i.id}">
+        <span><span class="code">${esc(i.name)}</span>
+        <span class="desc">${esc(i.loc||"—")} · ${esc(i.qty)} in stock${i.par?" · par "+esc(i.par):""}</span></span>
+        <span class="rt"><span class="badge b-${s[0]}">${esc(s[1])}</span><span class="chev">&#8250;</span></span></button>`
+      }).join("")+`</div>`
+    :`<div class="empty"><strong>Nothing here</strong><p>That list is clear.</p></div>`);
+}
+
+/* ---------- search ---------- */
+function renderSearch(){
+  $("#title").textContent="Search";
+  const q=query.toLowerCase();
+  const hits=live().filter(i=>(i.name+" "+i.loc+" "+i.cat+" "+catName(i.cat)+" "+i.cls).toLowerCase().includes(q)).slice(0,40);
+  $("#v-search").innerHTML=hits.length
+    ? `<div class="sect">${hits.length} result${hits.length===1?"":"s"}</div><div class="rows">`
+      +hits.map(i=>{const cp=S.comps.find(c=>c.code===i.loc);
+        return `<button class="row" data-item="${i.id}">
+          <span><span class="code">${esc(i.name)}</span>
+          <span class="desc">${esc(i.loc||"—")}${cp&&cp.desc?" · "+esc(cp.desc):""} · ${esc(i.qty)} in stock</span></span>
+          <span class="rt"><span class="chev">&#8250;</span></span></button>`}).join("")+`</div>`
+    : `<div class="empty"><strong>Nothing found</strong><p>No item, compartment, or category matches that.</p></div>`;
+}
+
+/* ---------- sweep ---------- */
+function renderSweep(){
+  $("#title").textContent="Sweep";
+  const cur=S.curLoc, cs=comps(), here=live().filter(i=>i.loc===cur);
+  $("#v-sweep").innerHTML=`
+    <div class="chips">${cs.map(c=>`<button data-loc="${esc(c.code)}" class="${c.code===cur?"on":""}">${esc(c.code)}</button>`).join("")}</div>
+    <div class="card" style="margin-bottom:14px">
+      <div class="two"><label class="fld"><span>New compartment</span>
+        <input type="text" id="nc" placeholder="BIN-7" autocapitalize="characters"></label>
+        <label class="fld"><span>Where it is</span><input type="text" id="nd" placeholder="Drawer 3, left"></label></div>
+      <div class="two"><label class="fld"><span>Side of the van</span><select id="nz">
+        <option value="">Not placed yet</option>${SIDES.map(z=>`<option>${z}</option>`).join("")}</select></label>
+        <label class="fld"><span>Size on the wall</span>
+          <div style="display:flex;gap:6px"><input type="text" id="nw" inputmode="numeric" placeholder="W 6" style="text-align:center">
+          <input type="text" id="nh" inputmode="numeric" placeholder="H 4" style="text-align:center"></div></label></div>
+      <button class="btn sec" id="addc" style="margin:0;max-width:none">Add compartment</button></div>
+    ${cur?`<div class="card">
+      <label class="fld"><span>Item</span><input type="text" id="f-name" placeholder="Black magnetic powder, 1 lb"></label>
+      <div class="two"><label class="fld"><span>Quantity</span><input type="text" id="f-qty" inputmode="numeric" value="1"></label>
+        <label class="fld"><span>Par level</span><input type="text" id="f-par" inputmode="numeric" placeholder="Blank for now"></label></div>
+      <div class="two"><label class="fld"><span>Category</span><select id="f-cat">${CATS.map(c=>`<option value="${c[0]}"${c[0]===S.lastCat?" selected":""}>${c[0]} · ${c[1]}</option>`).join("")}</select></label>
+        <label class="fld"><span>Class</span><select id="f-cls">${CLASSES.map(c=>`<option${c===S.lastCls?" selected":""}>${c}</option>`).join("")}</select></label></div>
+      <label class="fld"><span>Expiry or service date</span><input type="date" id="f-date"></label>
+      <button class="btn" id="add" style="margin:4px 0 0;max-width:none">Add to ${esc(cur)}</button></div>
+      ${here.length?`<div class="sect">In ${esc(cur)} — ${here.length}</div><div class="rows">`
+        +here.slice().reverse().map(i=>`<button class="row" data-item="${i.id}">
+          <span><span class="code">${esc(i.name)}</span><span class="desc">${esc(i.qty)} in stock${i.par?" · par "+esc(i.par):""}</span></span>
+          <span class="rt"><span class="chev">&#8250;</span></span></button>`).join("")+`</div>`:""}`
+    :`<div class="empty"><strong>Pick a compartment</strong><p>Choose one above, or add a new code and say where it sits in the van.</p></div>`}`;
+}
+
+/* ---------- events ---------- */
+document.addEventListener("click",e=>{
+  const g=e.target.closest("[data-go]"); if(g)return go(g.dataset.go);
+  const l=e.target.closest("[data-list]"); if(l){view="home";return renderList(l.dataset.list)}
+  const ed=e.target.closest("[data-edit]");
+  if(ed){editing=ed.dataset.edit==="on";if(!editing)editSel=null;return renderComps()}
+  if(e.target.closest("#eclose")){editSel=null;return renderComps()}
+  if(e.target.closest("#esave")){
+    const c=S.comps.find(x=>x.code===editSel); if(!c)return;
+    const W=S.walls[c.side]||{cols:24,rows:12};
+    c.w=Math.max(1,Math.min(W.cols,n($("#ew").value)||c.w));
+    c.h=Math.max(1,Math.min(W.rows,n($("#eh").value)||c.h));
+    c.x=Math.max(0,Math.min(W.cols-c.w,n($("#ex").value)));
+    c.y=Math.max(0,Math.min(W.rows-c.h,n($("#ey").value)));
+    save();renderComps();return toast(c.code+" resized")}
+  const c=e.target.closest("[data-comp]");
+  if(c){ if(editing){editSel=c.dataset.comp;return renderComps()}
+    curComp=c.dataset.comp;view="compdetail";
+    $$(".view").forEach(v=>v.classList.toggle("on",v.id==="v-compdetail"));
+    window.scrollTo&&window.scrollTo(0,0);return render()}
+  const ah=e.target.closest("[data-addhere]");
+  if(ah){S.curLoc=ah.dataset.addhere;save();return go("sweep")}
+  const ck=e.target.closest("[data-check]");
+  if(ck){const cc=S.comps.find(x=>x.code===ck.dataset.check);
+    if(cc){cc.checked=new Date().toISOString().slice(0,10);save();renderCompDetail();toast(cc.code+" marked swept")}
+    return}
+  if(e.target.closest("#addgap"))return gapSheet(null);
+  const ig=e.target.closest("[data-invg]");
+  if(ig){invGroup=ig.dataset.invg;return renderInventory()}
+  if(e.target.closest("#gear")){view="data";
+    $$(".view").forEach(v=>v.classList.toggle("on",v.id==="v-data"));
+    $("#q").value="";query="";$("#qclear").style.display="none";
+    window.scrollTo&&window.scrollTo(0,0);return render()}
+  if(e.target.closest("#dlj")){
+    const safe=Object.assign({},S);delete safe.gh;
+    return toast(download(JSON.stringify(safe,null,1),"van-backup-"+today()+".json","application/json")
+      ?"Backup downloaded":"Download blocked — use Copy CSV")}
+  if(e.target.closest("#dlc")){
+    return toast(download(toCSV(),"van-inventory-"+today()+".csv","text/csv")
+      ?"CSV downloaded":"Download blocked — use Copy CSV")}
+  if(e.target.closest("#cpc")){
+    navigator.clipboard&&navigator.clipboard.writeText(toCSV())
+      .then(()=>{S.lastBackup=today();save();renderData();toast("Copied")})
+      .catch(()=>toast("Copy blocked by the browser"));return}
+  if(e.target.closest("#ghconnect")){
+    S.gh={owner:$("#gho").value.trim(),repo:$("#ghr").value.trim(),
+      path:$("#ghp").value.trim()||"data.json",token:$("#ght").value.trim(),sha:"",last:""};
+    if(!ghOn()){S.gh.token="";return toast("Owner, repository and token are all needed")}
+    store.set(S);toast("Checking...");
+    ghPull(true).then(r=>{
+      if(r==="error"){S.gh.token="";store.set(S);renderData();return toast("Couldn't reach that repo — check the token")}
+      renderData();toast(r==="empty"?"Connected. Push to create the file.":"Connected and pulled")});
+    return}
+  if(e.target.closest("#ghpush")){toast("Pushing...");ghPush(conflict);return}
+  if(e.target.closest("#ghpull")){toast("Pulling...");ghPull(false);return}
+  if(e.target.closest("#ghoff")){
+    if(!confirm("Disconnect this device? The data stays in the repo and on this device."))return;
+    S.gh={owner:"",repo:"",path:"data.json",token:"",sha:"",last:""};store.set(S);
+    renderData();return toast("Disconnected")}
+  if(e.target.closest("#impadd"))return ingest($("#imp").value,false);
+  if(e.target.closest("#imprep")){
+    if(confirm("Replace everything currently in the app?"))ingest($("#imp").value,true);return}
+  if(e.target.closest("#cleardemo2")){
+    if(!confirm("Remove all sample data? Anything you added yourself stays."))return;
+    clearDemo();renderData();return toast("Sample cleared")}
+  if(e.target.closest("#wipe")){
+    if(!confirm("Erase every item and compartment? Download a backup first if you need one."))return;
+    S.items=[];S.comps=[];S.curLoc="";S.demo=false;save();return go("home")}
+  if(e.target.closest("#loaddemo")){loadDemo();return go("home")}
+  if(e.target.closest("#cleardemo")){
+    if(!confirm("Remove all sample data? Anything you added yourself stays."))return;
+    clearDemo();return go("home")}
+  const di=e.target.closest("[data-item]");
+  if(di){const it=S.items.find(x=>x.id===di.dataset.item);
+    if(it&&it.status==="Not carried")return gapSheet(it);
+    return openItem(di.dataset.item)}
+  if(e.target.closest("[data-loc]")){S.curLoc=e.target.closest("[data-loc]").dataset.loc;save();return renderSweep()}
+  if(e.target.closest("#addc")){
+    const code=$("#nc").value.trim().toUpperCase(); if(!code)return toast("Needs a code");
+    if(!S.comps.some(x=>x.code===code))
+      S.comps.push({code,desc:$("#nd").value.trim(),side:$("#nz").value,
+        x:null,y:null,w:n($("#nw").value)||6,h:n($("#nh").value)||4});
+    S.curLoc=code;save();renderSweep();return toast("Added "+code)}
+  if(e.target.closest("#add")){
+    const nm=$("#f-name").value.trim(); if(!nm)return toast("Item needs a name");
+    S.lastCat=$("#f-cat").value;S.lastCls=$("#f-cls").value;
+    S.items.push({id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),name:nm,loc:S.curLoc,
+      cat:S.lastCat,cls:S.lastCls,qty:n($("#f-qty").value),par:$("#f-par").value.trim(),
+      date:$("#f-date").value||"",status:"Stocked",gapType:"",note:"",steps:[],source:"",verified:"",uses:[]});
+    save();renderSweep();toast("Added to "+S.curLoc);const f=$("#f-name");f&&f.focus()}
+});
+
+function placeholder(el,t,b){$(el).innerHTML=`<div class="empty"><strong>${t}</strong><p>${b}</p></div>`}
+function render(){
+  buildTabs();renderDemoBar();
+  if(view==="itemdetail")return renderItemDetail();
+  if(query)return renderSearch();
+  if(view==="compdetail")return renderCompDetail();
+  if(view==="data")return renderData();
+  if(view==="home")return renderHome();
+  if(view==="compartments")return renderComps();
+  if(view==="sweep")return renderSweep();
+  $("#title").textContent=(TABS.find(t=>t[0]===view)||[,""])[1];
+  if(view==="inventory")return renderInventory();
+  if(view==="guide")return renderGuide();
+}
+render();
+if(ghOn())ghPull(true).then(()=>renderSyncPill());
+</script>
+</body>
+</html>
