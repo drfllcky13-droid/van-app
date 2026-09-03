@@ -188,6 +188,7 @@ body.skfull .skgrid.full.notools{grid-template-columns:minmax(0,1fr);grid-templa
 .k-dim{stroke:var(--kc,#111);stroke-width:1.6;fill:none}
 .k-dimbg{fill:#fff;stroke:var(--kc,#111);stroke-width:.8}
 .k-dimt{fill:var(--kc,#111);font-family:var(--sys);font-size:10px;font-weight:600}
+.k-pnum{fill:#111;font-family:var(--sys);font-size:11px;font-weight:700}
 .k-num{fill:#fff;font-family:var(--sys);font-size:22px;font-weight:700;text-anchor:middle}
 .k-sel{fill:none;stroke:#0A62C4;stroke-width:2.5;stroke-dasharray:7 5}
 .k-handle{fill:#0A62C4;stroke:#fff;stroke-width:2.5}
@@ -226,6 +227,14 @@ body.skfull .skgrid.full.notools{grid-template-columns:minmax(0,1fr);grid-templa
   border-radius:9px;padding:10px 13px;font-size:14px;font-weight:600;color:var(--blue);white-space:nowrap}
 .objbar button.danger{color:var(--red);border-color:var(--red)}
 .palette{display:grid;grid-template-columns:repeat(auto-fill,minmax(86px,1fr));gap:8px;margin-bottom:6px}
+.steps{margin:0;padding-left:20px;color:var(--ink2);font-size:14px;line-height:1.55}
+.steps li{margin-bottom:7px}
+.steps b{color:var(--ink)}
+.palsearch{position:relative;margin:0 0 10px}
+.palsearch input{width:100%;padding:10px 34px 10px 12px;font-size:15px}
+.palsearch button{position:absolute;right:6px;top:50%;transform:translateY(-50%);
+  background:none;border:0;color:var(--ink3);font-size:20px;padding:0 6px}
+.palette .pg{display:block;font-size:10px;color:var(--ink3);margin-top:1px}
 .palette button{background:var(--card);border:.5px solid var(--line2);border-radius:11px;
   padding:9px 5px 7px;display:flex;flex-direction:column;align-items:center;gap:5px}
 .palette .pv{height:32px;display:flex;align-items:center;justify-content:center}
@@ -948,6 +957,8 @@ body.xwide .cellwrap .sweepcard .ch{display:none}
 <section class="view" id="v-sketch"></section>
 <section class="view" id="v-guide"></section>
 <section class="view" id="v-active"></section>
+<section class="view" id="v-incident"></section>
+<section class="view" id="v-reorder"></section>
 <section class="view" id="v-bay"></section>
 <section class="view" id="v-compdetail"></section>
 <section class="view" id="v-itemdetail"></section>
@@ -1026,7 +1037,7 @@ const STOCKFORMS=[{
     "Additional notes | textarea",
     "Report prepared by","Date of report | date"].join("\n")
 }];
-const GUIDESRC="Intro to Forensics \u2014 WPD.pptx, Patrol Training";
+const GUIDESRC="WBP Patrol Training \u2014 Intro to Forensics";
 // reference items drawn from the training deck: name, category, class, instructions
 const GUIDEITEMS=[["Magnetic fingerprint powder","C","Reagent",["Use on non-metal surfaces only: paper, wood, tile, glass.","Do not use on metal.","Do not use on a wet surface. Powder and moisture turn to paste — let it dry or use another method.","Pour a small amount onto a plate or an evidence envelope folded like a plate. Never dip the applicator into the container.","Apply with the magnetic applicator only.","Lift onto a white backing card."]],["Black fingerprint powder","C","Reagent",["Use on light-coloured surfaces: light paper, wood, tile, glass, metals.","Lift onto a white backing card. The card is always the opposite colour to the powder.","Apply with the fiberglass brush.","Pour a small amount onto a plate or a folded evidence envelope. Never dip the brush into the container.","Do not use on a wet surface."]],["White fingerprint powder","C","Reagent",["Use on dark-coloured surfaces: dark paper, wood, tile, glass, metals.","Lift onto a black backing card. The card is always the opposite colour to the powder.","Apply with the fiberglass brush.","Pour a small amount onto a plate or a folded evidence envelope. Never dip the brush into the container.","Do not use on a wet surface."]],["Copper fingerprint powder","C","Reagent",["Carried in the kit as an alternative when black and white give poor contrast.","Match the powder to the surface: the powder must contrast with the surface, and the backing card must contrast with the powder.","Pour a small amount onto a plate or a folded evidence envelope. Never dip the brush into the container.","Do not use on a wet surface."]],["Silver black fingerprint powder","C","Reagent",["Do not use. Carried in the kit but not to be used.","Use black powder on light surfaces or white powder on dark surfaces instead."]],["Magnetic applicator","C","Durable",["For magnetic powder only.","Load from powder poured onto a plate or folded envelope, never from the container.","Clean between surfaces."]],["Fiberglass brush","C","Durable",["For applying white and black powder.","Load from powder poured onto a plate or folded envelope, never from the container.","Do not use on a wet surface."]],["Feather duster","C","Durable",["For removing small amounts of excess powder from a print before lifting.","Never dip it into a powder container."]],["Hinge lifters","C","Consumable",["Lift the developed print, then fold the hinge over onto the backing card.","Backing card is the opposite colour to the powder used: white card for black or magnetic powder, black card for white powder.","Label the lift with the location it came from and the surface."]],["Gel lifters","C","Consumable",["For lifting from textured or curved surfaces where tape will not sit flat.","Photograph the lift before packaging.","Label with the location and surface it came from."]],["Lifting tape","C","Consumable",["For flat surfaces. Lay the tape down without trapping air, lift in one movement.","Transfer to a backing card of the opposite colour to the powder.","Label with the location and surface it came from."]],["Backing cards, white","C","Consumable",["Used with black powder and with magnetic powder.","The card is always the opposite colour to the powder so the lift still reads."]],["Backing cards, black","C","Consumable",["Used with white powder.","The card is always the opposite colour to the powder so the lift still reads."]],["Cotton swabs, DNA","D","Consumable",["Collect with one wet swab and one dry swab from the same area.","One sample per envelope. DNA from different areas of the scene never shares an envelope.","Name the exact surface swabbed on the envelope, not just the room.","Elimination DNA is required before the swabs can be tested if there is a known victim."]],["Buccal swab kit","D","Consumable",["For known samples and elimination DNA.","One sample per envelope.","Elimination DNA is required before scene swabs can be tested if there is a known victim."]],["GSR / SEM kit","E","Consumable",["Record a separate time for every sample site.","Sites are taken as right back, right palm, left back, left palm.","Write each site and its time on the envelope, for example: right back 0943 hrs, right palm 0945 hrs.","Note where the kit was collected, including at autopsy."]],["Red evidence envelopes","H","Consumable",["General evidence. Anything that is not drugs and fits in an envelope.","Write the description on the envelope first, then copy it into EFORCE word for word.","The description answers four things: what and how many, which evidence marker, where exactly, and when plus your item number.","Write the EFORCE tag number on the envelope once it is issued."]],["Blue evidence envelopes","H","Consumable",["Suspected drugs only. Nothing else goes in a blue envelope.","Suspected drugs must not go in a red envelope.","Write the EFORCE tag number on the envelope once it is issued."]],["Brown paper bags","H","Consumable",["For items too large for a normal envelope.","Place a red evidence sticker on the bag and label the sticker.","For clothing and lab items, state what the item is packaged in — the lab will not accept a submission without it."]],["Red evidence stickers","H","Consumable",["Applied to brown paper bags and any container that is not a pre-printed envelope.","Label the sticker the same way you would label an envelope."]],["Sharps container","H","Consumable",["Knives and other sharp or pointed objects.","If it could cut somebody handling it later, it goes in a sharps container, not an envelope."]],["Gun box","G","Consumable",["Unload the firearm. It goes into the box unloaded.","If it is a pistol, lock the slide back before boxing.","Zip-tie the firearm to the box so it cannot shift.","Draw an arrow on the printed firearm picture on the outside of the box showing which way the firearm faces inside.","Do not put ammunition in the gun box. Ammunition is packaged separately with its own EFORCE entry.","Check the chamber and the magazine before the box is closed.","EFORCE comment needs: date and time collected, status of the firearm, round count, whether one was chambered, and where it was found."]],["Small plastic baggies, casings","G","Consumable",["Each casing goes into its own small baggie.","All of the baggies then go into one red evidence envelope.","Label the envelope with how many casings are inside and the casing information."]],["Bullet boxes, cotton lined","G","Consumable",["A recovered bullet or fragment goes into a small brown box with cotton lining.","The box then goes into a red evidence envelope."]],["Dry safe","H","Durable",["For wet clothing. Wet items never go into evidence envelopes.","Follow the instructions posted on the dry safe itself."]],["Latex gloves","A","Consumable",["Worn any time you handle evidence. Wear two pairs.","The first pair stays on while you collect. Change the outer pair between items, not just when it looks dirty.","Two pairs keep your own prints and DNA off the evidence.","Patrol gloves are not PPE. They protect neither you nor the evidence."]],["Crime scene tape","A","Consumable",["Set the perimeter larger than you believe the scene is. You can bring it in later; you cannot re-secure ground people have walked through.","If you are not sure where the edge of the scene is, put the tape further out.","Everyone who crosses the tape goes on the scene entry log, including you."]],["Evidence markers","B","Durable",["Set the marker next to the item. Never move evidence to place a marker — if placing it there would move the item, set it further away.","The marker number you use is the number that goes on the envelope and in your photographs.","Some markers have a scale built in; use it for close-up shots."]],["Temporary evidence markers","B","Consumable",["Placed on arrival to keep people off possible evidence until the real markers reach the scene.","Do not move evidence to place one."]],["L-scale","B","Durable",["Used in every close-up photograph.","It gives size in both directions, and the targets let the lab correct for camera angle.","Use the marker's built-in scale or a scale from the evidence collection box."]],["Scene camera","B","Durable",["Check it before you need it: charged, and no files left on the card.","Photograph in four ranges in order: overall, mid, close, then close-up with scale.","Overall: start wide, include street signs or the address so the photos tie to a location.","Mid: buildings and obvious evidence, overlapping every frame so positions relate to each other.","Close: the item filling the frame, still in place.","Close-up with scale: the same shot with a scale beside it.","Get the overall shots early, before more people arrive and add to the scene.","Back at the station, move the photographs off the card and delete them from the camera card."]]];
 function seedGuideItems(){
@@ -1486,11 +1497,22 @@ function redrawCanvas(){
   const w=document.querySelector(".canvaswrap"); if(w)w.innerHTML=canvasSVG(sk);
 }
 document.addEventListener("input",e=>{
+  if(e.target&&e.target.id==="palq"){
+    palQ=e.target.value; const at=e.target.selectionStart;
+    renderSketch();
+    const el=document.getElementById("palq");
+    if(el){el.focus(); try{el.setSelectionRange(at,at)}catch(_){}}
+    return}
   const on=e.target.closest("#oname"), num=e.target.closest("#onum");
   if(on||num){const o=objAt(selObj); if(o){
       if(on)o.label=on.value;
       if(num)o.n=num.value.trim();
-      saveLocal();redrawCanvas()} return}
+      saveLocal();redrawCanvas();
+      const skNow=S.sketches.find(x=>x.id===curSketch);
+      if(skNow&&skNow.incidentId&&o.t==="marker"){
+        clearTimeout(window.__mkT);
+        window.__mkT=setTimeout(()=>syncMarker(skNow,o),700);   // wait for typing to settle
+      }} return}
   const r=S.fills.find(x=>x.id===curFill); if(!r)return;
   const fv=e.target.closest("[data-fv]");
   if(fv){r.values[fv.dataset.fv]=fv.value;return saveLocal()}
@@ -1574,8 +1596,7 @@ function renderHome(){
   const pop=L.slice().sort((a,b)=>((b.fav?1e6:0)+(b.uses||[]).length)-((a.fav?1e6:0)+(a.uses||[]).length)).slice(0,3);
   const qf=pop.length?`<div class="sect">Quick find</div><div class="qf">`
     +pop.map(i=>`<button data-item="${i.id}"><span class="nm">${esc(i.name)}</span>
-      <span class="lc">${esc(i.loc||"—")}</span></button>`).join("")+`</div>`
-    +`<p class="empty" style="border:0;padding:10px 2px 0;text-align:left;font-size:13px">Ordered by how often you log use. It'll sharpen as you use it.</p>`:"";
+      <span class="lc">${esc(i.loc||"—")}</span></button>`).join("")+`</div>`:"";
   if(wideNow()){
     const bad=L.filter(i=>isOut(i)||isLow(i));
     const soon2=L.filter(i=>isExpiring(i)||isExpired(i)||isService(i));
@@ -1699,8 +1720,7 @@ function renderComps(){
   const W0=S.walls["Driver side"]||{cols:24,rows:12};
   const dflt=W0.cols===WALLDEF["Driver side"].cols&&W0.rows===WALLDEF["Driver side"].rows;
   $("#v-compartments").innerHTML=
-    `${dflt?`<div class="ph">Placeholder proportions — set each compartment to its real size, or send photos and I'll set them.</div>`
-       :`<div class="ph ok">Measured layout — ${cs.length} compartments across ${bays.length} units.</div>`}
+    `${dflt?`<div class="ph">Compartment sizes are estimates. Open any compartment and edit it to set its real dimensions.</div>`:""}
      <div class="editbar">
        <button data-go="print">Printable map</button></div>
      ${bays.map(card).join("")}
@@ -1940,7 +1960,7 @@ function renderItemDetail(){
           ${i.par===""?`A par level around ${suggest} would cover that with room to spare.`
             :parGap?`Your par of ${esc(i.par)} may be low — around ${suggest} would give more headroom.`
             :`Your par of ${esc(i.par)} covers that.`}</div>`
-        :`<p class="hint">Log use a few more times and this will suggest a par level.</p>`}
+        :`<p class="hint">A suggested par level appears once there is enough use history.</p>`}
         ${uses.length?`<div class="sect">Recent</div><div class="kv">${uses.map(u=>
           `<div><dt>${esc(u.d)}</dt><dd>used ${esc(u.n)}</dd></div>`).join("")}</div>`:""}`})()}
 
@@ -2138,7 +2158,7 @@ function renderPrint(){
       <button class="back" data-go="compartments" style="margin:0;align-self:center">&#8249; Compartments</button>
       <button class="btn" id="doprint" style="margin:0;max-width:none">Print</button></div>
     <p class="hint noprint" style="margin:0 0 16px">A page per unit plus a full index, to tape inside
-      the van. Print from Safari on a computer if the Print button does nothing — the home screen
+      the van. Use Safari on a computer to print — the home screen
       version has no print menu.</p>
     <div class="psheet">
       <div class="phead"><b>Van compartment map</b><span>${esc(today())}</span></div>
@@ -2163,6 +2183,9 @@ function parseFields(t){
 }
 if(S.formsSeeded!==STOCKV){S.formsSeeded=STOCKV;seedForms();store.set(S)}
 if(!S.guideSeeded){S.guideSeeded=1;seedGuideItems();store.set(S)}
+if(!S.srcTidy){S.srcTidy=1;
+  (S.items||[]).forEach(i=>{if(/WPD\.pptx/.test(i.source||""))i.source=GUIDESRC});
+  store.set(S)}
 const fieldsText=f=>(f.fields||[]).map(x=>
   x.type==="table"?x.label+" | table | "+(x.cols||[]).join(", ")
   :x.def?x.label+" | "+x.type+" | "+x.def
@@ -2262,7 +2285,128 @@ const WPN={
  rope:["<path d=\"M 87.33 40.00 L 86.00 41.33 L 85.67 44.33 L 89.67 46.67 L 94.33 46.33 L 94.67 45.33 L 92.67 44.00 L 91.00 45.00 L 86.67 42.33 L 93.00 41.33 L 94.33 44.00 L 99.00 46.33 L 100.67 46.33 L 101.67 44.33 L 109.33 48.33 L 110.67 53.67 L 105.00 56.33 L 95.67 52.67 L 86.33 46.67 L 85.00 47.33 L 96.33 56.67 L 106.33 59.33 L 113.33 55.33 L 114.33 52.00 L 112.67 48.00 L 109.00 44.67 L 105.00 43.00 L 98.00 43.00 L 95.00 41.33 L 95.33 40.00 L 99.67 41.33 L 102.00 40.67 L 103.33 41.67 L 105.00 40.67 L 109.00 43.67 L 110.67 43.00 L 112.67 46.33 L 115.33 47.67 L 117.00 53.33 L 116.33 55.00 L 110.00 60.33 L 106.67 61.00 L 100.00 60.00 L 95.00 57.67 L 87.33 51.33 L 84.67 50.67 L 84.67 53.00 L 88.33 54.00 L 92.00 58.33 L 95.67 59.33 L 101.00 64.33 L 99.33 65.00 L 94.67 61.33 L 92.33 61.67 L 85.33 55.33 L 88.67 60.33 L 91.67 63.00 L 93.33 62.67 L 97.33 66.33 L 101.67 68.00 L 109.00 67.00 L 113.00 63.33 L 113.00 61.00 L 116.67 59.00 L 119.00 56.00 L 119.00 49.67 L 117.33 49.00 L 116.00 44.67 L 111.67 41.00 L 102.00 38.33 Z\"/><path d=\"M 111.00 62.67 L 109.67 64.33 L 107.33 63.67 L 108.33 62.67 Z\"/><path d=\"M 100.33 61.00 L 106.67 63.67 L 105.00 65.33 L 103.33 64.67 Z\"/><path d=\"M 38.00 31.00 L 37.33 37.67 L 38.67 37.00 L 40.67 41.67 L 48.67 47.67 L 49.00 49.00 L 48.00 49.67 L 43.67 46.33 L 42.00 46.67 L 38.67 42.33 L 37.67 39.00 L 36.67 39.67 L 37.33 44.00 L 40.33 48.00 L 45.00 51.00 L 59.33 51.67 L 62.00 51.00 L 65.33 48.00 L 59.33 46.00 L 57.00 43.33 L 58.33 42.33 L 64.33 45.00 L 65.67 43.67 L 63.33 41.67 L 50.67 41.33 L 46.67 39.00 L 43.67 35.00 L 47.00 32.67 L 46.00 31.33 L 42.00 32.67 L 41.00 35.00 L 39.00 36.00 L 40.33 32.00 L 46.67 29.67 L 56.67 33.67 L 61.67 37.00 L 65.67 41.67 L 67.00 41.33 L 67.67 43.00 L 66.33 46.67 L 66.67 50.67 L 69.00 54.00 L 70.00 54.00 L 69.00 47.00 L 70.33 43.67 L 71.67 42.33 L 72.67 43.67 L 70.67 49.33 L 71.67 53.33 L 73.33 55.33 L 74.33 55.00 L 72.67 49.67 L 74.00 46.33 L 76.33 44.67 L 75.00 48.00 L 75.67 54.33 L 78.00 56.67 L 78.67 55.67 L 77.67 52.33 L 78.33 51.00 L 79.67 51.00 L 81.00 56.33 L 82.33 56.67 L 82.00 49.00 L 83.33 46.33 L 83.33 42.00 L 86.33 38.00 L 86.00 37.00 L 84.00 37.33 L 78.67 43.67 L 78.67 42.00 L 82.67 36.67 L 79.33 37.67 L 78.67 35.67 L 75.33 35.33 L 72.67 37.00 L 73.33 34.33 L 70.67 34.00 L 68.33 37.33 L 68.33 34.33 L 64.00 31.00 L 65.33 34.67 L 68.33 38.33 L 67.00 41.33 L 66.00 38.67 L 62.33 34.67 L 60.33 34.33 L 56.67 30.00 L 49.33 27.33 L 48.00 25.67 L 49.67 25.33 L 51.67 27.00 L 54.00 26.67 L 56.33 28.67 L 58.33 28.67 L 61.67 33.33 L 62.67 29.33 L 54.67 24.33 L 52.33 24.67 L 51.00 23.33 L 43.00 24.67 Z\"/><path d=\"M 57.33 47.67 L 61.67 48.67 L 59.00 49.67 Z\"/><path d=\"M 49.33 47.33 L 50.33 46.67 L 54.67 49.33 L 53.00 50.00 Z\"/><path d=\"M 80.33 45.00 L 80.33 47.00 L 78.00 49.67 L 77.67 48.00 Z\"/><path d=\"M 41.67 38.67 L 43.00 38.67 L 49.00 43.67 L 51.33 43.00 L 57.00 46.33 L 55.33 47.00 L 51.67 45.00 L 48.33 45.33 L 42.67 41.33 Z\"/><path d=\"M 43.33 27.00 L 45.00 25.67 L 46.33 26.33 L 45.67 27.33 Z\"/>",36.67,23.33,82.33,44.67],
  screwdriver:["<path d=\"M 74.33 50.00 L 75.67 52.00 L 77.33 52.00 Z\"/><path d=\"M 35.67 45.00 L 39.33 47.00 L 43.00 47.00 L 46.33 45.33 L 48.00 45.33 L 48.00 46.67 L 57.00 46.67 L 62.33 45.33 L 71.33 45.67 L 73.00 43.67 L 71.67 42.67 L 45.67 43.00 L 40.00 42.00 L 36.67 43.33 Z\"/><path d=\"M 37.33 45.00 L 38.33 44.00 L 42.33 44.67 L 40.67 45.67 Z\"/><path d=\"M 74.33 44.67 L 76.00 48.33 L 77.67 48.33 L 78.33 41.33 L 80.00 42.00 L 79.00 51.00 L 86.67 49.67 L 92.33 53.00 L 114.67 51.67 L 113.00 50.33 L 96.00 50.00 L 91.33 51.00 L 89.33 47.33 L 89.67 45.00 L 92.00 47.33 L 91.67 48.67 L 114.33 48.67 L 117.00 47.33 L 116.67 50.33 L 119.33 49.00 L 120.67 44.33 L 120.00 40.33 L 114.00 36.00 L 93.00 36.00 L 86.33 39.00 L 81.33 39.00 L 77.00 37.00 L 75.33 38.00 Z\"/><path d=\"M 76.33 39.00 L 78.67 39.67 L 76.67 40.33 Z\"/>",35.67,36.00,85.00,17.00]
 };
+// a fixed seed, so a stain pattern looks the same every time it is drawn
+const R=s=>{let x=s;return()=>((x=x*16807%2147483647)/2147483647)};
 const SHAPES={
+ blooddrop:(w,hh)=>{const r=R(7);let s=`<ellipse cx="${w*.44}" cy="${hh*.52}" rx="${w*.20}" ry="${hh*.24}" class="k-fill"/>`;
+ for(let i=0;i<7;i++){const a=r()*6.28,d=(0.30+r()*0.28);
+  s+=`<circle cx="${(w*(.44+Math.cos(a)*d)).toFixed(1)}" cy="${(hh*(.52+Math.sin(a)*d)).toFixed(1)}" r="${(w*(.02+r()*.03)).toFixed(1)}" class="k-fill"/>`}
+ return s},
+ bloodimpact:(w,hh)=>{const r=R(21);let s=`<circle cx="${w*.5}" cy="${hh*.5}" r="${w*.035}" class="k-fill"/>`;
+ for(let i=0;i<30;i++){const a=(i/30)*6.28+r()*.18, d=.16+Math.pow(r(),.6)*.34;
+  const x=w*(.5+Math.cos(a)*d), y=hh*(.5+Math.sin(a)*d);
+  const sz=w*(.010+(1-d)*.030);
+  s+=`<ellipse cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" rx="${sz.toFixed(1)}" ry="${(sz*(1.4+d*2.4)).toFixed(1)}" transform="rotate(${(a*57.3+90).toFixed(0)} ${x.toFixed(1)} ${y.toFixed(1)})" class="k-fill"/>`}
+ return s},
+ bloodcastoff:(w,hh)=>{let s="";
+ for(let i=0;i<11;i++){const t=i/10, x=w*(.06+t*.88), y=hh*(.72-Math.sin(t*2.2)*.34);
+  const sz=w*(.016+.020*Math.sin(t*3.14));
+  s+=`<ellipse cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" rx="${sz.toFixed(1)}" ry="${(sz*2.0).toFixed(1)}" transform="rotate(${(-32+t*60).toFixed(0)} ${x.toFixed(1)} ${y.toFixed(1)})" class="k-fill"/>`}
+ return s},
+ bloodarterial:(w,hh)=>{let s="";
+ for(let i=0;i<6;i++){const t=i/5, x=w*(.08+t*.84), y=hh*(.5+Math.sin(t*7.5)*.30);
+  s+=`<ellipse cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" rx="${(w*.045).toFixed(1)}" ry="${(hh*.11).toFixed(1)}" class="k-fill"/>`;
+  for(let k=0;k<3;k++)s+=`<circle cx="${(x+w*(.02+k*.02)).toFixed(1)}" cy="${(y+hh*(.10+k*.05)).toFixed(1)}" r="${(w*.012).toFixed(1)}" class="k-fill"/>`}
+ return s},
+ bloodtransfer:(w,hh)=>`
+ <path d="M${w*.16} ${hh*.20} q ${w*.30} ${-hh*.08} ${w*.62} ${hh*.04}
+   q ${w*.08} ${hh*.26} ${w*.02} ${hh*.54}
+   q ${-w*.32} ${hh*.10} ${-w*.64} ${-hh*.02}
+   q ${-w*.06} ${-hh*.28} 0 ${-hh*.56} Z" class="k-fill"/>
+ ${[0,1,2,3].map(i=>`<path d="M${w*(.24+i*.14)} ${hh*.24} l 0 ${hh*.52}"
+    stroke="#fff" stroke-width="3.2" fill="none"/>`).join("")}
+ <path d="M${w*.18} ${hh*.48} l ${w*.62} ${-hh*.02}" stroke="#fff" stroke-width="2.6" fill="none"/>`,
+ bloodswipe:(w,hh)=>`
+ <path d="M${w*.06} ${hh*.40} q ${w*.30} ${-hh*.16} ${w*.60} ${hh*.02}
+   q ${w*.20} ${hh*.06} ${w*.28} ${hh*.16} l 0 ${hh*.16}
+   q ${-w*.34} ${-hh*.12} ${-w*.62} ${-hh*.04}
+   q ${-w*.18} ${hh*.04} ${-w*.26} ${hh*.12} Z" class="k-fill"/>`,
+ bloodwipe:(w,hh)=>`
+ <path d="M${w*.06} ${hh*.24} L${w*.94} ${hh*.20} L${w*.94} ${hh*.80} L${w*.06} ${hh*.76} Z" class="k-fill"/>
+ <path d="M${w*.10} ${hh*.42} q ${w*.34} ${-hh*.10} ${w*.80} ${hh*.02} l 0 ${hh*.20}
+   q ${-w*.44} ${-hh*.12} ${-w*.80} ${-hh*.02} Z" fill="#fff"/>`,
+ bloodflow:(w,hh)=>`
+ <path d="M${w*.40} ${hh*.06} q ${w*.16} ${hh*.18} ${w*.06} ${hh*.34}
+   q ${-w*.08} ${hh*.18} ${w*.02} ${hh*.40} l ${-w*.16} 0
+   q ${-w*.08} ${-hh*.22} 0 ${-hh*.42} q ${w*.06} ${-hh*.16} ${-w*.06} ${-hh*.32} Z" class="k-fill"/>
+ <ellipse cx="${w*.46}" cy="${hh*.90}" rx="${w*.22}" ry="${hh*.09}" class="k-fill"/>`,
+ bloodvoid:(w,hh)=>{const r=R(99);let s="";
+ for(let i=0;i<40;i++){const x=r(), y=r();
+  if(x>.32&&x<.68&&y>.28&&y<.74)continue;
+  s+=`<circle cx="${(w*x).toFixed(1)}" cy="${(hh*y).toFixed(1)}" r="${(w*(.012+r()*.026)).toFixed(1)}" class="k-fill"/>`}
+ return s+`<rect x="${w*.32}" y="${hh*.28}" width="${w*.36}" height="${hh*.46}" class="k-thin" stroke-dasharray="5 4"/>`},
+ photopoint:(w,hh,o)=>`
+ <path d="M${w*.5} ${hh*.72} L${w*.08} ${hh*.10} L${w*.92} ${hh*.10} Z"
+   fill="#111" fill-opacity=".10" stroke="#111" stroke-width="1.4"/>
+ <rect x="${w*.34}" y="${hh*.70}" width="${w*.32}" height="${hh*.22}" rx="${w*.04}" class="k-fill"/>
+ <rect x="${w*.44}" y="${hh*.64}" width="${w*.12}" height="${hh*.08}" class="k-fill"/>
+ ${o&&o.n?`<circle cx="${w*.5}" cy="${hh*.34}" r="${w*.19}" fill="#fff" stroke="#111" stroke-width="1.4"/>
+   <text x="${w*.5}" y="${hh*.34+w*.075}" class="k-pnum" text-anchor="middle"
+     style="font-size:${(w*.24).toFixed(1)}px">${esc(o.n)}</text>`:""}`,
+ refpoint:(w,hh)=>`
+ <circle cx="${w*.5}" cy="${hh*.5}" r="${w*.34}" class="k-stroke"/>
+ <path d="M${w*.5} ${hh*.08} l 0 ${hh*.84} M${w*.08} ${hh*.5} l ${w*.84} 0" class="k-thin"/>
+ <circle cx="${w*.5}" cy="${hh*.5}" r="${w*.11}" class="k-fill"/>`,
+ baseline:(w,hh)=>{let s=`<path d="M${w*.04} ${hh*.5} L${w*.96} ${hh*.5}" class="k-thick"/>`;
+ for(let i=0;i<=4;i++){const x=w*(.06+i*.22);
+  s+=`<path d="M${x.toFixed(1)} ${hh*.24} l 0 ${hh*.52}" class="k-stroke"/>`}
+ return s},
+ triangulate:(w,hh)=>`
+ <circle cx="${w*.10}" cy="${hh*.86}" r="${w*.06}" class="k-fill"/>
+ <circle cx="${w*.90}" cy="${hh*.86}" r="${w*.06}" class="k-fill"/>
+ <path d="M${w*.10} ${hh*.86} L${w*.52} ${hh*.14} L${w*.90} ${hh*.86}" class="k-thin"/>
+ <path d="M${w*.10} ${hh*.86} L${w*.90} ${hh*.86}" class="k-stroke" stroke-dasharray="6 5"/>
+ <circle cx="${w*.52}" cy="${hh*.14}" r="${w*.075}" class="k-fill"/>`,
+ shotgun:(w,hh)=>`
+ <path d="M${w*.34} ${hh*.34} L${w*.98} ${hh*.30} L${w*.98} ${hh*.44} L${w*.34} ${hh*.46} Z" class="k-fill"/>
+ <path d="M${w*.34} ${hh*.42} L${w*.98} ${hh*.40}" stroke="#fff" stroke-width="1.4" fill="none"/>
+ <path d="M${w*.30} ${hh*.30} L${w*.46} ${hh*.30} L${w*.46} ${hh*.58} L${w*.36} ${hh*.60} Z" class="k-fill"/>
+ <path d="M${w*.36} ${hh*.58} l ${w*.05} 0 l ${-w*.02} ${hh*.22} l ${-w*.05} 0 Z" class="k-fill"/>
+ <path d="M${w*.02} ${hh*.30} L${w*.30} ${hh*.30} L${w*.30} ${hh*.54} L${w*.14} ${hh*.66}
+   q ${-w*.09} ${hh*.02} ${-w*.12} ${-hh*.08} Z" class="k-fill"/>`,
+ bullet:(w,hh)=>`
+ <path d="M${w*.5} ${hh*.04} q ${w*.34} ${hh*.20} ${w*.34} ${hh*.42} L${w*.84} ${hh*.90}
+   q ${-w*.02} ${hh*.06} ${-w*.08} ${hh*.06} L${w*.24} ${hh*.96}
+   q ${-w*.06} 0 ${-w*.08} ${-hh*.06} L${w*.16} ${hh*.46} q 0 ${-hh*.22} ${w*.34} ${-hh*.42} Z" class="k-fill"/>
+ <path d="M${w*.17} ${hh*.56} L${w*.83} ${hh*.56}" stroke="#fff" stroke-width="2" fill="none"/>`,
+ fragment:(w,hh)=>`
+ <path d="M${w*.22} ${hh*.16} L${w*.54} ${hh*.06} L${w*.78} ${hh*.30}
+   L${w*.94} ${hh*.58} L${w*.66} ${hh*.72} L${w*.72} ${hh*.94}
+   L${w*.38} ${hh*.80} L${w*.10} ${hh*.86} L${w*.18} ${hh*.52} Z" class="k-fill"/>
+ <path d="M${w*.30} ${hh*.34} L${w*.58} ${hh*.28}" stroke="#fff" stroke-width="1.8" fill="none"/>
+ <path d="M${w*.34} ${hh*.60} L${w*.62} ${hh*.52}" stroke="#fff" stroke-width="1.6" fill="none"/>`,
+ fingerprint:(w,hh)=>{let s="";
+ for(let i=0;i<5;i++){const rx=w*(.10+i*.085), ry=hh*(.13+i*.093);
+  s+=`<ellipse cx="${w*.5}" cy="${hh*.52}" rx="${rx.toFixed(1)}" ry="${ry.toFixed(1)}" class="k-stroke"/>`}
+ return s+`<rect x="${w*.34}" y="${hh*.78}" width="${w*.32}" height="${hh*.30}" fill="#fff"/>`},
+ palmprint:(w,hh)=>{let s=`<path d="M${w*.20} ${hh*.30} q ${w*.30} ${-hh*.16} ${w*.60} 0
+  q ${w*.06} ${hh*.34} ${-w*.06} ${hh*.56} q ${-w*.24} ${hh*.12} ${-w*.48} 0
+  q ${-w*.12} ${-hh*.22} ${-w*.06} ${-hh*.56} Z" class="k-stroke"/>`;
+ for(let i=0;i<3;i++)s+=`<path d="M${w*(.28+i*.16)} ${hh*.40} q ${w*.10} ${hh*.16} ${w*.02} ${hh*.34}" class="k-thin"/>`;
+ return s},
+ dresser:(w,hh)=>`
+ <rect x="${w*.04}" y="${hh*.10}" width="${w*.92}" height="${hh*.80}" rx="${w*.02}" class="k-stroke"/>
+ <path d="M${w*.04} ${hh*.36} L${w*.96} ${hh*.36} M${w*.04} ${hh*.63} L${w*.96} ${hh*.63}" class="k-thin"/>
+ ${[0.23,0.50,0.77].map(t=>`<path d="M${w*.40} ${hh*t} l ${w*.20} 0" class="k-stroke"/>`).join("")}`,
+ suv:(w,hh)=>`
+ <rect x="${w*.06}" y="${hh*.08}" width="${w*.88}" height="${hh*.84}" rx="${w*.10}" class="k-stroke"/>
+ <rect x="${w*.20}" y="${hh*.18}" width="${w*.60}" height="${hh*.26}" rx="${w*.04}" class="k-thin"/>
+ <rect x="${w*.20}" y="${hh*.56}" width="${w*.60}" height="${hh*.26}" rx="${w*.04}" class="k-thin"/>
+ <path d="M${w*.06} ${hh*.50} l ${w*.88} 0" class="k-thin"/>`,
+ vanx:(w,hh)=>`
+ <rect x="${w*.04}" y="${hh*.10}" width="${w*.92}" height="${hh*.80}" rx="${w*.06}" class="k-stroke"/>
+ <path d="M${w*.66} ${hh*.10} l 0 ${hh*.80}" class="k-stroke"/>
+ <rect x="${w*.72}" y="${hh*.22}" width="${w*.18}" height="${hh*.24}" rx="${w*.02}" class="k-thin"/>
+ <rect x="${w*.72}" y="${hh*.54}" width="${w*.18}" height="${hh*.24}" rx="${w*.02}" class="k-thin"/>`,
+ prymark:(w,hh)=>`
+ <path d="M${w*.06} ${hh*.34} L${w*.94} ${hh*.34} L${w*.94} ${hh*.48} L${w*.06} ${hh*.48} Z" class="k-fill"/>
+ <path d="M${w*.40} ${hh*.30} l ${w*.08} ${-hh*.16} l ${w*.06} ${hh*.04} l ${-w*.06} ${hh*.14} Z" class="k-fill"/>
+ <path d="M${w*.36} ${hh*.52} l ${w*.10} ${hh*.22} M${w*.52} ${hh*.52} l ${w*.06} ${hh*.18}" class="k-stroke"/>`,
+ crack:(w,hh)=>`
+ <path d="M${w*.06} ${hh*.22} L${w*.34} ${hh*.44} L${w*.28} ${hh*.62} L${w*.56} ${hh*.52}
+   L${w*.70} ${hh*.78} L${w*.66} ${hh*.56} L${w*.94} ${hh*.66}" class="k-stroke"/>
+ <path d="M${w*.34} ${hh*.44} L${w*.44} ${hh*.16} M${w*.56} ${hh*.52} L${w*.80} ${hh*.28}" class="k-thin"/>`,
+
  key:(w,hh)=>`<g transform="scale(${w/SYM.key[4]},${hh/SYM.key[5]}) translate(${-SYM.key[2]},${-SYM.key[3]})"><g transform="${SYM.key[1]}" class="k-fill" fill-rule="evenodd"><path d="${SYM.key[0]}"/></g></g>`,
  iddocs:(w,hh)=>`<g transform="scale(${w/SYM.iddocs[4]},${hh/SYM.iddocs[5]}) translate(${-SYM.iddocs[2]},${-SYM.iddocs[3]})"><g transform="${SYM.iddocs[1]}" class="k-fill" fill-rule="evenodd"><path d="${SYM.iddocs[0]}"/></g></g>`,
  camera:(w,hh)=>`<g transform="scale(${w/SYM.camera[4]},${hh/SYM.camera[5]}) translate(${-SYM.camera[2]},${-SYM.camera[3]})"><g transform="${SYM.camera[1]}" class="k-fill" fill-rule="evenodd"><path d="${SYM.camera[0]}"/></g></g>`,
@@ -2281,12 +2425,7 @@ const SHAPES={
  <rect x="0" y="${hh*.2}" width="${w}" height="${hh*.6}" class="k-fill"/>
  <rect x="${w*.05}" y="${hh*.35}" width="${w*.9}" height="${hh*.3}" fill="#fff"/>
  <line x1="${w*.5}" y1="0" x2="${w*.5}" y2="${hh}" class="k-stroke"/>`,
- stairs:    (w,hh)=>`
- <rect x="${w*.05}" y="${hh*.05}" width="${w*.9}" height="${hh*.9}" class="k-stroke"/>
- <line x1="${w*.05}" y1="${hh*.25}" x2="${w*.95}" y2="${hh*.25}" class="k-thin"/>
- <line x1="${w*.05}" y1="${hh*.45}" x2="${w*.95}" y2="${hh*.45}" class="k-thin"/>
- <line x1="${w*.05}" y1="${hh*.65}" x2="${w*.95}" y2="${hh*.65}" class="k-thin"/>
- <line x1="${w*.05}" y1="${hh*.85}" x2="${w*.95}" y2="${hh*.85}" class="k-thin"/>`,
+ stairs:    (w,hh)=>`<g transform="scale(${w/24},${hh/32}) translate(-8,-4)" class="k-stroke" fill="none"><rect x=\"8\" y=\"4\" width=\"24\" height=\"32\" fill=\"#fff\" stroke-width=\"2\"/> <line x1=\"8\" y1=\"10\" x2=\"32\" y2=\"10\"/> <line x1=\"8\" y1=\"16\" x2=\"32\" y2=\"16\"/> <line x1=\"8\" y1=\"22\" x2=\"32\" y2=\"22\"/> <line x1=\"8\" y1=\"28\" x2=\"32\" y2=\"28\"/> <path d=\"M20 32V12 M16 16l4-6 4 6\" stroke-width=\"1.2\"/></g>`,
  room:      (w,hh)=>`
  <rect x="${w*.05}" y="${hh*.05}" width="${w*.9}" height="${hh*.9}" class="k-stroke"/>`,
  table:     (w,hh)=>`<g transform="scale(${w/FURN.table[1]},${hh/FURN.table[2]})"><path d="${FURN.table[0]}" class="k-fill" fill-rule="evenodd"/></g>`,
@@ -2312,7 +2451,7 @@ const SHAPES={
  <path d="M${w*.44} ${hh*.20} L${w*.60} ${hh*.20} L${w*.60} ${hh*.42} L${w*.44} ${hh*.42} Z" class="k-fill"/>
  <path d="M${w*.24} ${hh*.14} L${w*.40} ${hh*.14}" class="k-thick"/>`,
  bicycle:   (w,hh)=>`<g transform="translate(${w/VEH.bicycle[3]*-VEH.bicycle[1]},${hh/VEH.bicycle[4]*-VEH.bicycle[2]}) scale(${w/VEH.bicycle[3]},${hh/VEH.bicycle[4]})"><path d="${VEH.bicycle[0]}" class="k-fill" fill-rule="evenodd"/></g>`,
- tree:      (w,hh)=>`<circle cx="${w*.5}" cy="${hh*.5}" r="${w*.44}" class="k-fill"/><circle cx="${w*.5}" cy="${hh*.5}" r="${w*.13}" fill="#fff"/>`,
+ tree:      (w,hh)=>`<g transform="scale(${w/38.68},${hh/35.84}) translate(1.18,-2.61)" class="k-stroke" fill="none"><path d=\"M20 6c5-3 12 0 14 6 5 2 4 9 1 13 3 5-1 11-6 12-5 3-12 1-15-3-5 3-12-1-13-7-4-4-2-11 2-14-3-6 2-12 7-10z\"/> <circle cx=\"20\" cy=\"20\" r=\"3\" fill=\"#000\"/></g>`,
  bush:      (w,hh)=>`<path d="M${w*.5} ${hh*.08} q ${w*.30} ${hh*.06} ${w*.24} ${hh*.30} q ${w*.14} ${hh*.22} ${-w*.10} ${hh*.32} q ${-w*.28} ${hh*.10} ${-w*.52} ${-hh*.02} q ${-w*.20} ${-hh*.14} ${-w*.04} ${-hh*.32} q ${-w*.04} ${-hh*.24} ${w*.42} ${-hh*.28} Z" class="k-stroke"/>`,
  fence:     (w,hh)=>`
  <rect x="0" y="${hh*.4}" width="${w}" height="${hh*.2}" class="k-fill"/>
@@ -2320,15 +2459,12 @@ const SHAPES={
  <line x1="${w*.5} " y1="0" x2="${w*.5}" y2="${hh}" class="k-thick"/>
  <line x1="${w*.9}" y1="0" x2="${w*.9}" y2="${hh}" class="k-thick"/>`,
  pole:      (w,hh)=>`<circle cx="${w*.5}" cy="${hh*.5}" r="${w*.44}" class="k-stroke"/><circle cx="${w*.5}" cy="${hh*.5}" r="${w*.20}" class="k-fill"/>`,
- dumpster:  (w,hh)=>`
- <rect x="${w*.05}" y="${hh*.15}" width="${w*.9}" height="${hh*.7}" rx="${w*.1}" class="k-fill"/>
- <rect x="${w*.15}" y="${hh*.25}" width="${w*.7}" height="${hh*.4}" fill="#fff"/>`,
+ dumpster:  (w,hh)=>`<g transform="scale(${w/28},${hh/24}) translate(-6,-6)" class="k-stroke" fill="none"><rect x=\"6\" y=\"10\" width=\"28\" height=\"20\" rx=\"2\"/> <line x1=\"6\" y1=\"18\" x2=\"34\" y2=\"18\"/> <rect x=\"10\" y=\"6\" width=\"20\" height=\"4\" rx=\"1\"/></g>`,
  building:  (w,hh)=>`
  <rect x="${w*.05}" y="${hh*.05}" width="${w*.9}" height="${hh*.9}" class="k-fill"/>
  <rect x="${w*.2}" y="${hh*.2}" width="${w*.6}" height="${hh*.6}" fill="#fff"/>`,
- road:      (w,hh)=>`
- <rect x="0" y="0" width="${w}" height="${hh}" class="k-fill"/>
- <line x1="0" y1="${hh*.5}" x2="${w}" y2="${hh*.5}" stroke="#fff" stroke-width="2" stroke-dasharray="10,10" fill="none"/>`,
+ road:      (w,hh)=>`<path d="M0 ${hh*.06} L${w} ${hh*.06} M0 ${hh*.94} L${w} ${hh*.94}" class="k-stroke"/>
+ <path d="M0 ${hh*.5} L${w} ${hh*.5}" class="k-stroke" stroke-dasharray="${w*.05} ${w*.04}"/>`,
  marker:    (w,hh)=>`<g transform="scale(${w/SYM.marker[4]},${hh/SYM.marker[5]}) translate(${-SYM.marker[2]},${-SYM.marker[3]})"><g transform="${SYM.marker[1]}" class="k-fill" fill-rule="evenodd"><path d="${SYM.marker[0]}"/></g></g>`,
  pistol:    (w,hh)=>`${(()=>{const a=WPN.pistol;return `<g transform="scale(${w/a[3]},${hh/a[4]}) translate(${-a[1]},${-a[2]})" class="k-fill" fill-rule="evenodd">${a[0]}</g>`})()}`,
  revolver:  (w,hh)=>`${(()=>{const a=WPN.revolver;return `<g transform="scale(${w/a[3]},${hh/a[4]}) translate(${-a[1]},${-a[2]})" class="k-fill" fill-rule="evenodd">${a[0]}</g>`})()}`,
@@ -2387,19 +2523,20 @@ const SHAPES={
 };
 const PALETTE=[
  ["Structure",[["room","Room"],["wall","Wall"],["door","Door"],["window","Window"],["stairs","Stairs"],["building","Building"]]],
- ["Furniture",[["table","Table"],["roundtable","Round table"],["chair","Chair"],["sofa","Sofa"],["bed","Bed"],["desk","Desk"],["cabinet","Cabinet"],["counter","Counter"],["fridge","Fridge"],["stove","Stove"],["sink","Sink"],["toilet","Toilet"],["bath","Bath"],["tv","TV"]]],
- ["Vehicles",[["car","Car"],["truck","Truck"],["motorcycle","Motorcycle"],["bicycle","Bicycle"],["scooter","Scooter"],["semitruck","Semi truck"],["bus","Bus"],["powerboat","Powerboat"],["sailboat","Sailboat"]]],
+ ["Furniture",[["table","Table"],["roundtable","Round table"],["chair","Chair"],["sofa","Sofa"],["bed","Bed"],["desk","Desk"],["cabinet","Cabinet"],["counter","Counter"],["fridge","Fridge"],["stove","Stove"],["sink","Sink"],["toilet","Toilet"],["bath","Bath"],["tv","TV"],["dresser","Dresser"]]],
+ ["Vehicles",[["car","Car"],["truck","Truck"],["motorcycle","Motorcycle"],["bicycle","Bicycle"],["scooter","Scooter"],["semitruck","Semi truck"],["bus","Bus"],["suv","SUV"],["vanx","Van"],["powerboat","Powerboat"],["sailboat","Sailboat"]]],
  ["Outdoor",[["tree","Tree"],["bush","Bush"],["fence","Fence"],["pole","Pole"],["dumpster","Dumpster"],["road","Road"]]],
- ["Markers",[["marker","Marker"],["dim","Dimension"],["body","Body"],["north","North"],["legend","Legend"],["arrow","Arrow"],["line","Line"],["rect","Box"],["circle","Circle"],["text","Text"]]],
- ["Weapons",[["pistol","Pistol"],["revolver","Revolver"],["rifle","Rifle"],["magazine","Magazine"],["cartridge","Live round"],["casing","Casing"],["bullethole","Bullet hole"],["knife","Knife"],["machete","Machete"],["hammer","Hammer"],["bat","Bat"],["crowbar","Crowbar"],["screwdriver","Screwdriver"],["rope","Rope"]]],
- ["Evidence",[["blood","Blood pool"],["spatter","Spatter"],["shoe","Shoe print"],["footprint","Bare footprint"],["tiretrack","Tire track"],["dragmark","Drag mark"],["hair","Hair or fibre"],["printcard","Print lift"],["swab","Swab"],["glass","Broken glass"],["cigarette","Cigarette"],["bottle","Bottle"],["can","Can"],["key","Key"]]],
+ ["Markers",[["marker","Marker"],["dim","Dimension"],["photopoint","Photo point"],["refpoint","Reference point"],["baseline","Baseline"],["triangulate","Triangulation"],["body","Body"],["north","North"],["legend","Legend"],["arrow","Arrow"],["line","Line"],["rect","Box"],["circle","Circle"],["text","Text"]]],
+ ["Weapons",[["pistol","Pistol"],["revolver","Revolver"],["rifle","Rifle"],["magazine","Magazine"],["cartridge","Live round"],["casing","Casing"],["bullethole","Bullet hole"],["knife","Knife"],["machete","Machete"],["hammer","Hammer"],["bat","Bat"],["crowbar","Crowbar"],["screwdriver","Screwdriver"],["rope","Rope"],["shotgun","Shotgun"],["bullet","Bullet"],["fragment","Fragment"]]],
+ ["Blood",[["blooddrop","Drop"],["bloodimpact","Impact"],["bloodcastoff","Cast-off"],["bloodarterial","Arterial"],["bloodtransfer","Transfer"],["bloodswipe","Swipe"],["bloodwipe","Wipe"],["bloodflow","Flow"],["bloodvoid","Void"]]],
+ ["Evidence",[["blood","Blood pool"],["spatter","Spatter"],["shoe","Shoe print"],["footprint","Bare footprint"],["tiretrack","Tire track"],["dragmark","Drag mark"],["hair","Hair or fibre"],["printcard","Print lift"],["swab","Swab"],["glass","Broken glass"],["cigarette","Cigarette"],["bottle","Bottle"],["can","Can"],["key","Key"],["fingerprint","Fingerprint"],["palmprint","Palm print"],["prymark","Pry mark"],["crack","Crack"]]],
  ["Belongings",[["phone","Phone"],["laptop","Laptop"],["keys","Keys"],["wallet","Wallet"],["backpack","Bag"],["cash","Cash"],["pills","Pills"],["pillbottle","Pill bottle"],["syringe","Syringe"],["baggie","Baggie"],["packet","Packet"],["iddocs","ID documents"],["camera","Camera"]]]
 ];
-const DEFSIZE={camera:[72,68],iddocs:[76,48],key:[64,29],sailboat:[130,115],powerboat:[180,63],scooter:[110,60],bus:[230,66],semitruck:[240,60],room:[380,260],wall:[240,26],door:[70,70],window:[120,26],stairs:[120,150],building:[220,160],
+const DEFSIZE={blooddrop:[70,60],bloodimpact:[90,80],bloodcastoff:[150,60],bloodarterial:[150,64],bloodtransfer:[80,70],bloodswipe:[130,50],bloodwipe:[130,60],bloodflow:[60,96],bloodvoid:[100,80],photopoint:[64,64],refpoint:[44,44],baseline:[190,40],triangulate:[110,80],shotgun:[150,52],bullet:[26,50],fragment:[40,40],fingerprint:[46,58],palmprint:[54,64],dresser:[120,54],suv:[110,180],vanx:[110,190],prymark:[90,54],crack:[90,60],camera:[72,68],iddocs:[76,48],key:[64,29],sailboat:[130,115],powerboat:[180,63],scooter:[110,60],bus:[230,66],semitruck:[240,60],room:[380,260],wall:[240,26],door:[70,70],window:[120,26],stairs:[96,128],building:[220,160],
  table:[160,106],roundtable:[130,101],chair:[60,61],sofa:[170,79],bed:[150,136],desk:[160,105],cabinet:[140,72],
  counter:[190,115],fridge:[78,69],stove:[92,76],sink:[92,64],toilet:[66,58],bath:[160,76],tv:[110,51],
- car:[180,83],truck:[190,82],motorcycle:[130,60],bicycle:[120,59],tree:[90,90],bush:[80,55],fence:[220,30],
- pole:[30,30],dumpster:[120,80],road:[420,110],marker:[44,45],body:[110,186],
+ car:[180,83],truck:[190,82],motorcycle:[130,60],bicycle:[120,59],tree:[92,85],bush:[80,55],fence:[220,30],
+ pole:[30,30],dumpster:[118,101],road:[420,110],marker:[44,45],body:[110,186],
  north:[52,53],legend:[300,190],dim:[200,0],arrow:[130,40],line:[160,20],rect:[150,110],circle:[110,110],text:[160,34],
  pistol:[96,59],revolver:[96,63],rifle:[150,53],magazine:[30,58],cartridge:[16,50],casing:[18,46],
  bullethole:[44,50],knife:[84,14],machete:[104,71],hammer:[44,67],bat:[84,78],crowbar:[92,59],
@@ -2523,13 +2660,46 @@ Persons present | table | Name, Agency, In, Out</pre>
     save();closeSheet();renderForms();toast(isNew?"Form added":"Saved")};
 }
 
-let curFill=null;
+let curFill=null, curInc=null;
 // forms and sketches that have not been exported yet are "open"
+// an incident is the record a scene's documents belong to
+const DOCPLAN=[
+  {key:"entrylog",  form:"Crime scene entry log",  label:"Entry log"},
+  {key:"evidence",  form:"Evidence log",           label:"Evidence log"},
+  {key:"sketch",    form:null,                     label:"Sketch"},
+  {key:"report",    form:"Forensic services report",label:"Report"}
+];
+function newIncident(){
+  const inc={id:newId(),caseNo:"",offence:"",addr:"",
+    opened:new Date().toISOString(),closed:"",
+    plan:DOCPLAN.map(d=>d.key)};
+  (S.incidents=S.incidents||[]).push(inc); saveLocal(); return inc;
+}
+const incidents=()=>S.incidents||[];
+const openIncidents=()=>incidents().filter(i=>!i.closed);
+const incidentOf=id=>incidents().find(x=>x.id===id);
+// everything attached to one incident, whether exported or not
+function docsFor(incId){
+  const f=(S.fills||[]).filter(x=>x.incidentId===incId).map(x=>({
+    kind:"fill",id:x.id,rec:x,type:x.formName||"Form",exported:!!x.exported}));
+  const s=(S.sketches||[]).filter(x=>x.incidentId===incId).map(x=>({
+    kind:"sketch",id:x.id,rec:x,type:"Sketch",exported:!!x.exported}));
+  return [...f,...s];
+}
+// what the checklist shows for one planned document
+function planState(inc,key){
+  const d=DOCPLAN.find(x=>x.key===key); if(!d)return null;
+  const mine=docsFor(inc.id).filter(x=>
+    d.form? x.type===d.form : x.kind==="sketch");
+  if(!mine.length)return {d,state:"none",docs:[]};
+  if(mine.every(x=>x.exported))return {d,state:"done",docs:mine};
+  return {d,state:"open",docs:mine};
+}
 function openDocs(){
-  const f=(S.fills||[]).filter(x=>!x.exported).map(x=>({
+  const f=(S.fills||[]).filter(x=>!x.exported&&!x.incidentId).map(x=>({
     kind:"fill", id:x.id, when:x.started||"",
     caseNo:(fillCase(x)||"").trim(), type:x.formName||"Form"}));
-  const s=(S.sketches||[]).filter(x=>!x.exported&&(x.objs||[]).length).map(x=>({
+  const s=(S.sketches||[]).filter(x=>!x.exported&&!x.incidentId&&(x.objs||[]).length).map(x=>({
     kind:"sketch", id:x.id, when:x.when||"",
     caseNo:(x.caseNo||"").trim(), type:"Sketch"}));
   return [...f,...s].sort((a,b)=>
@@ -2609,13 +2779,159 @@ function loadPDF(){
     document.head.appendChild(s);
   });
 }
-async function exportFill(r){
+// one packet: cover, then the documents in a fixed order, numbered straight through
+const BUNDLEORDER=["report","entrylog","evidence","sketch"];
+async function bundleIncident(inc){
+  let JsPDF; try{ JsPDF=await loadPDF() }catch(e){ return toast(e.message) }
+  const items=[], gaps=[];
+  BUNDLEORDER.forEach(key=>{
+    const st=planState(inc,key); if(!st)return;
+    if(!st.docs.length){ gaps.push(st.d.label); return }
+    st.docs.forEach(d=>items.push({key,label:st.d.label,...d}));
+  });
+  docsFor(inc.id).forEach(d=>{
+    if(!items.some(x=>x.id===d.id))items.push({key:"extra",label:d.type,...d});
+  });
+  if(!items.length)return toast("Nothing to bundle yet");
+
+  const doc=new JsPDF({unit:"pt",format:"letter"});
+  const contents=[];
+  for(const it of items){
+    doc.addPage("letter", it.kind==="sketch"&&!it.rec.portrait ? "landscape" : "portrait");
+    const from=doc.internal.getNumberOfPages();
+    if(it.kind==="fill") await exportFill(it.rec,doc);
+    else                 await exportSketch(it.rec,doc);
+    contents.push({label:it.label, from, to:doc.internal.getNumberOfPages()});
+  }
+  // photographs referenced by the sketches, listed after them
+  const shots=[];
+  for(const it of items){
+    if(it.kind!=="sketch")continue;
+    for(const o of (it.rec.objs||[])){
+      if(o.t!=="photopoint")continue;
+      let img=null;
+      if(o.photoId){ try{ img=await photoGet(o.photoId) }catch(e){} }
+      shots.push({n:o.n||"", label:o.label||"", img});
+    }
+  }
+  if(shots.length){
+    shots.sort((a,b)=>(parseInt(a.n,10)||0)-(parseInt(b.n,10)||0));
+    doc.addPage("letter","portrait");
+    const from=doc.internal.getNumberOfPages();
+    const PW=doc.internal.pageSize.getWidth(), PH=doc.internal.pageSize.getHeight(), PM=54;
+    let py=PM+8;
+    doc.setFont("helvetica","bold");doc.setFontSize(15);doc.setTextColor(0);
+    doc.text("Photograph index",PM,py); py+=16;
+    doc.setFont("helvetica","normal");doc.setFontSize(8.5);doc.setTextColor(110);
+    doc.text("Reference copies. The photographs in the case file are the evidential copies.",PM,py);
+    py+=18; doc.setDrawColor(30);doc.setLineWidth(1);doc.line(PM,py,PW-PM,py); py+=16;
+    const cw=(PW-2*PM-16)/2;
+    let col=0, rowTop=py;
+    for(const s of shots){
+      const x=PM+col*(cw+16);
+      if(rowTop+cw*0.80>PH-PM-20){ doc.addPage("letter","portrait"); rowTop=PM; col=0 }
+      const ix=PM+col*(cw+16);
+      let bottom=rowTop;
+      if(s.img){
+        const ih=Math.min(cw*s.img.hh/s.img.w, cw*0.78);
+        try{ doc.addImage(s.img.data,"JPEG",ix,rowTop,cw,ih,undefined,"FAST") }catch(e){}
+        doc.setDrawColor(170);doc.setLineWidth(.6);doc.rect(ix,rowTop,cw,ih);
+        bottom=rowTop+ih;
+      }else{
+        doc.setDrawColor(190);doc.setLineWidth(.6);doc.rect(ix,rowTop,cw,cw*0.55);
+        doc.setFontSize(8.5);doc.setTextColor(150);
+        doc.text("No reference copy attached",ix+cw/2,rowTop+cw*0.30,{align:"center"});
+        bottom=rowTop+cw*0.55;
+      }
+      doc.setFont("helvetica","bold");doc.setFontSize(9.5);doc.setTextColor(0);
+      doc.text("Photograph "+(s.n||"\u2014"),ix,bottom+14);
+      doc.setFont("helvetica","normal");doc.setFontSize(9);doc.setTextColor(60);
+      doc.text(doc.splitTextToSize(s.label||"No caption",cw).slice(0,2),ix,bottom+27);
+      if(col===1){ rowTop=bottom+48; col=0 } else col=1;
+    }
+    contents.push({label:"Photograph index",from,to:doc.internal.getNumberOfPages()});
+  }
+  const total=doc.internal.getNumberOfPages();
+  const ref="B-"+(inc.caseNo||"NOCASE").replace(/[^A-Za-z0-9]+/g,"")+"-"
+    +new Date().toISOString().slice(0,10).replace(/-/g,"")+"-"
+    +String(Date.now()).slice(-4);
+
+  // cover
+  doc.setPage(1);
+  const W=doc.internal.pageSize.getWidth(), H=doc.internal.pageSize.getHeight(), M=64;
+  let y=M+10;
+  try{ doc.addImage(BADGE,"PNG",M,y,58,50,undefined,"FAST") }catch(e){}
+  doc.setFont("helvetica","bold");doc.setFontSize(9);doc.setTextColor(20);
+  ["WILLIAMSPORT BUREAU OF POLICE","FORENSIC SERVICES UNIT"].forEach((t,i)=>
+    doc.text(t,M+72,y+20+i*13));
+  y+=76;
+  doc.setDrawColor(20);doc.setLineWidth(1.4);doc.line(M,y,W-M,y); y+=34;
+  doc.setFontSize(22);doc.text("Scene documentation",M,y); y+=30;
+  doc.setFontSize(28);doc.text(inc.caseNo||"No case number",M,y); y+=34;
+  doc.setFont("helvetica","normal");doc.setFontSize(11.5);doc.setTextColor(40);
+  [["Offence or incident",inc.offence],["Scene",inc.addr],
+   ["Incident opened",(inc.opened||"").slice(0,16).replace("T"," ")],
+   ["Bundle reference",ref],
+   ["Generated",new Date().toISOString().slice(0,16).replace("T"," ")],
+   ["Total pages",String(total)]].forEach(([k,v])=>{
+    doc.setFont("helvetica","bold");doc.setFontSize(7);doc.setTextColor(110);
+    doc.text(String(k).toUpperCase(),M,y);
+    doc.setFont("helvetica","normal");doc.setFontSize(11.5);doc.setTextColor(0);
+    doc.text(String(v||"\u2014"),M+130,y); y+=21;
+  });
+  y+=14;
+  doc.setFont("helvetica","bold");doc.setFontSize(11);doc.text("Contents",M,y);y+=6;
+  doc.setLineWidth(.8);doc.setDrawColor(60);doc.line(M,y,W-M,y);y+=18;
+  doc.setFont("helvetica","normal");doc.setFontSize(11);
+  contents.forEach(c=>{
+    doc.text(c.label,M,y);
+    doc.text(c.from===c.to?("page "+c.from):("pages "+c.from+"\u2013"+c.to),W-M,y,{align:"right"});
+    y+=18;
+  });
+  if(gaps.length){
+    y+=12;
+    doc.setFont("helvetica","bold");doc.setFontSize(11);doc.setTextColor(150,40,40);
+    doc.text("Not included",M,y);y+=16;
+    doc.setFont("helvetica","normal");doc.setFontSize(10.5);
+    gaps.forEach(g=>{doc.text(g+" \u2014 not prepared",M,y);y+=15});
+    doc.setTextColor(0);
+  }
+  doc.setFontSize(8.5);doc.setTextColor(120);
+  doc.text("This bundle is a copy assembled from the unit's records. The case file remains the record.",
+    M,H-M,{maxWidth:W-2*M});
+
+  // running header and continuous numbering on every page
+  for(let i=1;i<=total;i++){
+    doc.setPage(i);
+    const pw=doc.internal.pageSize.getWidth(), ph=doc.internal.pageSize.getHeight();
+    doc.setFont("helvetica","normal");doc.setFontSize(7.5);doc.setTextColor(140);
+    if(i>1)doc.text((inc.caseNo||"No case number")+"  \u00b7  "+ref, 40, 26);
+    doc.text("Page "+i+" of "+total, pw-40, ph-20, {align:"right"});
+    doc.setTextColor(0);
+  }
+
+  const name=(inc.caseNo||"incident").replace(/[^a-z0-9]+/gi,"-").toLowerCase()+"-bundle.pdf";
+  const blob=doc.output("blob");
+  try{
+    const file=new File([blob],name,{type:"application/pdf"});
+    if(navigator.canShare&&navigator.canShare({files:[file]})){
+      await navigator.share({files:[file],title:(inc.caseNo||"Incident")+" bundle"});
+      return toast("Bundle sent");
+    }
+  }catch(e){ if(e&&e.name==="AbortError")return; }
+  const u=URL.createObjectURL(blob);const a=document.createElement("a");
+  a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(u),1500);
+  toast("Bundle downloaded");
+}
+async function exportFill(r,shared){
   const f=S.forms.find(x=>x.id===r.formId)||{fields:[]};
   let JsPDF; try{ JsPDF=await loadPDF() }catch(e){ return toast(e.message) }
-  const doc=new JsPDF({unit:"pt",format:"letter"});
+  const doc=shared||new JsPDF({unit:"pt",format:"letter"});
   const M=54, W=doc.internal.pageSize.getWidth(), H=doc.internal.pageSize.getHeight();
   let y=M;
-  const page=()=>{doc.setFontSize(8);doc.setTextColor(120);
+  const page=()=>{ if(shared)return;      // the bundle numbers its own pages
+    doc.setFontSize(8);doc.setTextColor(120);
     doc.text("Captured "+new Date().toISOString().slice(0,16).replace("T"," ")+"  ·  page "+doc.internal.getNumberOfPages(),M,H-28);
     doc.setTextColor(0)};
   const need=n=>{if(y+n>H-56){page();doc.addPage();y=M}};
@@ -2717,6 +3033,7 @@ async function exportFill(r){
     });
     y+=10;
   });
+  if(shared)return doc;                       // the bundle handles paging and saving
   page();
   const safe=String(r.formName).replace(/[^a-z0-9]+/gi,"-").toLowerCase();
   const name=safe+"-"+new Date().toISOString().slice(0,10)+".pdf";
@@ -2733,10 +3050,10 @@ async function exportFill(r){
   setTimeout(()=>URL.revokeObjectURL(u),1500);
   afterExport(r);
 }
-async function exportSketch(sk){
+async function exportSketch(sk,shared){
   let JsPDF; try{ JsPDF=await loadPDF() }catch(e){ return toast(e.message) }
   const portrait=!!sk.portrait;
-  const doc=new JsPDF({unit:"pt",format:"letter",orientation:portrait?"portrait":"landscape"});
+  const doc=shared||new JsPDF({unit:"pt",format:"letter",orientation:portrait?"portrait":"landscape"});
   const M=40, W=doc.internal.pageSize.getWidth(), H=doc.internal.pageSize.getHeight();
   let y=M;
 
@@ -2756,7 +3073,7 @@ async function exportSketch(sk){
     [["Scene attended",(sk.when||"").replace("T"," ")],
      ["Sketch prepared",(sk.prepared||"").replace("T"," ")],["Depicts",sk.depicts||""]],
     [["Sketch",sk.sheet||""],
-     ["Scale",scaleOf(sk)?("1 unit = "+measure(sk,1).replace(/\u2032/g,"'").replace(/\u2033/g,'"')):"Not to scale"],
+     ["Scale",scaleOf(sk)?("To scale - "+measure(sk,pageW(sk)).replace(/\u2032/g,"'").replace(/\u2033/g,'"')+" across"):"Not to scale"],
      ["Prepared by",sk.by||""]]
   ];
   rows.forEach((col,ci)=>{
@@ -2804,6 +3121,7 @@ async function exportSketch(sk){
       .k-text,.k-tag{fill:var(--kc,#111);font-family:sans-serif;
         paint-order:stroke fill;stroke:#fff;stroke-width:3.2px;stroke-linejoin:round}
       .k-num{fill:#fff;font-family:sans-serif;font-weight:700}
+      .k-pnum{fill:#111;font-family:sans-serif;font-size:11px;font-weight:700}
       .k-legt,.k-legn,.k-legr{fill:var(--kc,#111);font-family:sans-serif}
       .k-legu{fill:#888;font-family:sans-serif;font-style:italic}
       .k-credit{fill:#555;font-family:sans-serif;font-size:9.5px}
@@ -2864,6 +3182,7 @@ async function exportSketch(sk){
       : "Not to scale. ")
     +"Exported "+new Date().toISOString().slice(0,16).replace("T"," "), M,H-24);
 
+  if(shared)return doc;
   const safe=String(sk.caseNo||"sketch").replace(/[^a-z0-9]+/gi,"-").toLowerCase();
   const name=safe+"-sketch-"+new Date().toISOString().slice(0,10)+".pdf";
   const blob=doc.output("blob");
@@ -2915,10 +3234,58 @@ const GLYPH={
  clock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5.3l3.4 2"/></svg>',
  gap:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="4 3"><rect x="3.5" y="3.5" width="17" height="17" rx="3"/></svg>',
  ok:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M8 12.4l2.7 2.7L16 9.5"/></svg>'};
-let curSketch=null, sceneTab="forms", selObj=null, palCat=0, skFull=false, skTools=true;
+let curSketch=null, sceneTab="forms", selObj=null, palCat=0, palQ="", skFull=false, skTools=true;
+// photographs live in IndexedDB, not localStorage — they would blow its 5 MB ceiling
+const PDB={name:"vanphotos",store:"p",_db:null};
+function photoDB(){
+  if(PDB._db)return Promise.resolve(PDB._db);
+  return new Promise((res,rej)=>{
+    const rq=indexedDB.open(PDB.name,1);
+    rq.onupgradeneeded=()=>{const db=rq.result;
+      if(!db.objectStoreNames.contains(PDB.store))db.createObjectStore(PDB.store)};
+    rq.onsuccess=()=>{PDB._db=rq.result;res(rq.result)};
+    rq.onerror=()=>rej(new Error("Could not open photo storage"));
+  });
+}
+function photoOp(mode,fn){
+  return photoDB().then(db=>new Promise((res,rej)=>{
+    const tx=db.transaction(PDB.store,mode), st=tx.objectStore(PDB.store);
+    const rq=fn(st);
+    rq.onsuccess=()=>res(rq.result); rq.onerror=()=>rej(rq.error);
+  }));
+}
+const photoPut=(id,data)=>photoOp("readwrite",st=>st.put(data,id));
+const photoGet=id=>photoOp("readonly",st=>st.get(id));
+const photoDel=id=>photoOp("readwrite",st=>st.delete(id));
+const photoKeys=()=>photoOp("readonly",st=>st.getAllKeys());
+// shrink on the way in: a reference thumbnail, never the evidential copy
+function shrinkPhoto(file,max=1400,q=0.72){
+  return new Promise((res,rej)=>{
+    const fr=new FileReader();
+    fr.onload=()=>{
+      const img=new Image();
+      img.onload=()=>{
+        let {width:w,height:hh}=img;
+        const sc=Math.min(1,max/Math.max(w,hh));
+        w=Math.round(w*sc); hh=Math.round(hh*sc);
+        const c=document.createElement("canvas"); c.width=w; c.height=hh;
+        c.getContext("2d").drawImage(img,0,0,w,hh);
+        res({data:c.toDataURL("image/jpeg",q),w,hh});
+      };
+      img.onerror=()=>rej(new Error("Could not read that image"));
+      img.src=fr.result;
+    };
+    fr.onerror=()=>rej(new Error("Could not read that file"));
+    fr.readAsDataURL(file);
+  });
+}
 function newSketch(){
   const sk={id:newId(),caseNo:"",addr:"",when:new Date().toISOString().slice(0,16),by:"",objs:[]};
   S.sketches.push(sk);saveLocal();return sk;
+}
+function nextPhotoNo(sk){
+  const used=(sk.objs||[]).filter(o=>o.t==="photopoint").map(o=>parseInt(o.n,10)).filter(n=>!isNaN(n));
+  return used.length?Math.max(...used)+1:1;
 }
 function nextMarkerNo(sk){
   const used=(sk.objs||[]).filter(o=>o.t==="marker").map(o=>parseInt(o.n,10)).filter(n=>!isNaN(n));
@@ -2997,7 +3364,7 @@ function objSVG(o,sel){
     :o.t==="legend"&&skNow?legendSVG(o,skNow)
     :o.t==="text"
     ? `<text x="0" y="${o.h*.7}" class="k-text" style="font-size:${Math.max(11,o.h*.72)}px">${esc(o.label||"Text")}</text>`
-    : (SHAPES[o.t]||SHAPES.rect)(o.w,o.h);
+    : (SHAPES[o.t]||SHAPES.rect)(o.w,o.h,o);
   const ldy=LABELDY[o.id]||0;
   const tag=o.t!=="text"&&o.label?`<text x="${o.w/2}" y="${o.h+15+ldy}" class="k-tag">${esc(o.label)}</text>`
     +(Math.abs(ldy)>8?`<line x1="${o.w/2}" y1="${o.h+3}" x2="${o.w/2}" y2="${o.h+6+ldy-(ldy<0?-9:9)}"
@@ -3027,7 +3394,7 @@ function headerRows(sk){
      ["Sketch prepared", (sk.prepared||"").replace("T"," ")],
      ["Depicts", sk.depicts||""]],
     [["Sketch", sk.sheet||""],
-     ["Scale", scaleOf(sk)?("1 unit = "+measure(sk,1)):"Not to scale"],
+     ["Scale", scaleOf(sk)?("To scale \u2014 "+measure(sk,pageW(sk))+" across"):"Not to scale"],
      ["Prepared by", sk.by||""]]
   ];
 }
@@ -3160,6 +3527,106 @@ async function fetchAerial(lat,lon,feet,px){
     fr.readAsDataURL(blob)});
   return {data,feet};
 }
+function orthoSheet(sk,src){
+  src=src||sk.orthoSrc||"faro";
+  const faro=src==="faro";
+  openSheet(`<h3>Ortho import</h3>
+    <p style="margin:0 0 12px;color:var(--ink2);font-size:14.5px;line-height:1.5">An orthophoto is a
+      flat, straight-down view with no perspective, so it is already to scale. Export one and this
+      sets the sketch scale from it.</p>
+    <div class="filters" style="margin:0 0 14px">
+      <button data-osrc="faro" class="${faro?"sel":""}">FARO SCENE</button>
+      <button data-osrc="pix4d" class="${faro?"":"sel"}">Pix4D drone</button></div>
+    ${faro?`
+    <div class="sect" style="margin:4px 2px 6px">In FARO SCENE</div>
+    <ol class="steps">
+      <li>Register and process the project as normal.</li>
+      <li>Place a <b>clipping box</b> around the area you want, looking straight down.</li>
+      <li>Run <b>Project Point Cloud</b> first &mdash; the orthophoto is much cleaner for it.
+          SCENE LT cannot do this step.</li>
+      <li>Open <b>Create Orthophoto</b> and pick your clipping box.</li>
+      <li>Choose <b>Metric units</b>. The imperial setting has produced wrongly scaled images.</li>
+      <li>Set <b>Pixel/Meter</b>. 100 is the default and usually right; 200 for a small room.
+          Finer than the scan's own point spacing just adds gaps, not detail.</li>
+      <li>Tick <b>Show scale</b> so a scale bar is burned in as a cross-check.</li>
+      <li>Export as <b>PNG</b> or <b>JPG</b> and note the Pixel/Meter number.</li>
+    </ol>`:`
+    <div class="sect" style="margin:4px 2px 6px">In Pix4D</div>
+    <ol class="steps">
+      <li>Process calibration, dense point cloud and <b>DSM</b> first. The orthomosaic is built from
+          the DSM &mdash; if that is noisy the orthomosaic comes out distorted.</li>
+      <li>Draw a <b>processing area</b> or region of interest around the scene, so you get the ground
+          you need and not a whole field.</li>
+      <li>Under <b>Resolution</b>, note the <b>GSD in cm/pixel</b>. This is the number you need.</li>
+      <li>Export the orthomosaic as <b>JPG</b> rather than GeoTIFF &mdash; a .tif will not open here.</li>
+      <li>If it only offers GeoTIFF, open it in QGIS and export a JPG at the same resolution.</li>
+      <li>Keep it under about 10&nbsp;MB. Drop the resolution if it is larger.</li>
+    </ol>
+    <div class="unver" style="margin:12px 0 0">Pix4D uses an <b>average</b> GSD across the
+      orthomosaic, so distances taken off a drone image are approximate. Ground measurements are
+      the ones to rely on for anything that matters.</div>`}
+    <div class="sect" style="margin:18px 2px 6px">Here</div>
+    <label class="fld"><span>${faro?"Pixel/Meter used in SCENE":"GSD in cm/pixel from Pix4D"}</span>
+      <input type="text" id="opm" inputmode="decimal" placeholder="${faro?"100":"1.5"}"
+        value="${esc(faro?(sk.bgPPM||"100"):(sk.bgGSD||""))}"></label>
+    <label class="fld"><span>The orthophoto</span><input type="file" id="opf" accept="image/*"></label>
+    <p class="hint" style="margin:0 0 12px" id="opinfo"></p>
+    <button class="btn" id="opgo" style="max-width:none;margin:0">Import</button>
+    <button class="btn sec" id="opx" style="max-width:none">Cancel</button>`);
+  $("#opx").onclick=closeSheet;
+  $$("#sheet [data-osrc]").forEach(bq=>bq.onclick=()=>{
+    sk.orthoSrc=bq.dataset.osrc; saveLocal(); orthoSheet(sk,bq.dataset.osrc)});
+  const f=$("#opf");
+  // metres of ground per image pixel, whichever way the number is expressed
+  const perPx=v=>faro ? (v>0?1/v:0) : (v>0?v/100:0);
+  const preview=()=>{
+    const file=f&&f.files&&f.files[0];
+    const v=parseFloat(($("#opm")||{}).value||"");
+    const el=$("#opinfo"); if(!el)return;
+    if(!(v>0)){el.textContent=faro?"Enter the Pixel/Meter value you used in SCENE."
+      :"Enter the GSD in cm/pixel from Pix4D.";return}
+    if(!file){el.textContent="Choose the exported image, then press Import.";return}
+    const img=new Image(); const u=URL.createObjectURL(file);
+    img.onload=()=>{const ft=img.width*perPx(v)*3.28084;
+      el.textContent=img.width+" px wide \u2014 "+(Math.round(ft*10)/10)
+        +" ft across. Press Import to place it."; URL.revokeObjectURL(u)};
+    img.onerror=()=>{el.textContent="That file could not be read as an image. A .tif will not open \u2014 export a JPG.";
+      URL.revokeObjectURL(u)};
+    img.src=u;
+  };
+  if(f)f.onchange=preview;
+  const pm=$("#opm"); if(pm)pm.oninput=preview;
+  preview();
+  $("#opgo").onclick=()=>{
+    const file=f&&f.files&&f.files[0];
+    if(!file)return toast("Choose the exported image first");
+    const v=parseFloat(($("#opm")||{}).value||"");
+    if(!(v>0))return toast(faro?"Enter the Pixel/Meter value first":"Enter the GSD first");
+    if(file.size>10*1024*1024)return toast("That image is over 10 MB \u2014 export it smaller");
+    const rd=new FileReader();
+    rd.onload=()=>{
+      const img=new Image();
+      img.onload=()=>{
+        const availH=pageH(sk)-(hasHeader(sk)?HEADER_H:0);
+        let w=pageW(sk), hh=w*img.height/img.width;
+        if(hh>availH){hh=availH;w=hh*img.width/img.height}
+        sk.bg={data:rd.result,x:(pageW(sk)-w)/2,y:(hasHeader(sk)?HEADER_H:0)+(availH-hh)/2,
+               w,h:hh,op:1,place:"",
+               src: faro ? ("FARO orthophoto at "+v+" px/m")
+                         : ("Pix4D orthomosaic at "+v+" cm/px GSD, average")};
+        if(faro)sk.bgPPM=String(v); else sk.bgGSD=String(v);
+        sk.orthoSrc=src;
+        const feet=img.width*perPx(v)*3.28084;
+        sk.scale={px:w,real:Math.round(feet*100)/100,unit:"ft"};
+        saveLocal();closeSheet();renderSketch();
+        toast("Scale set \u2014 "+(Math.round(feet*10)/10)+" ft across");
+      };
+      img.onerror=()=>toast("Could not read that image \u2014 a .tif will not open, export a JPG");
+      img.src=rd.result;
+    };
+    rd.readAsDataURL(file);
+  };
+}
 function bgSheet(sk){
   const b=sk.bg||{};
   openSheet(`<h3>Backdrop</h3>
@@ -3182,7 +3649,11 @@ function bgSheet(sk){
       Imagery from PEMA 2021&ndash;2023 via PASDA. Below about 200&nbsp;ft across you are past the
       resolution the imagery holds, so it turns soft &mdash; pick a wider view and zoom the page
       instead.</p>
-    <label class="fld"><span>Or load an image</span><input type="file" id="bgf" accept="image/*"></label>
+    <div class="sect" style="margin:4px 2px 8px">Or load an image</div>
+    <button class="btn" id="bgortho" style="max-width:none;margin:0 0 10px">Ortho import &mdash; from a FARO scan</button>
+    <label class="fld"><span>Any other image</span><input type="file" id="bgf" accept="image/*"></label>
+    <p class="hint" style="margin:0 0 12px">A plain photo or floor plan comes in without a scale.
+      Set one with the Set scale button, or use Ortho import above and it scales itself.</p>
     ${b.data?`<label class="fld"><span>Fade</span>
       <input type="range" id="bgop" min="15" max="100" value="${Math.round((b.op==null?0.55:b.op)*100)}"></label>`:""}
     ${b.data?`<div class="two">
@@ -3197,6 +3668,7 @@ function bgSheet(sk){
     ${b.data?`<button class="btn sec" id="bgdel" style="max-width:none;color:var(--red);border-color:var(--red)">Remove backdrop</button>`:""}
     <button class="btn sec" id="bgx" style="max-width:none">Cancel</button>`);
   $("#bgx").onclick=closeSheet;
+  const orth=$("#bgortho"); if(orth)orth.onclick=()=>orthoSheet(sk);
   const place=async(hit)=>{
     const feet=+$("#bgft").value||200;
     $("#bghits").innerHTML=`<p class="hint" style="margin:0 0 10px">Fetching imagery\u2026</p>`;
@@ -3262,9 +3734,20 @@ function bgSheet(sk){
         let w=pageW(sk), hh=w*img.height/img.width;
         if(hh>availH){hh=availH;w=hh*img.width/img.height}
         sk.bg={data:rd.result,x:(pageW(sk)-w)/2,y:(hasHeader(sk)?HEADER_H:0)+(availH-hh)/2,
-               w,h:hh,op:0.55};
+               w,h:hh,op:0.55,src:"",place:""};
+        // a FARO orthophoto carries its own scale: pixels per metre
+        const ppm=parseFloat(($("#bgppm")||{}).value||"");
+        let msg="Backdrop added \u2014 now set the scale";
+        if(ppm>0){
+          sk.bgPPM=String(ppm);
+          const metres=img.width/ppm;                 // real width of the whole image
+          const feet=metres*3.28084;
+          sk.scale={px:w,real:Math.round(feet*100)/100,unit:"ft"};
+          msg="Backdrop added \u2014 scale set from "+ppm+" px/m ("
+            +(Math.round(feet*10)/10)+" ft across)";
+        }else if(scaleOf(sk))msg="Backdrop added";
         saveLocal();closeSheet();renderSketch();
-        toast(scaleOf(sk)?"Backdrop added":"Backdrop added \u2014 now set the scale");
+        toast(msg);
       };
       img.onerror=()=>toast("Could not read that image");
       img.src=rd.result;
@@ -3306,7 +3789,7 @@ function renderSketch(){
         <div class="oshead"><b>${esc(SHAPENAME(sel.t))}</b>
           <span class="osr">Rotation <span id="rotval">${sel.r||0}\u00b0</span></span></div>
         <div class="osgrid">
-          ${sel.t==="marker"?`<label class="fld osnum"><span>Number</span>
+          ${(sel.t==="marker"||sel.t==="photopoint")?`<label class="fld osnum"><span>Number</span>
             <input type="text" id="onum" inputmode="numeric" value="${esc(sel.n||"")}"></label>`:""}
           <label class="fld osname"><span>${sel.t==="marker"?"Name it — prints on the sketch and in the legend"
             :sel.t==="legend"?"Name it (not shown on the sketch)":"Name it — prints on the sketch"}</span>
@@ -3317,6 +3800,10 @@ function renderSketch(){
           ${INKS.map(([k,nm,hex])=>`<button class="ink${(sel.ink||"")===k?" on":""}"
             data-ink="${k}" title="${nm}" aria-label="${nm}"
             style="background:${hex}"></button>`).join("")}</div>
+        ${sel.t==="photopoint"?`<div class="objbar" style="margin-top:10px">
+          <button data-ophoto="${sel.id}">${sel.photoId?"Change photograph":"Attach photograph"}</button>
+          ${sel.photoId?`<button data-ophotox="${sel.id}">Remove</button>`:""}</div>
+          <div id="photoprev"></div>`:""}
         <div class="objbar">
           <button data-orot="${sel.id}">Rotate 15&#176;</button>
           <button data-orot0="${sel.id}">Straighten</button>
@@ -3329,9 +3816,20 @@ function renderSketch(){
       :`<p class="hint" style="margin-top:6px">Tap an object to select it. Tap the page to deselect.</p>`}
     <p class="kbdhint">Arrow keys nudge, shift for bigger steps. D duplicates, Delete removes, Escape deselects.</p>
     </div><div class="skrail">
-    <div class="filters wrap">${PALETTE.map(([c],ix)=>
-      `<button data-pal="${ix}" class="${ix===palCat?"sel":""}">${esc(c)}</button>`).join("")}</div>
-    ${palCat>=0?`<div class="palette">${PALETTE[palCat][1].map(([t,nm])=>
+    <div class="palsearch"><input type="text" id="palq" placeholder="Search symbols"
+      value="${esc(palQ||"")}" autocomplete="off" autocapitalize="off">
+      ${palQ?`<button id="palqx" aria-label="Clear">&#215;</button>`:""}</div>
+    ${palQ?"":`<div class="filters wrap">${PALETTE.map(([c],ix)=>
+      `<button data-pal="${ix}" class="${ix===palCat?"sel":""}">${esc(c)}</button>`).join("")}</div>`}
+    ${palQ? (()=>{const q=palQ.toLowerCase(); const hits=[];
+        PALETTE.forEach(([g,l])=>l.forEach(([t,nm])=>{
+          if(nm.toLowerCase().includes(q)||g.toLowerCase().includes(q)||t.includes(q))hits.push([t,nm,g])}));
+        return hits.length
+          ? `<div class="palette">`+hits.map(([t,nm,g])=>
+              `<button data-add="${t}"><span class="pv">${palPreview(t)}</span>
+               <span class="pn">${esc(nm)}</span><span class="pg">${esc(g)}</span></button>`).join("")+`</div>`
+          : `<p class="hint">Nothing matches that.</p>`})()
+      : palCat>=0?`<div class="palette">${PALETTE[palCat][1].map(([t,nm])=>
       `<button data-add="${t}"><span class="pv">${palPreview(t)}</span><span class="pn">${esc(nm)}</span></button>`).join("")}</div>`
       :`<p class="hint" style="margin:0 0 12px">Pick a category above to place something.</p>`}
     ${(sk.objs||[]).length?`<div class="sect">Layers</div>
@@ -3401,7 +3899,8 @@ function addObj(t){
   const top=hasHeader(sk)?HEADER_H:0;
   const o={id:newId(),t,x:Math.round(pageW(sk)/2-w/2),
     y:Math.round(top+(pageH(sk)-top)/2-hh/2),w,h:hh,r:0,label:"",ar:w/hh};
-  if(t==="marker")o.n=String(nextMarkerNo(sk));
+  if(t==="marker"){o.n=String(nextMarkerNo(sk)); setTimeout(()=>syncMarker(sk,o),0)}
+  if(t==="photopoint")o.n=String(nextPhotoNo(sk));
   if(t==="text")o.label="Text";
   sk.objs.push(o);selObj=o.id;saveLocal();renderSketch();
 }
@@ -3562,6 +4061,65 @@ function sketchMetaSheet(sk){
     saveLocal();closeSheet();renderSketch();
     toast(moved?"Saved \u2014 "+moved+" object"+(moved===1?"":"s")+" moved clear of the block":"Saved")};
 }
+// a marker on an incident sketch writes itself into that incident's evidence log
+function syncMarker(sk,o){
+  if(!sk||!sk.incidentId||o.t!=="marker")return 0;
+  const inc=incidentOf(sk.incidentId); if(!inc)return 0;
+  const f=S.forms.find(x=>x.name==="Evidence log"); if(!f)return 0;
+  const tbl=(f.fields||[]).find(x=>x.type==="table"); if(!tbl)return 0;
+  let rec=(S.fills||[]).find(x=>x.incidentId===inc.id&&x.formId===f.id&&!x.exported);
+  if(!rec){
+    rec=newFill(f); rec.incidentId=inc.id;
+    const put=(re,v)=>{const fd=(f.fields||[]).find(x=>re.test(x.label)); if(fd&&v)rec.values[fd.id]=v};
+    put(/case/i,inc.caseNo); put(/address|scene/i,inc.addr);
+  }
+  const rows=Array.isArray(rec.values[tbl.id])?rec.values[tbl.id]:[];
+  const num=String(o.n||"").trim(); if(!num)return 0;
+  let row=rows.find(r=>String((r||{}).Marker||"").trim()===num);
+  if(!row){ row={}; row.Marker=num; rows.push(row) }
+  if(o.label&&o.label.trim())row.Item=o.label.trim();
+  rec.values[tbl.id]=rows.filter(r=>Object.values(r||{}).some(v=>String(v||"").trim()));
+  saveLocal();
+  return 1;
+}
+function photoSheet(o){
+  openSheet(`<h3>Photograph ${esc(o.n||"")}</h3>
+    <p class="hint" style="margin:0 0 14px">A reference copy is stored with the sketch and appears in
+      the bundle. The photograph in the case file remains the evidential copy \u2014 the number is
+      what ties them together.</p>
+    <label class="fld"><span>Photograph number</span>
+      <input type="text" id="phn" value="${esc(o.n||"")}" inputmode="numeric"></label>
+    <label class="fld"><span>What it shows</span>
+      <input type="text" id="phc" value="${esc(o.label||"")}" placeholder="Kitchen, looking north"></label>
+    <label class="fld"><span>Image</span><input type="file" id="phf" accept="image/*"></label>
+    <div id="phprev" style="margin:0 0 10px"></div>
+    <button class="btn" id="phsave" style="max-width:none;margin:0">Save</button>
+    ${o.photoId?`<button class="btn sec" id="phdel" style="max-width:none;color:var(--red);border-color:var(--red)">Remove photograph</button>`:""}
+    <button class="btn sec" id="phx" style="max-width:none">Cancel</button>`);
+  const show=id=>{ if(!id)return;
+    photoGet(id).then(d=>{const el=$("#phprev");
+      if(el&&d)el.innerHTML=`<img src="${d.data}" style="width:100%;border-radius:10px">
+        <p class="hint" style="margin:6px 0 0">${d.w}&times;${d.hh} reference copy</p>`}).catch(()=>{})};
+  show(o.photoId);
+  $("#phx").onclick=closeSheet;
+  const del=$("#phdel");
+  if(del)del.onclick=()=>{ if(o.photoId)photoDel(o.photoId).catch(()=>{});
+    delete o.photoId; saveLocal(); closeSheet(); renderSketch(); toast("Photograph removed")};
+  const f=$("#phf");
+  if(f)f.onchange=async()=>{
+    const file=f.files&&f.files[0]; if(!file)return;
+    try{
+      const shrunk=await shrinkPhoto(file);
+      const id=o.photoId||newId();
+      await photoPut(id,shrunk);
+      o.photoId=id; saveLocal(); show(id);
+      toast("Photograph attached");
+    }catch(err){ toast(err.message||"Could not attach that") }
+  };
+  $("#phsave").onclick=()=>{
+    o.n=$("#phn").value.trim(); o.label=$("#phc").value.trim();
+    saveLocal(); closeSheet(); renderSketch(); toast("Saved")};
+}
 function labelSheet(o){
   openSheet(`<h3>Label</h3>
     <label class="fld"><span>What is it</span><input type="text" id="olb" value="${esc(o.label||"")}" placeholder="Kitchen table"></label>
@@ -3570,10 +4128,13 @@ function labelSheet(o){
     <button class="btn sec" id="olx" style="max-width:none">Cancel</button>`);
   $("#olx").onclick=closeSheet;
   $("#olsv").onclick=()=>{
-    pushUndo(S.sketches.find(x=>x.id===curSketch));
+    const skNow=S.sketches.find(x=>x.id===curSketch);
+    pushUndo(skNow);
     o.label=$("#olb").value.trim();
     if(o.t==="marker"&&$("#onm"))o.n=$("#onm").value.trim();
-    saveLocal();closeSheet();renderSketch();toast("Saved")};
+    const synced=syncMarker(skNow,o);
+    saveLocal();closeSheet();renderSketch();
+    toast(synced?"Saved \u2014 evidence log updated":"Saved")};
 }
 
 /* ---------- inventory ---------- */
@@ -3632,7 +4193,7 @@ function renderInventory(){
     `<button data-invg="${k}" class="${invGroup===k?"sel":""}">${l}</button>`).join("")}</div>
     <div class="sect">${L.length} items</div>${body}
     ${!invAll&&L.length>CAP?`<button class="btn sec" id="invall" style="margin:14px auto 0">Show all ${L.length}</button>
-      <p class="hint" style="text-align:center">Showing ${CAP} for speed. Search is faster than scrolling.</p>`:""}`;
+      <p class="hint" style="text-align:center">Showing the first ${CAP}. Use search to find anything else.</p>`:""}`;
 }
 
 /* ---------- guide ---------- */
@@ -3670,7 +4231,7 @@ function renderGuide(){
     `<div class="sect">${esc(k)}</div><div class="rows">`+g[k].sort((a,b)=>a.name.localeCompare(b.name)).map(i=>
       `<button class="row" data-item="${i.id}">
         <span><span class="code">${esc(i.name)}</span>
-        <span class="desc">${(i.steps||[]).length} steps · ${esc(i.loc||"—")}${i.source?" · "+esc(i.source):""}</span></span>
+        <span class="desc">${[(i.steps||[]).length+" steps", i.loc?esc(i.loc):"", i.source?esc(i.source):""].filter(Boolean).join(" · ")}</span></span>
         <span class="rt">${badge(i)}<span class="chev">&#8250;</span></span></button>`).join("")+`</div>`).join("")
     +missingList+reqBlock}
 
@@ -3857,50 +4418,115 @@ const docIcon=k=>`<svg class="dg" viewBox="0 0 24 24" fill="none" stroke="curren
   stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${DOCICON[k]||DOCICON.report}</svg>`;
 function renderActive(){
   $("#title").textContent="Active";
-  const docs=openDocs();
-  if(!docs.length){
+  const incs=openIncidents(), loose=openDocs();
+  if(!incs.length&&!loose.length){
     $("#v-active").innerHTML=`<div class="empty"><strong>Nothing open</strong>
-      <p>Forms you are filling in and sketches you are drawing appear here until you export them.</p>
-      <button class="btn" data-go="forms">Start one</button></div>`;
+      <p>Start an incident and the app keeps its forms and sketches together,
+         then bundles them into one report.</p>
+      <button class="btn" id="newinc">Start an incident</button></div>`;
     return;
   }
-  const tile=d=>{
-    const rec = d.kind==="fill" ? (S.fills||[]).find(x=>x.id===d.id)
-                                : (S.sketches||[]).find(x=>x.id===d.id);
-    if(!rec)return "";
-    let meta="", detail="";
-    if(d.kind==="fill"){
-      const f=S.forms.find(x=>x.id===rec.formId)||{fields:[]};
-      const done=(f.fields||[]).filter(x=>{
-        const v=rec.values[x.id];
-        return x.type==="table" ? (Array.isArray(v)&&v.some(row=>Object.values(row||{}).some(s=>String(s||"").trim())))
-                                : String(v||"").trim()!=="";
-      }).length;
-      meta=done+" of "+(f.fields||[]).length+" filled in";
-      const addr=(f.fields||[]).find(x=>/address/i.test(x.label));
-      detail=(addr&&String(rec.values[addr.id]||"").trim())
-        || ("Started "+String(rec.started||"").slice(0,16).replace("T"," "));
-    }else{
-      const objs=(rec.objs||[]).length;
-      const marks=(rec.objs||[]).filter(o=>o.t==="marker").length;
-      meta=objs+" object"+(objs===1?"":"s")+(marks?" \u00b7 "+marks+" marker"+(marks===1?"":"s"):"");
-      detail=rec.addr||"No address";
-    }
-    return `<button class="acttile" data-doc="${d.kind}:${d.id}">
+  const tile=inc=>{
+    const plan=(inc.plan||[]).map(k=>planState(inc,k)).filter(Boolean);
+    const done=plan.filter(p=>p.state==="done").length;
+    const open=plan.filter(p=>p.state==="open").length;
+    return `<button class="acttile" data-inc="${inc.id}">
       <div class="ai">
-        <h2>${esc(d.caseNo||"No case number")}</h2>
-        <div class="sub">${esc(d.type)}</div>
-        <div class="sub">${esc(detail)}</div>
+        <h2>${esc(inc.caseNo||"No case number")}</h2>
+        <div class="sub">${esc(inc.offence||"No offence recorded")}</div>
+        <div class="sub">${esc(inc.addr||"No address")}</div>
       </div>
-      <div class="ak">${docIcon(docKind(d.kind,d.type))}</div>
-      <div class="am"><span class="badge b-attn">${esc(meta)}</span>
-        <span class="badge b-unchecked">Not exported</span></div>
-    </button>`;
+      <div class="ak">${docIcon("report")}</div>
+      <div class="am">
+        <span class="badge ${done===plan.length?"b-good":"b-attn"}">${done} of ${plan.length} done</span>
+        ${open?`<span class="badge b-unchecked">${open} in progress</span>`:""}
+      </div></button>`;
   };
   $("#v-active").innerHTML=
-    `<p class="hint" style="margin:0 0 14px">${docs.length} open. These live in the app until you
-      export them, so clear them down as each case closes.</p>`
-    + docs.map(tile).join("");
+    `<div class="editbar"><button id="newinc" class="on">Start an incident</button></div>`
+    +(incs.length?`<div class="sect">Incidents</div>`+incs.map(tile).join(""):"")
+    +(loose.length?`<div class="sect">Not filed to an incident</div>`
+        +`<p class="hint" style="margin:0 0 12px">Open these and attach them, or export and clear them.</p>`
+        +loose.map(looseTile).join(""):"");
+}
+function looseTile(d){
+  const rec = d.kind==="fill" ? (S.fills||[]).find(x=>x.id===d.id)
+                              : (S.sketches||[]).find(x=>x.id===d.id);
+  if(!rec)return "";
+  let meta="", detail="";
+  if(d.kind==="fill"){
+    const f=S.forms.find(x=>x.id===rec.formId)||{fields:[]};
+    const done=(f.fields||[]).filter(x=>{
+      const v=rec.values[x.id];
+      return x.type==="table" ? (Array.isArray(v)&&v.some(row=>Object.values(row||{}).some(s=>String(s||"").trim())))
+                              : String(v||"").trim()!=="";
+    }).length;
+    meta=done+" of "+(f.fields||[]).length+" filled in";
+    const addr=(f.fields||[]).find(x=>/address/i.test(x.label));
+    detail=(addr&&String(rec.values[addr.id]||"").trim())
+      || ("Started "+String(rec.started||"").slice(0,16).replace("T"," "));
+  }else{
+    const objs=(rec.objs||[]).length, marks=(rec.objs||[]).filter(o=>o.t==="marker").length;
+    meta=objs+" object"+(objs===1?"":"s")+(marks?" \u00b7 "+marks+" marker"+(marks===1?"":"s"):"");
+    detail=rec.addr||"No address";
+  }
+  return `<button class="acttile" data-doc="${d.kind}:${d.id}">
+    <div class="ai"><h2>${esc(d.caseNo||"No case number")}</h2>
+      <div class="sub">${esc(d.type)}</div><div class="sub">${esc(detail)}</div></div>
+    <div class="ak">${docIcon(docKind(d.kind,d.type))}</div>
+    <div class="am"><span class="badge b-attn">${esc(meta)}</span>
+      <span class="badge b-unchecked">Not exported</span></div></button>`;
+}
+function renderIncident(){
+  const inc=incidentOf(curInc);
+  if(!inc){view="active";return renderActive()}
+  $("#title").textContent=inc.caseNo||"Incident";
+  const plan=(inc.plan||[]).map(k=>planState(inc,k)).filter(Boolean);
+  const extras=docsFor(inc.id).filter(x=>!plan.some(p=>p.docs.some(d=>d.id===x.id)));
+  const row=p=>{
+    const lab={none:"Not started",open:"In progress",done:"Exported"}[p.state];
+    const cls={none:"b-unchecked",open:"b-attn",done:"b-good"}[p.state];
+    return `<button class="row" data-plan="${p.d.key}">
+      <span><span class="code">${esc(p.d.label)}</span>
+      <span class="desc">${p.docs.length?p.docs.length+" started":"Nothing yet"}</span></span>
+      <span class="rt"><span class="badge ${cls}">${lab}</span><span class="chev">&#8250;</span></span>
+    </button>`;
+  };
+  $("#v-incident").innerHTML=`
+    <button class="back" data-go="active">&#8249; Active</button>
+    <div class="acttile" style="text-align:left">
+      <div class="ai"><h2>${esc(inc.caseNo||"No case number")}</h2>
+        <div class="sub">${esc(inc.offence||"No offence recorded")}</div>
+        <div class="sub">${esc(inc.addr||"No address")}</div></div>
+      <div class="ak">${docIcon("report")}</div>
+    </div>
+    <div class="editbar">
+      <button data-incbundle="1" class="on">Export bundle</button>
+      <button data-incedit="1">Incident details</button>
+      <button data-incclose="1">Close incident</button></div>
+    <div class="sect">Documents</div>
+    <div class="rows">${plan.map(row).join("")}</div>
+    ${extras.length?`<div class="sect">Also attached</div><div class="rows">`
+      +extras.map(x=>`<button class="row" data-doc="${x.kind}:${x.id}">
+        <span><span class="code">${esc(x.type)}</span>
+        <span class="desc">${x.exported?"Exported":"In progress"}</span></span>
+        <span class="rt"><span class="chev">&#8250;</span></span></button>`).join("")+`</div>`:""}`;
+}
+function incidentSheet(inc){
+  openSheet(`<h3>Incident details</h3>
+    <p class="hint" style="margin:0 0 14px">Every document started from this incident inherits these.</p>
+    <label class="fld"><span>Case number</span>
+      <input type="text" id="inc" value="${esc(inc.caseNo||"")}" placeholder="2026-0912"></label>
+    <label class="fld"><span>Offence or incident</span>
+      <input type="text" id="ino" value="${esc(inc.offence||"")}" placeholder="Death investigation"></label>
+    <label class="fld"><span>Scene address</span>
+      <input type="text" id="ina" value="${esc(inc.addr||"")}"></label>
+    <button class="btn" id="insave" style="max-width:none;margin:0">Save</button>
+    <button class="btn sec" id="inx" style="max-width:none">Cancel</button>`);
+  $("#inx").onclick=closeSheet;
+  $("#insave").onclick=()=>{
+    inc.caseNo=$("#inc").value.trim(); inc.offence=$("#ino").value.trim();
+    inc.addr=$("#ina").value.trim(); save(); closeSheet(); renderIncident(); toast("Saved")};
 }
 function renderData(){
   $("#title").textContent="Data";
@@ -3923,7 +4549,7 @@ function renderData(){
     </div>
     <p class="hint" style="margin:0 0 12px">${storageState.persisted
       ? "Everything you enter is written to this device as you go. The browser has agreed not to clear it to reclaim space, so it survives restarts and long gaps between shifts."
-      : "Everything you enter is written to this device as you go, but the browser has not agreed to keep it. Use the app a few times and it usually will. Until then, download a backup."}
+      : "Everything you enter is written to this device as you go. The browser has not yet marked it as protected storage, which normally happens after the app has been used a few times. Keep a backup until it does."}
       Losing or wiping the phone still loses the data, so keep a backup somewhere else.</p>
     ${L.length&&stale?`<div class="unver">No backup taken in over a week. Download one and put it somewhere off this phone.</div>`:""}
     <div class="idsect">Back up</div>
@@ -3950,7 +4576,7 @@ function renderData(){
         <button class="btn" id="ghpush" style="max-width:none;margin:0">${conflict?"Push over theirs":"Push now"}</button>
         <button class="btn sec" id="ghpull" style="max-width:none">Pull from GitHub</button>
         <button class="btn sec" id="ghoff" style="max-width:none">Disconnect this device</button></div>
-      <p class="hint">Changes push automatically a couple of seconds after you make them. Every push is a commit, so the repo keeps the full history.</p>`
+      <p class="hint">Changes save automatically a couple of seconds after you make them, and every version is kept.</p>`
     :`<p class="hint" style="margin-top:0">Connect once and every change saves itself to a private
       repo a couple of seconds after you make it — no sign-in after the first time, and any other
       device you connect reads the same list. The token you paste is what keeps it automatic, so it
@@ -3976,6 +4602,54 @@ function renderData(){
 
 /* ---------- filtered lists from the strip ---------- */
 let listKey=null;
+// what to order, and how many, for anything short or expiring
+function reorderRows(){
+  return live().filter(i=>isOut(i)||isLow(i)||isExpired(i))
+    .map(i=>{
+      const par=n(i.par), have=n(i.qty);
+      const need=i.par!==""&&i.par!=null&&par>have ? par-have : (isOut(i)?1:0);
+      return {i, need, why: isOut(i)?"Out of stock" : isExpired(i)?"Expired" : "Below par"};
+    })
+    .sort((a,b)=>(a.i.cat||"").localeCompare(b.i.cat||"")||a.i.name.localeCompare(b.i.name));
+}
+function reorderText(){
+  const rows=reorderRows();
+  const when=new Date().toISOString().slice(0,16).replace("T"," ");
+  let out="Reorder list \u2014 Forensic Services Unit\nPrepared "+when+"\n\n";
+  let cat="";
+  rows.forEach(r=>{
+    const c=catName(r.i.cat);
+    if(c!==cat){out+=(cat?"\n":"")+c+"\n"; cat=c}
+    out+="  "+(r.need?r.need+" x ":"")+r.i.name
+      +(r.i.loc?"  ("+r.i.loc+")":"")
+      +"  \u2014 "+r.why+", "+r.i.qty+" in stock"
+      +(r.i.par!==""&&r.i.par!=null?", par "+r.i.par:"")+"\n";
+  });
+  if(!rows.length)out+="Nothing to order.\n";
+  return out;
+}
+function renderReorder(){
+  $("#title").textContent="Reorder";
+  const rows=reorderRows();
+  const byCat={};
+  rows.forEach(r=>{const c=catName(r.i.cat);(byCat[c]=byCat[c]||[]).push(r)});
+  $("#v-reorder").innerHTML=`<button class="back" data-go="home">&#8249; Home</button>`
+    +(rows.length?`
+      <p class="hint" style="margin:0 0 14px">${rows.length} item${rows.length===1?"":"s"} short.
+        Quantities are what it takes to reach par.</p>
+      <div class="editbar">
+        <button id="rocopy" class="on">Copy list</button>
+        <button id="roshare">Send</button></div>`
+      +Object.keys(byCat).sort().map(c=>`<div class="sect">${esc(c)}</div><div class="rows">`
+        +byCat[c].map(r=>`<button class="row" data-item="${r.i.id}">
+          <span><span class="code">${r.need?r.need+" &times; ":""}${esc(r.i.name)}</span>
+          <span class="desc">${esc(r.i.loc||"not placed")} &middot; ${esc(r.i.qty)} in stock${
+            r.i.par!==""&&r.i.par!=null?" &middot; par "+esc(r.i.par):""}</span></span>
+          <span class="rt"><span class="badge b-${r.why==="Below par"?"attn":"action"}">${esc(r.why)}</span>
+          <span class="chev">&#8250;</span></span></button>`).join("")+`</div>`).join("")
+    :`<div class="empty"><strong>Nothing to order</strong>
+        <p>Everything is at or above par, and nothing has expired.</p></div>`);
+}
 function renderList(key){
   const L=live();
   const map={low:["Low or out",L.filter(i=>isOut(i)||isLow(i))],
@@ -3986,6 +4660,7 @@ function renderList(key){
   listKey=key;
   $("#v-home").innerHTML=`<button class="back" data-go="home">&#8249; Home</button>`
     +(key==="gaps"?`<button class="btn sec" id="addgap" style="margin:0 0 14px;max-width:none">Log something we don't carry</button>`:"")
+    +(key==="low"&&reorderRows().length?`<button class="btn" id="goreorder" style="margin:0 0 14px;max-width:none">Make a reorder list</button>`:"")
     +(arr.length?`<div class="rows">`+arr.map(i=>{
       const s=isOut(i)?["action","Out"]:isExpired(i)?["action","Expired"]:isLow(i)?["attn","Below par"]
         :isService(i)?["attn","Service due"]:isExpiring(i)?["attn",daysOut(i.date)+" days"]:["good","OK"];
@@ -4090,6 +4765,23 @@ document.addEventListener("click",e=>{
   const bg=e.target.closest("[data-back]"); if(bg&&view==="compdetail"){
     view="compartments";$$(".view").forEach(v=>v.classList.toggle("on",v.id==="v-compartments"));
     render();return restoreScroll("compartments")}
+  if(e.target.closest("#goreorder")){view="reorder";window.scrollTo&&window.scrollTo(0,0);return render()}
+  if(e.target.closest("#rocopy")){
+    const t=reorderText();
+    if(navigator.clipboard)navigator.clipboard.writeText(t).then(()=>toast("Copied")).catch(()=>toast("Could not copy"));
+    else toast("Could not copy");
+    return}
+  if(e.target.closest("#roshare")){
+    const t=reorderText(), name="reorder-"+today()+".txt";
+    (async()=>{
+      try{
+        const file=new File([t],name,{type:"text/plain"});
+        if(navigator.canShare&&navigator.canShare({files:[file]})){
+          await navigator.share({files:[file],title:"Reorder list"}); return toast("Sent")}
+      }catch(err){ if(err&&err.name==="AbortError")return }
+      if(download(t,name,"text/plain"))toast("Downloaded"); else toast("Use Copy list instead");
+    })();
+    return}
   const l=e.target.closest("[data-list]"); if(l){view="home";return renderList(l.dataset.list)}
   const bh=e.target.closest("[data-bay]");
   if(bh){rememberScroll();prevView="compartments";curBay=bh.dataset.bay;
@@ -4172,6 +4864,46 @@ document.addEventListener("click",e=>{
     syncErr="";retries=0;renderSyncBar();toast("Retrying");ghPush(false);return}
   const sc=e.target.closest("[data-scene]");
   if(sc){sceneTab=sc.dataset.scene;return renderForms()}
+  if(e.target.closest("#newinc")){
+    const inc=newIncident(); curInc=inc.id; view="incident"; render(); incidentSheet(inc); return}
+  const ib=e.target.closest("[data-inc]");
+  if(ib){curInc=ib.dataset.inc; view="incident"; render(); return}
+  if(e.target.closest("[data-incbundle]")){
+    const inc=incidentOf(curInc); if(!inc)return;
+    toast("Building the bundle\u2026"); bundleIncident(inc); return}
+  if(e.target.closest("[data-incedit]")){
+    const inc=incidentOf(curInc); if(inc)incidentSheet(inc); return}
+  if(e.target.closest("[data-incclose]")){
+    const inc=incidentOf(curInc); if(!inc)return;
+    const left=(inc.plan||[]).map(k=>planState(inc,k)).filter(p=>p&&p.state!=="done").length;
+    return askConfirm("Close incident",
+      left? left+" document"+(left===1?"":"s")+" still outstanding. Closing moves it out of Active; "
+            +"you can still reopen it from the incident list."
+          : "This moves it out of Active. You can reopen it later.",
+      "Close it",false,()=>{
+        inc.closed=new Date().toISOString(); save(); view="active"; render(); toast("Incident closed")})}
+  // start (or open) a planned document, carrying the incident's details into it
+  const pb=e.target.closest("[data-plan]");
+  if(pb){
+    const inc=incidentOf(curInc); if(!inc)return;
+    const st=planState(inc,pb.dataset.plan); if(!st)return;
+    if(st.docs.length){
+      const d=st.docs[0];
+      if(d.kind==="fill"){curFill=d.id;view="fill"} else {curSketch=d.id;selObj=null;view="sketch"}
+      return render();
+    }
+    if(st.d.form){
+      const f=S.forms.find(x=>x.name===st.d.form);
+      if(!f)return toast("That form is missing \u2014 add it in Scene");
+      const r=newFill(f); r.incidentId=inc.id;
+      const put=(re,val)=>{const fd=(f.fields||[]).find(x=>re.test(x.label)); if(fd&&val)r.values[fd.id]=val};
+      put(/case/i, inc.caseNo); put(/offence|incident type/i, inc.offence); put(/address|scene/i, inc.addr);
+      save(); curFill=r.id; view="fill"; return render();
+    }
+    const sk=newSketch();
+    Object.assign(sk,{incidentId:inc.id,caseNo:inc.caseNo,offence:inc.offence,addr:inc.addr});
+    save(); curSketch=sk.id; selObj=null; view="sketch"; return render();
+  }
   const dtb=e.target.closest("[data-doc]");
   if(dtb){const [k,id]=dtb.dataset.doc.split(":");
     if(k==="fill"){curFill=id;view="fill"} else {curSketch=id;selObj=null;view="sketch"}
@@ -4193,9 +4925,16 @@ document.addEventListener("click",e=>{
   }
   if(e.target.closest("[data-skundo]"))return doUndo();
   if(e.target.closest("[data-skredo]"))return doRedo();
+  if(e.target.closest("#palqx")){palQ="";renderSketch();return}
   const pl=e.target.closest("[data-pal]");
   if(pl){const n=+pl.dataset.pal; palCat = (palCat===n ? -1 : n); return renderSketch()}
   const ad=e.target.closest("[data-add]"); if(ad)return addObj(ad.dataset.add);
+  const oph=e.target.closest("[data-ophoto]");
+  if(oph){const o=objAt(oph.dataset.ophoto); if(o)photoSheet(o); return}
+  const ophx=e.target.closest("[data-ophotox]");
+  if(ophx){const o=objAt(ophx.dataset.ophotox); if(o&&o.photoId){
+    photoDel(o.photoId).catch(()=>{}); delete o.photoId; saveLocal(); renderSketch();
+    toast("Photograph removed")} return}
   const ol=e.target.closest("[data-olabel]"); if(ol)return labelSheet(objAt(ol.dataset.olabel));
   const ik=e.target.closest("[data-ink]");
   if(ik){const o=objAt(selObj); if(o){pushUndo(skc);o.ink=ik.dataset.ink;saveLocal();renderSketch()} return}
@@ -4518,6 +5257,8 @@ function renderView(v){
   if(v==="search")return renderSearch();
   if(v==="itemdetail")return renderItemDetail();
   if(v==="active")return renderActive();
+  if(v==="incident")return renderIncident();
+  if(v==="reorder")return renderReorder();
   if(v==="bay")return renderBay();
   if(v==="compdetail")return renderCompDetail();
   if(v==="data"){renderData();return fitHeader()}
