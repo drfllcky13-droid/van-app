@@ -275,7 +275,10 @@ body.skfull .skgrid.full.notools{grid-template-columns:minmax(0,1fr);grid-templa
 .wallhead .cnt{font-size:12.5px;color:var(--ink3);font-weight:400}
 .wallhead .wtags{margin-left:auto;display:flex;gap:5px}
 .wallhead .badge{padding:2px 8px}
+.vanwrap.mirrored .vanbody{transform:scaleX(-1)}
+.vanwrap.mirrored .cargo{transform:scaleX(-1)}
 .vanwrap{position:relative;aspect-ratio:2.55/1;max-height:420px;margin-bottom:4px}
+@media (max-width:820px){ .vanwrap{aspect-ratio:1.62/1;max-height:none} }
 .vanbody{position:absolute;left:0;right:0;top:0;height:87%;z-index:1;background:var(--ink3);
   clip-path:polygon(0% 92%,0% 64%,2% 42%,9% 38%,17% 0%,100% 0%,100% 92%)}
 .vaninner{position:absolute;inset:0;background:var(--card2);
@@ -321,6 +324,46 @@ body.skfull .skgrid.full.notools{grid-template-columns:minmax(0,1fr);grid-templa
 .chips button.on i{background:#fff}
 .demobar button{margin-left:auto;background:var(--amber);color:var(--card);border:0;
   border-radius:8px;padding:7px 12px;font-size:13px;font-weight:600;flex:0 0 auto}
+.bayhead{display:grid;grid-template-columns:1fr 2fr;gap:14px;align-items:center;
+  background:var(--card);border:.5px solid var(--line2);border-radius:16px;
+  padding:13px 30px 13px 13px;margin-bottom:12px;position:relative;
+  width:100%;text-align:left;color:inherit;font-family:inherit}
+.bayhead .baychev{position:absolute;right:12px;top:50%;transform:translateY(-50%);
+  color:var(--ink3);font-size:20px}
+.bayinfo{min-width:0}
+.bayinfo h2{font-size:19px;font-weight:800;letter-spacing:-.02em;margin:0 0 2px}
+.bayinfo .sub{font-size:12.5px;color:var(--ink2);line-height:1.35;margin-bottom:8px}
+.vankey .vanwrap{aspect-ratio:2.55/1;max-height:none;margin:0}
+.vankey .here{background:var(--red);border:1px solid #fff;border-radius:2px}
+.keyends{display:flex;justify-content:space-between;font-size:9px;color:var(--ink3);
+  font-family:var(--mono);margin-top:4px;white-space:nowrap}
+.bayhead.mini{grid-template-columns:78px 1fr;gap:12px;padding:10px 12px;margin-bottom:14px}
+.bayhead.mini .bayinfo h2{font-size:16px;font-weight:700}
+.bayhead.mini .bayinfo .sub{font-size:11.5px;color:var(--ink3);margin-bottom:6px}
+.bayhead.mini .badge{font-size:10px;padding:2px 7px}
+@media (hover:hover) and (pointer:fine){.bayhead:hover{border-color:var(--line)}}
+.cdtags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.bayplan{display:grid;gap:5px;margin-top:14px;
+  grid-template-columns:repeat(var(--cols),minmax(0,1fr));
+  grid-template-rows:repeat(var(--rows),minmax(0,1fr));
+  aspect-ratio:calc(var(--cols)/var(--rows)*0.72)}
+.bcell{border-radius:9px;padding:6px 7px;text-align:left;overflow:hidden;min-width:0;min-height:0;
+  display:flex;flex-direction:column;justify-content:center;gap:1px;
+  border:1px solid var(--line);background:var(--card);
+  container-type:size;container-name:bcell}
+.bcell .bc{font-size:13px;font-weight:700;letter-spacing:-.01em;line-height:1.1;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bcell .bn{font-size:11px;color:var(--ink2);line-height:1.15;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bcell .bn.un{font-style:italic;color:var(--ink3)}
+.bcell.s-good{background:var(--greenbg);border-color:var(--green)}
+.bcell.s-attn{background:var(--amberbg);border-color:var(--amber)}
+.bcell.s-action{background:var(--redbg);border-color:var(--red)}
+.bcell .bn{display:none}
+@container bcell (min-width:72px){ .bcell .bn{display:block} }
+@container bcell (max-width:44px){ .bcell{padding:4px 4px} .bcell .bc{font-size:11px} }
+@container bcell (max-width:30px){ .bcell .bc{font-size:9.5px;letter-spacing:-.3px} }
+@container bcell (max-height:22px){ .bcell .bc{font-size:10.5px;line-height:1} .bcell .bn{display:none} }
 .cdhead{background:var(--card);border:.5px solid var(--line2);border-radius:14px;padding:16px;margin-bottom:14px}
 .cdhead h2{margin:0;font-size:24px;font-weight:700;letter-spacing:-.02em}
 .cdhead .sub{font-size:14.5px;color:var(--ink2);margin-top:2px}
@@ -773,6 +816,7 @@ body.xwide .cellwrap .sweepcard .ch{display:none}
 <section class="view" id="v-fill"></section>
 <section class="view" id="v-sketch"></section>
 <section class="view" id="v-guide"></section>
+<section class="view" id="v-bay"></section>
 <section class="view" id="v-compdetail"></section>
 <section class="view" id="v-itemdetail"></section>
 <section class="view" id="v-data"></section>
@@ -793,8 +837,63 @@ const CATS=[["A","Scene control & safety"],["B","Documentation"],["C","Latent pr
 const CLASSES=["Consumable","Durable","Reagent","Regulated"];
 const STATUSES=["Stocked","Low","Out","Expired","Service due","Not carried"];
 const SIDES=["Driver side","Passenger side","Rear doors","Cab"];
+// drawn as you see it standing inside the van: facing the driver wall the cab is
+// to your right, facing the passenger wall it is to your left
+const groupOf = code => String(code).replace(/\d+$/,"");
+const bayOf   = code => String(code)[0];
+function bayBounds(bay){
+  const cs=comps().filter(c=>bayOf(c.code)===bay);
+  if(!cs.length)return null;
+  const x=Math.min(...cs.map(c=>c.x)), y=Math.min(...cs.map(c=>c.y));
+  return {side:cs[0].side, x, y,
+    w:Math.max(...cs.map(c=>c.x+c.w))-x, h:Math.max(...cs.map(c=>c.y+c.h))-y, n:cs.length};
+}
+function vanKey(bay,showEnds){
+  const b=bayBounds(bay); if(!b)return "";
+  const W=S.walls[b.side]||{cols:144,rows:60};
+  return `<div class="vankey">
+    <div class="vanwrap${b.side==="Driver side"?" mirrored":""}">
+      <div class="wheel f"></div><div class="wheel r"></div>
+      <div class="vanbody"><div class="vaninner"></div>
+        <div class="cargo" style="grid-template-columns:repeat(${W.cols},minmax(0,1fr));
+          grid-template-rows:repeat(${W.rows},minmax(0,1fr));gap:0">
+          <div class="here" style="grid-column:${b.x+1}/span ${b.w};grid-row:${b.y+1}/span ${b.h}"></div>
+        </div></div></div>
+    ${showEnds?`<div class="keyends"><span>${b.side==="Driver side"?"Rear":"Front"}</span><span>${b.side==="Driver side"?"Front":"Rear"}</span></div>`:""}
+  </div>`;
+}
+const BAYNAME={"1":"Bin wall","2":"Drawer bank","3":"Open shelving"};
+function bayTally(bay){
+  const cs=comps().filter(c=>bayOf(c.code)===bay).map(c=>compState(c.code));
+  const a=cs.filter(s=>s.k==="action").length, t=cs.filter(s=>s.k==="attn").length,
+        u=cs.filter(s=>s.k==="unchecked").length;
+  return `${a?`<span class="badge b-action">${a} action</span>`:""}
+          ${t?`<span class="badge b-attn">${t} attention</span>`:""}
+          ${u?`<span class="badge b-unchecked">${u} not checked</span>`:""}
+          ${!a&&!t&&!u?`<span class="badge b-good">All good</span>`:""}`;
+}
+function groupsFor(side){
+  const cs=comps().filter(c=>c.side===side), by={};
+  cs.forEach(c=>{ const g=groupOf(c.code);
+    (by[g]=by[g]||[]).push(c); });
+  return Object.keys(by).map(g=>{
+    const m=by[g];
+    const x=Math.min(...m.map(c=>c.x)), y=Math.min(...m.map(c=>c.y));
+    const w=Math.max(...m.map(c=>c.x+c.w))-x, hh=Math.max(...m.map(c=>c.y+c.h))-y;
+    const st=m.map(c=>compState(c.code));
+    const k=st.some(s=>s.k==="action")?"action":st.some(s=>s.k==="attn")?"attn"
+           :st.every(s=>s.k==="good")?"good":"unchecked";
+    return {g,x,y,w,h:hh,n:m.length,k,bay:bayOf(g),
+            desc:(m[0].desc||"").replace(/,\s*double width$/,"")};
+  }).sort((a,b)=>a.y-b.y||a.x-b.x);
+}
+const capLeft = side => side==="Driver side" ? "Rear doors" : "Front of van";
+const capRight = side => side==="Driver side" ? "Front of van" : "Rear doors";
 const WALLDEF={"Driver side":{cols:24,rows:12},"Passenger side":{cols:24,rows:12},
  "Rear doors":{cols:12,rows:12},"Cab":{cols:12,rows:8}};
+const VANSIDES=["Driver side","Passenger side","Rear doors","Cab"];
+const VANWALLS={"Driver side":{"cols":144,"rows":60},"Passenger side":{"cols":144,"rows":60},"Rear doors":{"cols":72,"rows":60},"Cab":{"cols":48,"rows":40}};
+const VANCOMPS=[["2A","Evidence bags",0,84,2,14,22],["2B","Shoe / tire impression",0,84,24,14,22],["2C1","Evidence envelopes",0,98,2,20,5],["2C2","Cash envelopes",0,98,7,20,5],["2C3","Drug envelopes",0,98,12,20,5],["2C4","Misc. forms",0,98,17,20,5],["2C5","SEM kits",0,98,22,20,5],["2C6","",0,98,27,20,5],["2C7","",0,98,32,20,5],["2C8","",0,98,37,20,5],["2C9","",0,98,42,20,5],["2D1","",0,118,2,8,5],["2D2","",0,118,7,8,5],["2D3","",0,118,12,8,5],["2D4","Batteries",0,118,17,8,5],["2D5","",0,118,22,8,5],["2D6","",0,118,27,8,5],["2D7","",0,118,32,8,5],["2D8","",0,118,37,8,5],["2D9","",0,118,42,8,5],["2E1","Electrostatic bags",0,126,2,14,5],["2E2","",0,126,7,14,5],["2E3","",0,126,12,14,5],["2E4","Rain suits",0,126,17,14,5],["2E5","",0,126,22,14,5],["2E6","",0,126,27,14,5],["2E7","Hand preservation bags",0,126,32,14,5],["2E8","",0,126,37,14,5],["2E9","",0,126,42,14,5],["1A1","Upper storage",0,4,0,8,10],["1A2","Upper storage",0,12,0,8,10],["1A3","Upper storage",0,20,0,8,10],["1A4","Upper storage",0,28,0,8,10],["1A5","Upper storage",0,36,0,8,10],["1A6","Upper storage",0,44,0,8,10],["1B1","Bin, upper row",0,4,12,6,7],["1B2","Bin, upper row",0,10,12,6,7],["1B3","Bin, upper row",0,16,12,6,7],["1B4","Bin, upper row",0,22,12,6,7],["1B5","Bin, upper row",0,28,12,6,7],["1B6","Bin, upper row",0,34,12,6,7],["1B7","Bin, upper row, double width",0,40,12,12,7],["1C1","Bin, lower row",0,4,22,6,7],["1C2","Bin, lower row",0,10,22,6,7],["1C3","Bin, lower row",0,16,22,6,7],["1C4","Bin, lower row",0,22,22,6,7],["1C5","Bin, lower row",0,28,22,6,7],["1C6","Bin, lower row",0,34,22,6,7],["1C7","Bin, lower row, double width",0,40,22,12,7],["1D1","Evidence tubes / laser trajectory",0,4,31,8,11],["1D2","Evidence tubes / laser trajectory",0,12,31,8,11],["1D3","Evidence tubes / laser trajectory",0,20,31,8,11],["1D4","Evidence tubes / laser trajectory",0,28,31,8,11],["1D5","Evidence tubes / laser trajectory",0,36,31,8,11],["1D6","Evidence tubes / laser trajectory",0,44,31,8,11],["1E","Metal detector",0,4,44,48,11],["3A","Lighting / extension cords",1,40,6,16,48],["3B","Top shelf",1,56,0,88,10],["3C","Shelf 2",1,56,10,88,12],["3D","Shelf 3",1,56,22,88,12],["3E","Shelf 4",1,56,34,88,11],["3F","Bottom shelf",1,56,45,88,11]];
 const TABS=[["home","Home"],["compartments","Compartments"],["inventory","Inventory"],["forms","Scene"],["guide","Guide"]];
 const FORMCATS=["Scene documentation","Evidence and custody","Photography","Reports and statements","Admin"];
 const ICONS={home:"M3 11l9-8 9 8v9a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1z",
@@ -818,6 +917,13 @@ if(!S.fills)S.fills=[];
 if(!S.sketches)S.sketches=[];
 (S.locs||[]).forEach(c=>{if(c&&!S.comps.some(x=>x.code===c))S.comps.push({code:c,desc:"",side:"",x:null,y:null,w:6,h:4})});
 if(!S.walls)S.walls=JSON.parse(JSON.stringify(WALLDEF));
+if(!S.seeded&&!S.items.length&&!S.comps.length){
+  S.seeded=true;
+  S.comps=VANCOMPS.map(r=>({code:r[0],desc:r[1],side:VANSIDES[r[2]],
+    x:r[3],y:r[4],w:r[5],h:r[6],swept:""}));
+  S.walls=JSON.parse(JSON.stringify(VANWALLS));
+  S.demo=false; store.set(S);
+}
 S.comps.forEach(c=>{if(c.zone&&!c.side)c.side=(c.zone==="Rear")?"Rear doors":(c.zone==="Interior")?"":c.zone;
   if(c.w==null){c.w=6;c.h=4}
   if(c.x==null||c.y==null){c.x=null;c.y=null}});
@@ -979,6 +1085,12 @@ const DEMO_FORMS=[
  ["Scene entry and exit log","Scene documentation","2025-B","Everyone who crosses the tape, in and out, with times.",[["Blank PDF","https://example.com/entry-log.pdf"]],"2026-08-02"],
  ["Photography log","Photography","2022-A","Frame numbers, subject, scale used, direction of view.",[["Blank PDF","https://example.com/photo-log.pdf"]],"2024-01-10"],
  ["Consent to search","Reports and statements","2025-A","Signed before any consent search. Witnessed.",[],"2026-06-30"]];
+function seedVan(){
+  S.comps=VANCOMPS.map(r=>({code:r[0],desc:r[1],side:VANSIDES[r[2]],
+    x:r[3],y:r[4],w:r[5],h:r[6],swept:""}));
+  S.walls=JSON.parse(JSON.stringify(VANWALLS));
+  S.demo=false; save();
+}
 function loadDemo(){
   DEMO_FORMS.forEach(([name,cat,rev,desc,links,verified])=>{
     if(!S.forms.some(f=>f.name===name))
@@ -1322,86 +1434,34 @@ function renderComps(){
       <button class="btn" data-go="sweep">Add the first one</button></div>`;return;
   }
   SIDES.forEach(autoPlace);
-
-  const slotFor=c=>{const s=compState(c.code);
-    const label=(c.w<26&&(s.parts||[]).length>1)?s.parts[0]:s.label;
-    return `<button class="slot s-${s.k}${editSel===c.code?" sel":""}" data-comp="${esc(c.code)}"
-      style="grid-column:${c.x+1}/span ${c.w};grid-row:${c.y+1}/span ${c.h}">
-      <span><span class="code">${esc(c.code)}</span>${c.desc?`<span class="dsc">${esc(c.desc)}</span>`:""}</span>
-      <span class="st">${esc(label)}</span></button>`};
-
-  const wall=side=>{
-    const W=S.walls[side]||{cols:24,rows:12};
-    const mine=cs.filter(c=>c.side===side);
-    const st=mine.map(c=>compState(c.code));
-    const bad=st.filter(s=>s.k==="action").length, att=st.filter(s=>s.k==="attn").length;
-    const unchk=st.filter(s=>s.k==="unchecked").length;
-    return `<section class="panel wall" data-wall="${esc(side)}">
-      <div class="ph2 wallhead"><b>${esc(side)}</b>
-        <span class="cnt">${mine.length} compartment${mine.length===1?"":"s"}</span>
-        <span class="wtags">${bad?`<span class="badge b-action">${bad}</span>`:""}${att?`<span class="badge b-attn">${att}</span>`:""}${unchk?`<span class="badge b-unchecked">${unchk}</span>`:""}</span></div>
-      <div class="pb">
-        <div class="vanwrap">
-          <div class="wheel f"></div><div class="wheel r"></div>
-          <div class="vanbody"><div class="vaninner"></div>
-            <div class="cargo" style="grid-template-columns:repeat(${W.cols},minmax(0,1fr));grid-template-rows:repeat(${W.rows},minmax(0,1fr));gap:${W.cols>60?1:3}px">
-              ${mine.map(slotFor).join("")}</div></div></div>
-        <div class="orient"><span>Front</span><span>Rear doors</span></div>
-      </div></section>`;
+  const bays=[...new Set(cs.map(c=>bayOf(c.code)))].sort();
+  const card=bay=>{
+    const b=bayBounds(bay);
+    const where=b.side+", "+(b.x+b.w/2 > (S.walls[b.side]||{cols:144}).cols/2
+      ? (b.side==="Driver side"?"front":"rear") : (b.side==="Driver side"?"rear":"front"));
+    return `<button class="bayhead" data-bay="${esc(bay)}">
+      ${vanKey(bay,true)}
+      <div class="bayinfo">
+        <h2>${esc(BAYNAME[bay]||"Bay "+bay)}</h2>
+        <div class="sub">${esc(where)} · ${b.w}&Prime; wide · ${b.n} compartments</div>
+        <div class="cdtags">${bayTally(bay)}</div>
+      </div>
+      <span class="baychev">&#8250;</span></button>`;
   };
-
+  const unplaced=cs.filter(c=>!SIDES.includes(c.side));
   const overlaps=c=>S.comps.filter(o=>o.side===c.side&&o.code!==c.code&&o.x!=null&&
     c.x<o.x+o.w&&o.x<c.x+c.w&&c.y<o.y+o.h&&o.y<c.y+c.h).map(o=>o.code);
   const sel=editSel?cs.find(c=>c.code===editSel):null;
   const ov=sel?overlaps(sel):[];
-  const panel=sel?`<div class="epanel">
-      <h4>${esc(sel.code)}${sel.desc?" · "+esc(sel.desc):""}</h4>
-      <div class="four">
-        <label><span>From front</span><input type="text" id="ex" inputmode="numeric" value="${sel.x}"></label>
-        <label><span>From roof</span><input type="text" id="ey" inputmode="numeric" value="${sel.y}"></label>
-        <label><span>Width</span><input type="text" id="ew" inputmode="numeric" value="${sel.w}"></label>
-        <label><span>Height</span><input type="text" id="eh" inputmode="numeric" value="${sel.h}"></label></div>
-      ${ov.length?`<p style="margin:10px 0 0;font-size:13px;color:var(--red);line-height:1.45">Overlaps ${esc(ov.join(", "))}. Two compartments can't share the same space on the wall.</p>`:""}
-      <button class="btn" id="esave" style="margin:12px 0 0;max-width:none">Save size</button>
-      <button class="btn sec" id="eclose" style="margin:8px 0 0;max-width:none">Done</button></div>`:"";
-
-  const unplaced=cs.filter(c=>!SIDES.includes(c.side));
-  lastWallMap={};SIDES.forEach(s=>{lastWallMap[s]=wall(s)});
-  const fine=SIDES.some(s=>(S.walls[s]||{cols:24}).cols>40);
-  lastWalls=`<div class="walls${fine?" fine":""}">${wall("Driver side")}${wall("Passenger side")}</div>`;
+  const W0=S.walls["Driver side"]||{cols:24,rows:12};
+  const dflt=W0.cols===WALLDEF["Driver side"].cols&&W0.rows===WALLDEF["Driver side"].rows;
   $("#v-compartments").innerHTML=
-    `${(()=>{const W=S.walls["Driver side"]||{cols:24,rows:12};
-       const dflt=W.cols===WALLDEF["Driver side"].cols&&W.rows===WALLDEF["Driver side"].rows;
-       return dflt
-         ? `<div class="ph">Placeholder proportions. Each wall is ${W.cols} units long and ${W.rows} tall — set each compartment to its real size, or send photos and I'll set them.</div>`
-         : `<div class="ph ok">Measured layout — ${cs.length} compartments. Each wall is ${W.cols}&Prime; long and ${W.rows}&Prime; tall, one grid square to the inch.</div>`})()}
+    `${dflt?`<div class="ph">Placeholder proportions — set each compartment to its real size, or send photos and I'll set them.</div>`
+       :`<div class="ph ok">Measured layout — ${cs.length} compartments across ${bays.length} units.</div>`}
      <div class="editbar">
        <button data-edit="${editing?"off":"on"}" class="${editing?"on":""}">${editing?"Done editing":"Edit layout"}</button>
        <button data-go="print">Printable map</button></div>
-     ${panel}
-     <div class="legend">
-       <span><i style="background:var(--green)"></i>Good</span>
-       <span><i style="background:var(--amber)"></i>Attention</span>
-       <span><i style="background:var(--red)"></i>Action needed</span>
-       <span><i style="background:var(--grey)"></i>Not checked</span></div>
-     <div class="walls${SIDES.some(s=>(S.walls[s]||{cols:24}).cols>40)?" fine":""}">${wall("Driver side")}${wall("Passenger side")}
-       ${cs.some(c=>c.side==="Rear doors")?wall("Rear doors"):""}
-       ${cs.some(c=>c.side==="Cab")?wall("Cab"):""}</div>
-     ${(()=>{  // a fine grid draws too small to read on a phone, so list them too
-       const fine=SIDES.some(s=>(S.walls[s]||{cols:24}).cols>40);
-       if(!fine||!cs.length)return "";
-       let out=`<div class="sect">Every compartment — ${cs.length}</div>`;
-       SIDES.forEach(side=>{
-         const mine=cs.filter(c=>c.side===side).sort((a,b)=>a.x-b.x||a.y-b.y);
-         if(!mine.length)return;
-         out+=`<div class="subsect">${esc(side)} · front to back</div><div class="rows">`
-           +mine.map(c=>{const s=compState(c.code);
-             return `<button class="row" data-comp="${esc(c.code)}">
-               <span><span class="code">${esc(c.code)}</span>
-               <span class="desc">${esc(c.desc||"Not named yet")}</span></span>
-               <span class="rt"><span class="badge b-${s.k}">${esc(s.label)}</span>
-               <span class="chev">&#8250;</span></span></button>`}).join("")+`</div>`});
-       return out})()}
+     ${bays.map(card).join("")}
      ${unplaced.length?`<div class="sect">Not placed on a side yet — ${unplaced.length}</div>
        <div class="rows">`+unplaced.map(c=>{const s=compState(c.code);
          return `<button class="row" data-comp="${esc(c.code)}">
@@ -1410,6 +1470,48 @@ function renderComps(){
          }).join("")+`</div>`:""}`;
 }
 
+/* ---------- bay detail: one unit, drawn large ---------- */
+let curBay=null;
+function renderBay(){
+  const cs=comps().filter(c=>bayOf(c.code)===curBay);
+  if(!cs.length){view="compartments";return renderComps()}
+  const side=cs[0].side;
+  const minX=Math.min(...cs.map(c=>c.x)), maxX=Math.max(...cs.map(c=>c.x+c.w));
+  const minY=Math.min(...cs.map(c=>c.y)), maxY=Math.max(...cs.map(c=>c.y+c.h));
+  const W=maxX-minX, H=maxY-minY;
+  const st=cs.map(c=>compState(c.code));
+  const act=st.filter(s=>s.k==="action").length, att=st.filter(s=>s.k==="attn").length;
+  const unc=st.filter(s=>s.k==="unchecked").length;
+  $("#title").textContent="Bay "+curBay;
+  $("#v-bay").innerHTML=`
+    <button class="back" data-go="compartments">&#8249; Compartments</button>
+    <div class="bayhead mini">
+      ${vanKey(curBay,false)}
+      <div class="bayinfo">
+        <h2>${esc(BAYNAME[curBay]||"Bay "+curBay)}</h2>
+        <div class="sub">${esc(side)} · ${W}&Prime; · ${cs.length} compartments</div>
+        <div class="cdtags">${bayTally(curBay)}</div>
+      </div>
+    </div>
+    <div class="bayplan" style="--cols:${W};--rows:${H}">
+      ${cs.map(c=>{const s=compState(c.code);
+        return `<button class="bcell s-${s.k}" data-comp="${esc(c.code)}"
+          style="grid-column:${c.x-minX+1}/span ${c.w};grid-row:${c.y-minY+1}/span ${c.h}">
+          <span class="bc">${esc(c.code)}</span>
+          ${c.desc?`<span class="bn">${esc(c.desc)}</span>`:`<span class="bn un">Not named yet</span>`}
+        </button>`}).join("")}
+    </div>
+    <div class="orient" style="margin:6px 2px 0">
+      <span>${capLeft(side)}</span><span>${capRight(side)}</span></div>
+    <div class="sect">Every compartment</div>
+    <div class="rows">${cs.slice().sort((a,b)=>a.code.localeCompare(b.code,undefined,{numeric:true}))
+      .map(c=>{const s=compState(c.code);
+        return `<button class="row" data-comp="${esc(c.code)}">
+          <span><span class="code">${esc(c.code)}</span>
+          <span class="desc">${esc(c.desc||"Not named yet")}</span></span>
+          <span class="rt"><span class="badge b-${s.k}">${esc(s.label)}</span>
+          <span class="chev">&#8250;</span></span></button>`}).join("")}</div>`;
+}
 
 /* ---------- compartment detail ---------- */
 let curComp=null, dupOK=false;
@@ -1491,7 +1593,7 @@ function miniWall(code){
         style="grid-column:${o.x+1}/span ${o.w};grid-row:${o.y+1}/span ${o.h}"
         >${o.code===c.code?esc(o.code):""}</div>`).join("")}
     </div>
-    <div class="miniorient"><span>Front of van</span><span>Rear doors</span></div>
+    <div class="miniorient"><span>${capLeft(c.side)}</span><span>${capRight(c.side)}</span></div>
   </div>`;
 }
 
@@ -1766,7 +1868,7 @@ function renderPrint(){
     if(!mine.length)return "";
     return `<section class="pwall">
       <h3>${esc(side)}</h3>
-      <div class="porient"><span>Front of van</span><span>Rear doors</span></div>
+      <div class="porient"><span>${capLeft(side)}</span><span>${capRight(side)}</span></div>
       <div class="pgrid" style="grid-template-columns:repeat(${W.cols},minmax(0,1fr));grid-template-rows:repeat(${W.rows},minmax(0,1fr));gap:${W.cols>60?1:3}px">
         ${mine.map(c=>`<div class="pslot" style="grid-column:${c.x+1}/span ${c.w};grid-row:${c.y+1}/span ${c.h}">
           <b>${esc(c.code)}</b>${c.desc?`<i>${esc(c.desc)}</i>`:""}</div>`).join("")}
@@ -2727,8 +2829,8 @@ function renderData(){
         <button class="btn sec" id="ghoff" style="max-width:none">Disconnect this device</button></div>
       <p class="hint">Changes push automatically a couple of seconds after you make them. Every push is a commit, so the repo keeps the full history.</p>`
     :`<p class="hint" style="margin-top:0">Store the inventory in a private GitHub repo so every device reads the same list. You need a fine-grained token with read and write on Contents for that one repo.</p>
-      <div class="two"><label class="fld"><span>Owner</span><input type="text" id="gho" placeholder="your-username" autocapitalize="off"></label>
-        <label class="fld"><span>Repository</span><input type="text" id="ghr" placeholder="van-data" autocapitalize="off"></label></div>
+      <div class="two"><label class="fld"><span>Owner</span><input type="text" id="gho" value="${esc(S.ghOwner||"drfllcky13-droid")}" autocapitalize="off"></label>
+        <label class="fld"><span>Repository</span><input type="text" id="ghr" value="${esc(S.ghRepo||"van-data")}" autocapitalize="off"></label></div>
       <label class="fld"><span>File path</span><input type="text" id="ghp" value="data.json" autocapitalize="off"></label>
       <label class="fld"><span>Access token</span><input type="password" id="ght" placeholder="github_pat_..." autocapitalize="off"></label>
       <button class="btn" id="ghconnect" style="max-width:none;margin:0">Connect</button>
@@ -2860,9 +2962,12 @@ document.addEventListener("click",e=>{
     c.x=Math.max(0,Math.min(W.cols-c.w,n($("#ex").value)));
     c.y=Math.max(0,Math.min(W.rows-c.h,n($("#ey").value)));
     save();renderComps();return toast(c.code+" resized")}
+  const bh=e.target.closest("[data-bay]");
+  if(bh){rememberScroll();prevView="compartments";curBay=bh.dataset.bay;
+    view="bay";window.scrollTo&&window.scrollTo(0,0);return render()}
   const c=e.target.closest("[data-comp]");
   if(c){ if(editing){editSel=c.dataset.comp;return renderComps()}
-    rememberScroll();prevView="compartments";curComp=c.dataset.comp;view="compdetail";
+    rememberScroll();prevView=view==="bay"?"bay":"compartments";curComp=c.dataset.comp;view="compdetail";
     $$(".view").forEach(v=>v.classList.toggle("on",v.id==="v-compdetail"));
     window.scrollTo&&window.scrollTo(0,0);return render()}
   const ec=e.target.closest("[data-editcomp]");
@@ -3038,6 +3143,7 @@ document.addEventListener("click",e=>{
       .then(()=>{S.lastBackup=today();save();renderData();toast("Copied")})
       .catch(()=>toast("Copy blocked by the browser"));return}
   if(e.target.closest("#ghconnect")){
+    S.ghOwner=$("#gho").value.trim(); S.ghRepo=$("#ghr").value.trim();
     S.gh={owner:$("#gho").value.trim(),repo:$("#ghr").value.trim(),
       path:$("#ghp").value.trim()||"data.json",token:$("#ght").value.trim(),sha:"",last:""};
     if(!ghOn()){S.gh.token="";return toast("Owner, repository and token are all needed")}
@@ -3166,7 +3272,7 @@ document.addEventListener("visibilitychange",()=>{
 });
 window.addEventListener("orientationchange",()=>setTimeout(fitHeader,200));
 
-const DETAILS=["itemdetail","compdetail","fill"];
+const DETAILS=["itemdetail","compdetail","fill","bay"];
 const mq=q=>!!(window.matchMedia&&window.matchMedia(q).matches);
 function applyMode(){
   const m=S.mode||"auto";
@@ -3179,6 +3285,7 @@ const wideNow=()=>document.body.classList.contains("xwide");
 function renderView(v){
   if(v==="search")return renderSearch();
   if(v==="itemdetail")return renderItemDetail();
+  if(v==="bay")return renderBay();
   if(v==="compdetail")return renderCompDetail();
   if(v==="data"){renderData();return fitHeader()}
   if(v==="print")return renderPrint();
