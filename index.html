@@ -445,6 +445,8 @@ input[type=text],input[type=date],select,textarea{width:100%;padding:11px 12px;b
 .justrow{display:flex;align-items:center;gap:9px;background:var(--card2);border-radius:10px;
   padding:9px 11px;margin-top:8px;font-size:14px}
 .justrow .jn{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.justrow.dup{box-shadow:inset 3px 0 0 var(--amber)}
+.justrow .jdup{display:block;font-size:11.5px;color:var(--amber);font-weight:600;margin-top:1px}
 .justrow .jq{font-family:var(--mono);font-size:12.5px;color:var(--ink3)}
 .justrow .jx{background:none;border:0;color:var(--blue);font-size:13px;font-weight:600;padding:0 2px}
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
@@ -695,6 +697,12 @@ body.wide .side .in1{font-size:15px;font-weight:700;letter-spacing:-.01em;color:
 body.wide .side .in2{font-size:12px;color:var(--ink3);margin-top:1px}
 .side .ident{display:none}
 
+.unitpb{display:flex;flex-direction:column;gap:10px}
+.unitpb .bayhead{margin:0;padding:13px 15px;border-radius:14px}
+.unitpb .bayinfo h2{font-size:17px}
+.unitpb .bayinfo .sub{font-size:12.5px}
+.unitpb .cdtags{margin-top:8px}
+.unitpb .badge{font-size:11px;padding:4px 10px}
 .panel{background:var(--card);border:.5px solid var(--line2);border-radius:14px;
   overflow:hidden;margin-bottom:14px}
 .panel .ph2{font-size:13.5px;font-weight:700;letter-spacing:.01em;color:var(--ink2);
@@ -794,7 +802,6 @@ body.xwide .cellwrap .sweepcard .ch{display:none}
 .nrow .nn{display:block;font-size:14px;font-weight:600;letter-spacing:-.01em;line-height:1.25}
 .nrow .nm2{display:flex;align-items:center;gap:8px;margin-top:3px}
 .nrow .lc{font-family:var(--mono);font-size:12px;color:var(--ink2)}
-.panel.spare{border-style:dashed}
 @media (hover:hover) and (pointer:fine){.nrow:hover{background:var(--card2)}}
 @media (max-width:1240px){
   body.xwide .dashfixed{grid-template-columns:repeat(6,minmax(0,1fr));grid-auto-rows:auto}
@@ -1405,8 +1412,7 @@ function renderHome(){
       <span class="s">${esc(s)}</span></span></button>`;
 
     const B={
-      driver: wallPanel("Driver side"),
-      passenger: wallPanel("Passenger side"),
+      units: unitPanel(),
       low: bad.length?tile("red","alert",bad.length+(bad.length===1?" item low or out":" items low or out"),"Tap to review","low")
         :tile("green","ok","Stock is fine","Nothing low or out","low"),
       expiring: soon2.length?tile("amber","clock",soon2.length+(soon2.length===1?" item expiring":" items expiring"),"Within 90 days","expiring")
@@ -1436,17 +1442,13 @@ function renderHome(){
           ${pop.length?`<div class="qf">`+pop.map(i=>`<button data-item="${i.id}">
               <span class="nm">${esc(i.name)}</span><span class="lc">${esc(i.loc||"—")}</span></button>`).join("")+`</div>`
             :`<p class="hint" style="margin:0">Star an item and it appears here.</p>`}</div></div>`,
-      blank1:`<div class="panel spare"><div class="ph2">Spare</div><div class="pb">
-          <p class="hint" style="margin:0">Reserved. Tell me what belongs here.</p></div></div>`,
-      blank2:`<div class="panel spare"><div class="ph2">Spare</div><div class="pb">
-          <p class="hint" style="margin:0">Reserved. Tell me what belongs here.</p></div></div>`
     };
     const place=(k,col,row,w,hh)=>`<div class="cellwrap" style="grid-column:${col}/span ${w};grid-row:${row}/span ${hh}">${B[k]||""}</div>`;
     $("#v-home").innerHTML=`<div class="dashfixed">`+[
-      ["driver",1,1,6,8],["actions",7,1,3,4],["gaps",10,1,3,4],
+      ["units",1,1,6,16],["actions",7,1,3,4],["gaps",10,1,3,4],
       ["expiring",7,5,3,4],["attention",10,5,3,4],
-      ["passenger",1,9,6,8],["low",7,9,3,4],["blank1",10,9,3,4],
-      ["sweep",7,13,3,4],["blank2",10,13,3,4],
+      ["low",7,9,6,4],
+      ["sweep",7,13,6,4],
       ["quick",1,17,12,6]
     ].map(a=>place(...a)).join("")+`</div>`;
     return;
@@ -1470,10 +1472,24 @@ function autoPlace(side){
     if(c.x==null){c.x=0;c.y=0}});
 }
 
-let lastWalls="", lastWallMap={};
-function ensureWalls(){ if(!lastWalls){const t=$("#title").textContent;renderComps();$("#title").textContent=t} }
-function wallPanel(side){ ensureWalls(); return lastWallMap[side]||"" }
-function wallsHTML(){ ensureWalls(); return lastWalls }
+function unitPanel(){
+  const cs=comps(); if(!cs.length)return "";
+  const bays=[...new Set(cs.map(c=>bayOf(c.code)))].sort();
+  return `<div class="panel"><div class="ph2">Units</div><div class="pb unitpb">
+    ${bays.map(bay=>{
+      const b=bayBounds(bay); if(!b)return "";
+      const end=b.x+b.w/2>(S.walls[b.side]||{cols:144}).cols/2
+        ?(b.side==="Driver side"?"front":"rear"):(b.side==="Driver side"?"rear":"front");
+      return `<button class="bayhead" data-bay="${esc(bay)}">
+        <div class="bayinfo">
+          <h2>${esc(BAYNAME[bay]||"Bay "+bay)}</h2>
+          <div class="sub">${esc(b.side)}, ${end}</div>
+          <div class="sub">${b.w}-inch &nbsp;|&nbsp; ${b.n} compartments</div>
+        </div>
+        ${vanKey(bay,false)}
+        <div class="cdtags">${bayTally(bay)}</div></button>`}).join("")}
+  </div></div>`;
+}
 
 function renderComps(){
   $("#title").textContent="Compartments";
@@ -3321,6 +3337,7 @@ document.addEventListener("click",e=>{
     window.scrollTo&&window.scrollTo(0,0);return render()}
   if(e.target.closest("#dlj")){
     const safe=Object.assign({},S);delete safe.gh;delete safe.fills;delete safe.sketches;
+    safe.items=(safe.items||[]).map(i=>{const c=Object.assign({},i);delete c.dupOf;return c});
     return toast(download(JSON.stringify(safe,null,1),"van-backup-"+today()+".json","application/json")
       ?"Backup downloaded":"Download blocked — use Copy CSV")}
   if(e.target.closest("#dlc")){
@@ -3435,6 +3452,8 @@ function quickAdd(){
     cat:S.lastCat||CATS[0][0],cls:S.lastCls||CLASSES[0],qty,par:"",date:"",
     status:"Stocked",gapType:"",note:"",steps:[],source:"",verified:"",
     uses:[],rel:[],links:[],fav:false};
+  const elsewhereIn=live().find(i=>i.id!==it.id&&i.name.toLowerCase()===nm.toLowerCase());
+  it.dupOf=elsewhereIn?(elsewhereIn.loc||"the van"):"";
   S.items.push(it); save();
   justAdded.unshift(it.id); justAdded=justAdded.slice(0,6);
   f.value=""; f.focus();
@@ -3444,8 +3463,8 @@ function paintJust(){
   const box=$("#qjust"); if(!box)return;
   const rows=justAdded.map(id=>S.items.find(i=>i.id===id)).filter(Boolean);
   box.innerHTML=rows.length?`<p class="hint" style="margin:14px 0 6px">Just added</p>`
-    +rows.map(i=>`<div class="justrow">
-      <span class="jn">${esc(i.name)}</span>
+    +rows.map(i=>`<div class="justrow${i.dupOf?" dup":""}">
+      <span class="jn">${esc(i.name)}${i.dupOf?`<span class="jdup">also in ${esc(i.dupOf)}</span>`:""}</span>
       <span class="jq">${esc(i.qty)}</span>
       <button class="jx" data-item="${i.id}">Details</button>
       <button class="jx" data-undo="${i.id}">Undo</button></div>`).join(""):"";
