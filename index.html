@@ -112,6 +112,58 @@ input,select,textarea{font-size:16px}
   .pcard svg{width:24px;height:24px;margin-bottom:2px}
 }
 
+.canvaswrap{background:var(--card);border:.5px solid var(--line);border-radius:12px;
+  padding:6px;margin-bottom:10px;touch-action:none}
+.skcanvas{width:100%;height:auto;display:block;border-radius:8px;touch-action:none;
+  -webkit-user-select:none;user-select:none}
+.k-line{fill:none;stroke:#111;stroke-width:2.5}
+.k-thin{fill:none;stroke:#111;stroke-width:1.2}
+.k-thick{fill:none;stroke:#111;stroke-width:4;stroke-linecap:round}
+.k-stroke{fill:none;stroke:#111;stroke-width:2}
+.k-dash{fill:none;stroke:#111;stroke-width:2;stroke-dasharray:8 6}
+.k-solid{fill:#111;stroke:none}
+.k-fill{fill:#111;stroke:none}
+.k-text{fill:#111;font-family:var(--sys);font-weight:600}
+.k-tag{fill:#111;font-family:var(--sys);font-size:15px;text-anchor:middle}
+.k-num{fill:#fff;font-family:var(--sys);font-size:22px;font-weight:700;text-anchor:middle}
+.k-sel{fill:none;stroke:#0A62C4;stroke-width:2.5;stroke-dasharray:7 5}
+.k-handle{fill:#0A62C4;stroke:#fff;stroke-width:2}
+.objbar{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px}
+.objbar button{flex:0 0 auto;background:var(--card);border:.5px solid var(--line);
+  border-radius:9px;padding:10px 13px;font-size:14px;font-weight:600;color:var(--blue);white-space:nowrap}
+.objbar button.danger{color:var(--red);border-color:var(--red)}
+.palette{display:grid;grid-template-columns:repeat(auto-fill,minmax(86px,1fr));gap:8px;margin-bottom:6px}
+.palette button{background:var(--card);border:.5px solid var(--line2);border-radius:11px;
+  padding:9px 5px 7px;display:flex;flex-direction:column;align-items:center;gap:5px}
+.palette .pv{height:30px;display:flex;align-items:center;justify-content:center}
+.pvs{max-width:44px;max-height:30px;overflow:visible}
+.palette .pn{font-size:11.5px;color:var(--ink2);text-align:center;line-height:1.2}
+@media (prefers-color-scheme:dark){.pvs .k-line,.pvs .k-stroke,.pvs .k-thin,.pvs .k-thick,.pvs .k-dash{stroke:#ddd}
+ .pvs .k-solid,.pvs .k-fill{fill:#ddd}.pvs .k-text{fill:#ddd}}
+.seg{display:grid;grid-template-columns:1fr 1fr;background:var(--greybg);
+  border-radius:9px;padding:2px;margin-bottom:12px}
+.seg button{background:none;border:0;padding:8px 6px;border-radius:7px;
+  font-size:14.5px;font-weight:500;color:var(--ink2)}
+.seg button.on{background:var(--card);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.plotwrap{background:var(--card);border:.5px solid var(--line2);border-radius:14px;
+  padding:10px;margin-bottom:6px;overflow-x:auto}
+.plot{width:100%;height:auto;display:block}
+.plot .gl{stroke:var(--line2);stroke-width:1}
+.plot .pf{fill:none;stroke:var(--line);stroke-width:1}
+.plot .rp{fill:var(--ink2)}
+.plot .rt{fill:var(--ink2);font-size:10px;font-family:var(--sys)}
+.plot .ip{fill:var(--blue)}
+.plot .in{fill:#fff;font-size:11px;font-weight:700;text-anchor:middle;font-family:var(--sys)}
+.plot .na{stroke:var(--ink2);stroke-width:1.5}
+.plot .naf{fill:var(--ink2)}
+.sweepcard{display:flex;align-items:center;gap:12px;width:100%;text-align:left;
+  background:var(--card);border:.5px solid var(--line2);border-radius:14px;padding:14px 16px;margin-top:10px}
+.sweepcard .n{display:block;font-size:16px;font-weight:600;letter-spacing:-.01em}
+.sweepcard .s{display:block;font-size:13.5px;color:var(--ink2);margin-top:2px}
+.sweepcard .ch{margin-left:auto;color:var(--ink3);font-size:18px}
+.sweepcard.live{border-color:var(--amber);background:var(--amberbg)}
+.sweepcard.live .n{color:var(--amber)}
+.sweepcard.live .s{color:var(--amber);opacity:.9}
 .sect{font-size:13px;font-weight:600;color:var(--ink2);margin:24px 2px 9px}
 .qf{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 .qf button{background:var(--card);border:.5px solid var(--line2);border-radius:12px;
@@ -133,6 +185,13 @@ input,select,textarea{font-size:16px}
 .b-attn{background:var(--amberbg);color:var(--amber)}
 .b-good{background:var(--greenbg);color:var(--green)}
 .b-unchecked{background:var(--greybg);color:var(--grey)}
+.b-req{background:var(--bluebg);color:var(--blue)}
+.links{background:var(--card);border:.5px solid var(--line2);border-radius:12px;overflow:hidden}
+.lnk{display:block;padding:12px 14px;border-bottom:.5px solid var(--line2);
+  text-decoration:none;color:inherit}
+.lnk:last-child{border-bottom:0}
+.lnk .ln{display:block;font-size:15px;font-weight:500;color:var(--blue);line-height:1.3}
+.lnk .lu{display:block;font-size:12.5px;color:var(--ink2);margin-top:1px}
 .chev{color:var(--ink3);font-size:16px}
 
 /* ---------- van walls ---------- */
@@ -141,20 +200,26 @@ input,select,textarea{font-size:16px}
 .whead{display:flex;align-items:baseline;gap:10px;margin-bottom:8px}
 .whead b{font-size:16px;font-weight:700;letter-spacing:-.01em}
 .whead span{font-size:12.5px;color:var(--ink3)}
-.vanwrap{position:relative;height:212px;margin-bottom:4px}
-.vanbody{position:absolute;left:0;right:0;top:0;height:184px;background:var(--ink3);
-  clip-path:polygon(0% 92%,0% 60%,4% 34%,20% 30%,30% 0%,100% 0%,100% 92%)}
+.vanwrap{position:relative;height:246px;margin-bottom:4px}
+.vanbody{position:absolute;left:0;right:0;top:0;height:214px;z-index:1;background:var(--ink3);
+  clip-path:polygon(0% 92%,0% 64%,2% 42%,9% 38%,17% 0%,100% 0%,100% 92%)}
 .vaninner{position:absolute;inset:0;background:var(--card2);
-  clip-path:polygon(1% 90%,1% 61%,5% 35.5%,20.6% 31.5%,30.7% 1.6%,99% 1.6%,99% 90%)}
+  clip-path:polygon(1% 90%,1% 65%,3% 43.5%,9.6% 39.5%,17.9% 1.6%,99% 1.6%,99% 90%)}
 .wheel{position:absolute;border-radius:50%;background:var(--card2);
-  border:2.5px solid var(--ink3);width:42px;height:42px;top:150px}
-.wheel.f{left:14%}.wheel.r{left:72%}
-.cargo{position:absolute;left:40%;right:2.5%;top:9%;bottom:15%;display:grid;gap:3px}
+  border:2.5px solid var(--ink3);width:44px;height:44px;top:176px}
+.wheel.f{left:8%}.wheel.r{left:76%}
+.cargo{position:absolute;left:19%;right:2.5%;top:7%;bottom:13%;display:grid;gap:3px}
 .slot{border-radius:6px;padding:4px 5px;text-align:left;border:.5px solid transparent;
-  overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;min-width:0}
-.slot .code{font-size:11.5px;font-weight:700;letter-spacing:-.01em;display:block;line-height:1.15}
-.slot .dsc{font-size:10px;opacity:.8;display:block;line-height:1.2;margin-top:1px}
-.slot .st{font-size:10px;font-weight:600;display:block;line-height:1.2}
+  overflow:hidden;display:flex;flex-direction:column;min-width:0;min-height:0;gap:1px}
+.slot>span{min-width:0;min-height:0;overflow:hidden;display:flex;flex-direction:column}
+.slot .code{font-size:11.5px;font-weight:700;letter-spacing:-.01em;line-height:1.15;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:0 0 auto}
+.slot .dsc{font-size:10px;opacity:.85;line-height:1.2;margin-top:1px;overflow:hidden;
+  white-space:nowrap;text-overflow:ellipsis;min-height:0}
+.slot .dsc.two{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;
+  -webkit-box-orient:vertical;text-overflow:clip}
+.slot .st{font-size:10px;font-weight:600;line-height:1.2;margin-top:auto;flex:0 0 auto;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .s-action{background:var(--redbg);color:var(--red);border-color:var(--red)}
 .s-attn{background:var(--amberbg);color:var(--amber);border-color:var(--amber)}
 .s-good{background:var(--greenbg);color:var(--green);border-color:var(--green)}
@@ -167,6 +232,17 @@ input,select,textarea{font-size:16px}
 .demobar{background:var(--amberbg);color:var(--amber);padding:11px 16px;font-size:13px;
   display:flex;align-items:center;gap:12px;line-height:1.35}
 .demobar span{flex:1;min-width:0}
+.demobar.warn{background:var(--amberbg);color:var(--amber)}
+.demobar.warn button{background:var(--amber);color:var(--card)}
+.demobar.bad{background:var(--redbg);color:var(--red)}
+.demobar.bad button{background:var(--red);color:#fff}
+.chips button i{display:inline-block;width:8px;height:8px;border-radius:50%;
+  margin-right:7px;vertical-align:1px;background:var(--grey)}
+.chips button.ch-good i{background:var(--green)}
+.chips button.ch-attn i{background:var(--amber)}
+.chips button.ch-action i{background:var(--red)}
+.chips button.ch-unchecked i{background:var(--grey)}
+.chips button.on i{background:#fff}
 .demobar button{margin-left:auto;background:var(--amber);color:var(--card);border:0;
   border-radius:8px;padding:7px 12px;font-size:13px;font-weight:600;flex:0 0 auto}
 .cdhead{background:var(--card);border:.5px solid var(--line2);border-radius:14px;padding:16px;margin-bottom:14px}
@@ -175,7 +251,7 @@ input,select,textarea{font-size:16px}
 .cdstats{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
 .back{background:none;border:0;color:var(--blue);font-size:16px;padding:0;margin-bottom:12px;font-weight:500}
 .acts{display:flex;gap:8px;margin-bottom:16px}
-.acts button{flex:1;padding:12px 8px;border-radius:11px;border:.5px solid var(--line);
+.acts button{flex:1;padding:12px 4px;font-size:13.5px;border-radius:11px;border:.5px solid var(--line);
   background:var(--card);color:var(--blue);font-size:14.5px;font-weight:600}
 .ph{background:var(--bluebg);color:var(--blue);border-radius:10px;padding:11px 13px;
   font-size:13px;line-height:1.5;margin-bottom:12px}
@@ -193,9 +269,11 @@ input,select,textarea{font-size:16px}
   border:.5px solid var(--line);border-radius:8px;color:var(--ink)}
 @media (min-width:820px){
   .walls{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
-  .vanwrap{height:300px}
-  .vanbody{height:262px}
-  .wheel{width:58px;height:58px;top:214px}
+  .vanwrap{height:320px}
+  .vanbody{height:282px}
+  .wheel{width:58px;height:58px;top:250px}
+  .cargo{left:20%}
+  .slot .dsc,.slot .st{font-size:11px}
   .slot .code{font-size:13px}
   .slot .dsc,.slot .st{font-size:11px}
 }
@@ -296,6 +374,15 @@ input[type=text],input[type=date],select,textarea{width:100%;padding:11px 12px;b
 .relrow .rn{display:block;font-size:15px;font-weight:500;line-height:1.25}
 .relrow .rl{display:block;font-size:12.5px;color:var(--ink2)}
 .okbox{background:var(--greenbg);color:var(--green);border-radius:10px;padding:10px 12px;font-size:13px;line-height:1.45}
+.chk{display:flex;align-items:center;gap:11px;width:100%;text-align:left;background:var(--card);
+  border:.5px solid var(--line);border-radius:10px;padding:12px 13px;font-size:16px}
+.chk i{width:24px;height:24px;border-radius:7px;border:1.5px solid var(--line);flex:0 0 auto;
+  display:flex;align-items:center;justify-content:center;font-style:normal;font-size:14px;color:#fff}
+.chk.on i{background:var(--blue);border-color:var(--blue)}
+.ftab .frow{display:flex;gap:6px;align-items:center;margin-bottom:6px}
+.ftab .fnum{font-size:12px;color:var(--ink3);width:14px;flex:0 0 auto}
+.ftab .frow input{flex:1;min-width:0;padding:9px 8px;font-size:15px}
+.ftab .frem{width:32px;flex:0 0 auto;background:none;border:0;color:var(--red);font-size:22px;line-height:1}
 .fmt{background:var(--card2);border:.5px solid var(--line2);border-radius:9px;padding:10px 11px;
   font-family:var(--mono);font-size:11.5px;line-height:1.5;overflow-x:auto;margin:0 0 12px;white-space:pre}
 .unver{background:var(--amberbg);color:var(--amber);border-radius:10px;padding:10px 12px;
@@ -363,11 +450,15 @@ input[type=text],input[type=date],select,textarea{width:100%;padding:11px 12px;b
 </header>
 
 <main class="main">
+<div id="syncbar" class="demobar" style="display:none"></div>
 <div id="demobar" class="demobar" style="display:none"></div>
 <section class="view on" id="v-home"></section>
 <section class="view" id="v-compartments"></section>
 <section class="view" id="v-inventory"></section>
 <section class="view" id="v-sweep"></section>
+<section class="view" id="v-forms"></section>
+<section class="view" id="v-fill"></section>
+<section class="view" id="v-sketch"></section>
 <section class="view" id="v-guide"></section>
 <section class="view" id="v-compdetail"></section>
 <section class="view" id="v-itemdetail"></section>
@@ -391,11 +482,13 @@ const STATUSES=["Stocked","Low","Out","Expired","Service due","Not carried"];
 const SIDES=["Driver side","Passenger side","Rear doors","Cab"];
 const WALLDEF={"Driver side":{cols:24,rows:12},"Passenger side":{cols:24,rows:12},
  "Rear doors":{cols:12,rows:12},"Cab":{cols:12,rows:8}};
-const TABS=[["home","Home"],["compartments","Compartments"],["inventory","Inventory"],["sweep","Sweep"],["guide","Guide"]];
+const TABS=[["home","Home"],["compartments","Compartments"],["inventory","Inventory"],["forms","Scene"],["guide","Guide"]];
+const FORMCATS=["Scene documentation","Evidence and custody","Photography","Reports and statements","Admin"];
 const ICONS={home:"M3 11l9-8 9 8v9a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1z",
  compartments:"M3 4h7v7H3zM14 4h7v7h-7zM3 13h7v7H3zM14 13h7v7h-7z",
  inventory:"M4 6h16M4 12h16M4 18h16",
  sweep:"M12 5v14M5 12h14",
+ forms:"M7 3h7l5 5v13a1 1 0 01-1 1H7a1 1 0 01-1-1V4a1 1 0 011-1zM14 3v5h5M9 13h6M9 17h6",
  guide:"M4 5a2 2 0 012-2h11a1 1 0 011 1v15a1 1 0 01-1 1H6a2 2 0 01-2-2zM8 7h7M8 11h7"};
 
 let MEM=null;
@@ -407,6 +500,9 @@ try{localStorage.setItem("__t","1");localStorage.removeItem("__t")}catch(e){MEM=
 
 const S=Object.assign({items:[],comps:[],locs:[],lastCat:"A",lastCls:"Consumable",curLoc:""},store.get()||{});
 if(!S.comps)S.comps=[];
+if(!S.forms)S.forms=[];
+if(!S.fills)S.fills=[];
+if(!S.sketches)S.sketches=[];
 (S.locs||[]).forEach(c=>{if(c&&!S.comps.some(x=>x.code===c))S.comps.push({code:c,desc:"",side:"",x:null,y:null,w:6,h:4})});
 if(!S.walls)S.walls=JSON.parse(JSON.stringify(WALLDEF));
 S.comps.forEach(c=>{if(c.zone&&!c.side)c.side=(c.zone==="Rear")?"Rear doors":(c.zone==="Interior")?"":c.zone;
@@ -415,8 +511,10 @@ S.comps.forEach(c=>{if(c.zone&&!c.side)c.side=(c.zone==="Rear")?"Rear doors":(c.
 S.items.forEach(i=>{if(i.date&&/^\d{4}-\d{2}$/.test(i.date))i.date=i.date+"-01";
   if(!i.uses)i.uses=[];
   if(!i.rel)i.rel=[];
+  if(!i.links)i.links=[];
   if(i.loc&&!S.comps.some(x=>x.code===i.loc))S.comps.push({code:i.loc,desc:"",side:"",x:null,y:null,w:6,h:4})});
 const save=()=>{store.set(S);if(typeof queuePush==='function')queuePush()};
+const saveLocal=()=>store.set(S);
 
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -435,13 +533,20 @@ const isOut=i=>i.status==="Out"||n(i.qty)===0;
 const isExpired=i=>{const d=daysOut(i.date);return i.status==="Expired"||(i.cls!=="Durable"&&d!==null&&d<0)};
 const isExpiring=i=>{const d=daysOut(i.date);return i.cls!=="Durable"&&d!==null&&d>=0&&d<=90};
 const isService=i=>{const d=daysOut(i.date);return i.status==="Service due"||(i.cls==="Durable"&&d!==null&&d<=30)};
-const gaps=()=>S.items.filter(i=>i.status==="Not carried"&&i.gapType!=="deliberate");
+const gaps=()=>S.items.filter(i=>i.status==="Not carried"&&i.gapType!=="deliberate"&&i.gapType!=="request");
+const requests=()=>S.items.filter(i=>i.status==="Not carried"&&i.gapType==="request");
+const isRequest=i=>i.status==="Not carried"&&i.gapType==="request";
+const parseLinks=t=>t.split(/\r?\n/).map(l=>l.trim()).filter(Boolean).map(l=>{
+  const b=l.split("|"); const url=(b.length>1?b.slice(1).join("|"):b[0]).trim();
+  const label=(b.length>1?b[0]:url).trim();
+  return /^https?:\/\//i.test(url)?{label,url}:null}).filter(Boolean);
+const linksText=i=>(i.links||[]).map(l=>l.label===l.url?l.url:l.label+" | "+l.url).join("\n");
 
 function compState(code){
   const it=live().filter(i=>i.loc===code);
   const rec=S.comps.find(c=>c.code===code);
-  if(!it.length)return rec&&rec.checked?{k:"good",label:"Empty",items:it}
-    :{k:"unchecked",label:"Not checked",items:it};
+  if(!it.length)return rec&&rec.checked?{k:"good",label:"Empty",parts:[],items:it}
+    :{k:"unchecked",label:"Not checked",parts:[],items:it};
   const bad=i=>isOut(i)||isExpired(i);
   const out=it.filter(isOut).length, exp=it.filter(i=>isExpired(i)&&!isOut(i)).length;
   const low=it.filter(i=>isLow(i)&&!bad(i)).length;
@@ -449,9 +554,9 @@ function compState(code){
   const p=[];
   if(out)p.push(out+" out"); if(exp)p.push(exp+" expired");
   if(low)p.push(low+" low"); if(soon)p.push(soon+" expiring"); if(svc)p.push(svc+" service");
-  if(out||exp)return{k:"action",label:p.join(", "),items:it};
-  if(low||soon||svc)return{k:"attn",label:p.join(", "),items:it};
-  return{k:"good",label:it.length+(it.length===1?" item":" items"),items:it};
+  if(out||exp)return{k:"action",label:p.join(", "),parts:p,items:it};
+  if(low||soon||svc)return{k:"attn",label:p.join(", "),parts:p,items:it};
+  return{k:"good",label:it.length+(it.length===1?" item":" items"),parts:[],items:it};
 }
 const comps=()=>S.comps.slice().sort((a,b)=>a.code.localeCompare(b.code,undefined,{numeric:true}));
 
@@ -536,11 +641,27 @@ const DEMO_STEPS={
  "Tyvek suits, XL":[["Put on over uniform, boots first, before entering the scene perimeter.",
    "Tape cuffs to gloves if handling wet biological material.",
    "Remove inside out at the perimeter and bag as contaminated waste."],"Sample text, not verified"]};
+const DEMO_REQ=[["FARO Focus laser scanner","B","Regional lab, evidence unit","555-0142","2 to 4 hours",
+  "Approval from the on-call supervisor. Operator comes with the unit.",
+  ["Confirm the scene is stable and lit before the operator arrives.",
+   "Mark scan positions so overlapping sweeps cover every wall.",
+   "Photograph each scanner position with a scale before moving it."],
+  [["FARO Focus quick guide","https://example.com/faro-quick-guide.pdf"]]]];
 const DEMO_GAPS=[["Electrostatic dust lifter","F","gap","Roughly $900. Ask about next budget cycle."],
  ["Snow print wax","F","deliberate","Not needed in this climate."],
  ["Alternate light source, portable","J","gap","Borrowing the lab unit currently."]];
 
+const DEMO_FORMS=[
+ ["Evidence submission form","Evidence and custody","2024-A","Every item leaving the scene. One per item, sealed with the packaging.",[["Blank PDF","https://example.com/evidence-submission.pdf"]],"2026-07-14"],
+ ["Chain of custody log","Evidence and custody","2023-C","Stays with the item. Every transfer signed by both parties.",[["Blank PDF","https://example.com/coc.pdf"]],""],
+ ["Scene entry and exit log","Scene documentation","2025-B","Everyone who crosses the tape, in and out, with times.",[["Blank PDF","https://example.com/entry-log.pdf"]],"2026-08-02"],
+ ["Photography log","Photography","2022-A","Frame numbers, subject, scale used, direction of view.",[["Blank PDF","https://example.com/photo-log.pdf"]],"2024-01-10"],
+ ["Consent to search","Reports and statements","2025-A","Signed before any consent search. Witnessed.",[],"2026-06-30"]];
 function loadDemo(){
+  DEMO_FORMS.forEach(([name,cat,rev,desc,links,verified])=>{
+    if(!S.forms.some(f=>f.name===name))
+      S.forms.push({id:newId(),name,cat,rev,desc,verified,demo:true,
+        links:links.map(([label,url])=>({label,url}))})});
   DEMO_COMPS.forEach(([code,desc,side,x,y,w,hh])=>{
     if(!S.comps.some(c=>c.code===code))
       S.comps.push({code,desc,side,x,y,w,h:hh,checked:"2026-08-28",demo:true})});
@@ -549,12 +670,18 @@ function loadDemo(){
     S.items.push({id:newId(),name,loc,cat,cls,qty,par:String(par),date,
       status:"Stocked",gapType:"",note:"",steps:g?g[0]:[],source:g?g[1]:"",verified:"",
       uses:[],fav:false,demo:true})});
+  DEMO_REQ.forEach(([name,cat,contact,phone,lead,note,steps,links])=>{
+    S.items.push({id:newId(),name,loc:"",cat,cls:"Durable",qty:0,par:"",date:"",
+      status:"Not carried",gapType:"request",note,contact,phone,lead,
+      steps,source:"Sample text, not verified",verified:"",uses:[],fav:false,rel:[],
+      links:links.map(([label,url])=>({label,url})),demo:true})});
   DEMO_GAPS.forEach(([name,cat,gt,note])=>{
     S.items.push({id:newId(),name,loc:"",cat,cls:"Consumable",qty:0,par:"",date:"",
       status:"Not carried",gapType:gt,note,steps:[],source:"",verified:"",uses:[],demo:true})});
   S.demo=true;save();
 }
 function clearDemo(){
+  S.forms=S.forms.filter(f=>!f.demo);
   S.items=S.items.filter(i=>!i.demo);
   S.comps=S.comps.filter(c=>!c.demo);
   if(S.curLoc&&!S.comps.some(c=>c.code===S.curLoc))S.curLoc="";
@@ -571,7 +698,7 @@ function renderDemoBar(){
 
 /* ---------- github sync ---------- */
 if(!S.gh)S.gh={owner:"",repo:"",path:"data.json",token:"",sha:"",last:""};
-let dirty=false, pushT=null, conflict=false;
+let dirty=false, pushT=null, conflict=false, syncErr="";
 
 const b64enc=s=>{const b=new TextEncoder().encode(s);let out="";
   for(let i=0;i<b.length;i+=8192)out+=String.fromCharCode.apply(null,b.subarray(i,i+8192));
@@ -581,7 +708,8 @@ const ghOn=()=>!!(S.gh.owner&&S.gh.repo&&S.gh.token);
 const ghURL=()=>`https://api.github.com/repos/${S.gh.owner}/${S.gh.repo}/contents/${S.gh.path||"data.json"}`;
 const ghHead=()=>({Authorization:"Bearer "+S.gh.token,Accept:"application/vnd.github+json",
   "X-GitHub-Api-Version":"2022-11-28"});
-const payload=()=>({items:S.items,comps:S.comps,walls:S.walls,demo:S.demo,
+const payload=()=>({items:S.items,comps:S.comps,forms:S.forms.map(f=>{
+    const c=Object.assign({},f);delete c.fills;return c}),walls:S.walls,demo:S.demo,
   lastCat:S.lastCat,lastCls:S.lastCls,savedAt:new Date().toISOString()});
 
 async function ghPull(silent){
@@ -591,9 +719,9 @@ async function ghPull(silent){
     if(r.status===404){S.gh.sha="";store.set(S);if(!silent)toast("No data file yet — push to create it");return"empty"}
     if(!r.ok)throw new Error(r.status===401?"Token rejected":r.status===403?"No access to that repo":"GitHub error "+r.status);
     const j=await r.json(), o=JSON.parse(b64dec(j.content));
-    S.items=o.items||[];S.comps=o.comps||[];if(o.walls)S.walls=o.walls;S.demo=!!o.demo;
+    S.items=o.items||[];S.comps=o.comps||[];S.forms=o.forms||[];if(o.walls)S.walls=o.walls;S.demo=!!o.demo;
     S.gh.sha=j.sha;S.gh.last=new Date().toISOString();dirty=false;conflict=false;
-    clearTimeout(pushT);store.set(S);
+    syncErr="";retries=0;clearTimeout(pushT);store.set(S);renderSyncBar();
     if(!silent)toast("Pulled "+S.items.length+" items");render();return"ok";
   }catch(e){if(!silent)toast(e.message||"Pull failed");return"error"}
 }
@@ -611,11 +739,32 @@ async function ghPush(force){
       return toast("Someone else changed the data — see Sync")}
     if(!r.ok)throw new Error(r.status===401?"Token rejected":r.status===403?"No write access":"GitHub error "+r.status);
     const j=await r.json();S.gh.sha=j.content.sha;S.gh.last=new Date().toISOString();
-    dirty=false;conflict=false;store.set(S);renderData();return"ok";
-  }catch(e){toast(e.message||"Push failed")}
+    dirty=false;conflict=false;syncErr="";retries=0;store.set(S);
+    renderSyncBar();renderData();return"ok";
+  }catch(e){
+    syncErr=e.message||"Couldn't reach GitHub";
+    store.set(S);renderSyncBar();
+    clearTimeout(pushT);pushT=setTimeout(()=>ghPush(false),retryIn());
+    return "error"}
 }
-function queuePush(){ if(!ghOn())return; dirty=true;
-  clearTimeout(pushT); pushT=setTimeout(()=>ghPush(false),2500); renderSyncPill(); }
+let retries=0;
+function retryIn(){retries=Math.min(retries+1,6);return Math.min(60000,2000*Math.pow(2,retries-1))}
+function queuePush(){ if(!ghOn())return; dirty=true; retries=0;
+  clearTimeout(pushT); pushT=setTimeout(()=>ghPush(false),2500);
+  renderSyncPill(); renderSyncBar(); }
+function renderSyncBar(){
+  const b=$("#syncbar"); if(!b)return;
+  const offline=typeof navigator!=="undefined"&&navigator.onLine===false;
+  if(!ghOn()||(!dirty&&!syncErr&&!conflict)){b.style.display="none";b.innerHTML="";fitHeader();return}
+  let msg,cls;
+  if(conflict){cls="bad";msg="Another device changed the data. Open Sync to choose which version wins."}
+  else if(offline){cls="warn";msg="No connection. Your changes are saved on this phone and will push when you're back online."}
+  else if(syncErr){cls="bad";msg=syncErr+". Retrying — your changes are still saved on this phone."}
+  else {b.style.display="none";b.innerHTML="";fitHeader();return}
+  b.className="demobar "+cls; b.style.display="";
+  b.innerHTML=`<span>${esc(msg)}</span><button id="syncnow">${conflict?"Open Sync":"Retry"}</button>`;
+  fitHeader();
+}
 function renderSyncPill(){
   const el=$("#syncpill"); if(!el)return;
   el.textContent=conflict?"Conflict":dirty?"Saving…":S.gh.last?"Synced "+S.gh.last.slice(11,16):"Not synced";
@@ -628,10 +777,27 @@ function buildTabs(){
   const h=TABS.map(([v,l])=>`<button data-v="${v}" aria-current="${v===view}">${ic(v)}<span>${l}</span></button>`).join("");
   $("#tabs").innerHTML=h; $("#side").innerHTML=h;
 }
-function go(v){view=v;query="";$("#q").value="";$("#qclear").style.display="none";
+const scrollMem={};
+function rememberScroll(){ if(view)scrollMem[view]=window.scrollY||0 }
+function restoreScroll(v){
+  const y=scrollMem[v]||0;
+  const put=()=>window.scrollTo&&window.scrollTo(0,y);
+  put(); if(typeof requestAnimationFrame==="function")requestAnimationFrame(put);
+}
+function go(v){rememberScroll();view=v;query="";$("#q").value="";$("#qclear").style.display="none";
   $$(".view").forEach(s=>s.classList.toggle("on",s.id==="v-"+v));
-  window.scrollTo&&window.scrollTo(0,0);render()}
+  render();restoreScroll(v)}
 document.addEventListener("click",e=>{const b=e.target.closest("#tabs button,#side button");if(b)go(b.dataset.v)});
+document.addEventListener("input",e=>{
+  const r=S.fills.find(x=>x.id===curFill); if(!r)return;
+  const fv=e.target.closest("[data-fv]");
+  if(fv){r.values[fv.dataset.fv]=fv.value;return saveLocal()}
+  const tb=e.target.closest("[data-ftab]");
+  if(tb){const k=tb.dataset.ftab,ri=+tb.dataset.tr;
+    if(!Array.isArray(r.values[k]))r.values[k]=[];
+    if(!r.values[k][ri])r.values[k][ri]={};
+    r.values[k][ri][tb.dataset.tc]=tb.value;saveLocal()}
+});
 let searchFrom="home";
 function applyQuery(){
   $("#qclear").style.display=query?"":"none";
@@ -671,12 +837,25 @@ function renderHome(){
     ${glyph[g]}<span><span class="n">${esc(t)}</span><span class="s">${esc(s)}</span></span>
     <span class="ch">&#8250;</span></button>`).join("");
 
+  const cs=comps();
+  const unchecked=cs.filter(c=>compState(c.code).k==="unchecked").length;
+  const sweepCard=cs.length
+    ? (unchecked?`<button class="sweepcard live" data-go="sweep">
+        <span><span class="n">Sweep in progress</span>
+        <span class="s">${unchecked} of ${cs.length} compartment${cs.length===1?"":"s"} not checked yet</span></span>
+        <span class="ch">&#8250;</span></button>`
+      :`<button class="sweepcard" data-go="sweep">
+        <span><span class="n">Log items</span><span class="s">Every compartment has been checked</span></span>
+        <span class="ch">&#8250;</span></button>`)
+    : `<button class="sweepcard live" data-go="sweep">
+        <span><span class="n">Start the sweep</span><span class="s">Add your first compartment</span></span>
+        <span class="ch">&#8250;</span></button>`;
   const pop=L.slice().sort((a,b)=>((b.fav?1e6:0)+(b.uses||[]).length)-((a.fav?1e6:0)+(a.uses||[]).length)).slice(0,3);
   const qf=pop.length?`<div class="sect">Quick find</div><div class="qf">`
     +pop.map(i=>`<button data-item="${i.id}"><span class="nm">${esc(i.name)}</span>
       <span class="lc">${esc(i.loc||"—")}</span></button>`).join("")+`</div>`
     +`<p class="empty" style="border:0;padding:10px 2px 0;text-align:left;font-size:13px">Ordered by how often you log use. It'll sharpen as you use it.</p>`:"";
-  $("#v-home").innerHTML=`<div class="strip">${strip}</div>${qf}`;
+  $("#v-home").innerHTML=`<div class="strip">${strip}</div>${sweepCard}${qf}`;
 }
 
 /* ---------- compartments ---------- */
@@ -708,11 +887,12 @@ function renderComps(){
   SIDES.forEach(autoPlace);
 
   const slotFor=c=>{const s=compState(c.code);
-    const big=c.w>=5&&c.h>=3, mid=c.h>=2;
+    const showDesc=c.w>=4&&c.h>=4, twoLine=c.h>=5, mid=c.h>=3;
+    const label=(c.w<6&&(s.parts||[]).length>1)?s.parts[0]:s.label;
     return `<button class="slot s-${s.k}${editSel===c.code?" sel":""}" data-comp="${esc(c.code)}"
       style="grid-column:${c.x+1}/span ${c.w};grid-row:${c.y+1}/span ${c.h}">
-      <span><span class="code">${esc(c.code)}</span>${big&&c.desc?`<span class="dsc">${esc(c.desc)}</span>`:""}</span>
-      ${mid?`<span class="st">${esc(s.label)}</span>`:""}</button>`};
+      <span><span class="code">${esc(c.code)}</span>${showDesc&&c.desc?`<span class="dsc${twoLine?" two":""}">${esc(c.desc)}</span>`:""}</span>
+      ${mid?`<span class="st">${esc(label)}</span>`:""}</button>`};
 
   const wall=side=>{
     const W=S.walls[side]||{cols:24,rows:12};
@@ -720,10 +900,10 @@ function renderComps(){
     return `<section class="wall">
       <div class="whead"><b>${esc(side)}</b><span>${mine.length} compartment${mine.length===1?"":"s"}</span></div>
       <div class="vanwrap">
+        <div class="wheel f"></div><div class="wheel r"></div>
         <div class="vanbody"><div class="vaninner"></div>
           <div class="cargo" style="grid-template-columns:repeat(${W.cols},1fr);grid-template-rows:repeat(${W.rows},1fr)">
-            ${mine.map(slotFor).join("")}</div></div>
-        <div class="wheel f"></div><div class="wheel r"></div></div>
+            ${mine.map(slotFor).join("")}</div></div></div>
       <div class="orient"><span>Front</span><span>Rear doors</span></div></section>`;
   };
 
@@ -767,7 +947,7 @@ function renderComps(){
 
 
 /* ---------- compartment detail ---------- */
-let curComp=null;
+let curComp=null, dupOK=false;
 function renderCompDetail(){
   const c=S.comps.find(x=>x.code===curComp);
   if(!c){view="compartments";return renderComps()}
@@ -793,7 +973,8 @@ function renderCompDetail(){
     </div>
     <div class="acts">
       <button data-addhere="${esc(c.code)}">Add an item</button>
-      <button data-check="${esc(c.code)}">${c.checked?"Mark swept again":"Mark swept"}</button>
+      <button data-check="${esc(c.code)}">${c.checked?"Swept again":"Mark swept"}</button>
+      <button data-editcomp="${esc(c.code)}">Edit</button>
     </div>
     ${sorted.length?`<div class="rows">`+sorted.map(i=>{const f=flag(i);
       return `<button class="row" data-item="${i.id}">
@@ -811,6 +992,14 @@ let curItem=null, prevView="home";
 function openSheet(html){$("#sheetbody").innerHTML=html;$("#scrim").classList.add("on");
   const f=()=>$("#sheet").classList.add("on");
   typeof requestAnimationFrame==="function"?requestAnimationFrame(f):setTimeout(f,16)}
+function askConfirm(title,body,label,danger,fn){
+  openSheet(`<h3>${esc(title)}</h3>
+    <p style="margin:0 0 16px;color:var(--ink2);font-size:14.5px;line-height:1.5">${esc(body)}</p>
+    <button class="btn${danger?" sec":""}" id="cfyes" style="max-width:none;margin:0${danger?";color:var(--red);border-color:var(--red)":""}">${esc(label)}</button>
+    <button class="btn sec" id="cfno" style="max-width:none">Cancel</button>`);
+  $("#cfno").onclick=closeSheet;
+  $("#cfyes").onclick=()=>{closeSheet();fn()};
+}
 function closeSheet(){$("#sheet").classList.remove("on");$("#scrim").classList.remove("on")}
 $("#scrim").onclick=closeSheet;
 const today=()=>new Date().toISOString().slice(0,10);
@@ -860,7 +1049,17 @@ function renderItemDetail(){
       <button class="star ${i.fav?"on":""}" data-fav="${i.id}" aria-label="Favourite">${i.fav?"&#9733;":"&#9734;"}</button>
     </div>
 
-    <div class="idsect">Where it is</div>
+    ${isRequest(i)?`
+      <div class="idsect">How to get it</div>
+      <div class="kv">
+        <div><dt>Not carried in the van</dt><dd>Request it</dd></div>
+        ${i.contact?`<div><dt>Who to contact</dt><dd>${esc(i.contact)}</dd></div>`:""}
+        ${i.phone?`<div><dt>Phone</dt><dd><a href="tel:${esc(i.phone.replace(/[^0-9+]/g,""))}">${esc(i.phone)}</a></dd></div>`:""}
+        ${i.lead?`<div><dt>Typical lead time</dt><dd>${esc(i.lead)}</dd></div>`:""}
+      </div>
+      ${!i.contact&&!i.phone?`<p class="hint">No contact recorded yet. Add one so this is useful at a scene.</p>`:""}
+      <button class="btn sec" data-editreq="${i.id}" style="margin:10px 0 0;max-width:none">Edit request details</button>`
+    :`<div class="idsect">Where it is</div>
     <div class="loc">
       <div class="lft"><div class="cd">${esc(i.loc||"Not placed")}</div>
         <div class="ds">${esc(c?(c.desc||c.side||"No description"):"No compartment set")}</div></div>
@@ -868,7 +1067,7 @@ function renderItemDetail(){
     </div>
     ${miniWall(i.loc)}
     <div class="parrow"><span>Par level <b>${esc(i.par||"not set")}</b></span>
-      <span>Status <b style="color:var(--${st[0]==="action"?"red":st[0]==="attn"?"amber":"green"})">${esc(st[1])}</b></span></div>
+      <span>Status <b style="color:var(--${st[0]==="action"?"red":st[0]==="attn"?"amber":"green"})">${esc(st[1])}</b></span></div>`}
 
     <div class="idsect">How to use</div>
     ${steps.length?`<div class="steps">${steps.map((s,x)=>
@@ -879,6 +1078,16 @@ function renderItemDetail(){
        <p>Paste the steps from the manufacturer sheet or your SOP, and record where they came from.</p>
        <button class="btn sec" data-editsteps="${i.id}" style="margin-top:12px">Add instructions</button></div>`}
     ${steps.length?`<button class="btn sec" data-editsteps="${i.id}" style="margin:10px 0 0;max-width:none">Edit instructions</button>`:""}
+
+    <div class="idsect">Guides and documents</div>
+    ${(i.links||[]).length?`<div class="links">`+(i.links||[]).map(l=>
+      `<a class="lnk" href="${esc(l.url)}" target="_blank" rel="noopener">
+        <span class="ln">${esc(l.label)}</span>
+        <span class="lu">${esc(l.url.replace(/^https?:\/\//,"").split("/")[0])}</span></a>`).join("")+`</div>
+      <button class="btn sec" data-editlinks="${i.id}" style="margin:9px 0 0;max-width:none">Edit links</button>`
+    :`<div class="empty" style="padding:18px 16px"><strong>No documents linked</strong>
+       <p>Link the manufacturer manual, a training video, or the SOP on your shared drive.</p>
+       <button class="btn sec" data-editlinks="${i.id}" style="margin-top:12px">Add a link</button></div>`}
 
     <div class="idsect">Works with</div>
     ${(()=>{const r=(i.rel||[]).map(id=>S.items.find(x=>x.id===id)).filter(Boolean);
@@ -901,24 +1110,45 @@ function renderItemDetail(){
       <div><dt>Source</dt><dd>${esc(i.source||"—")}</dd></div>
     </div>
     ${i.note?`<div class="idsect">Notes</div><div class="kv"><div style="display:block">${esc(i.note).replace(/\n/g,"<br>")}</div></div>`:""}
-    ${uses.length?`<div class="idsect">Recent use</div><div class="kv">${uses.map(u=>
-      `<div><dt>${esc(u.d)}</dt><dd>used ${esc(u.n)}</dd></div>`).join("")}</div>`:""}
+    ${(()=>{const all=i.uses||[]; if(!all.length)return "";
+      const cut=Date.now()-90*86400000;
+      const recent=all.filter(u=>Date.parse(u.d)>=cut);
+      const burn=recent.reduce((a,u)=>a+n(u.n),0);
+      const first=Date.parse(all[0].d), days=Math.max(1,Math.round((Date.now()-first)/86400000));
+      const per90=days>=30?Math.round(burn*(90/Math.min(days,90))):null;
+      const suggest=per90!==null&&recent.length>=2?Math.max(1,Math.ceil(per90*1.5)):null;
+      const parGap=suggest&&i.par!==""&&suggest>n(i.par);
+      return `<div class="idsect">Use history</div>
+        <div class="kv">
+          <div><dt>Used in the last 90 days</dt><dd>${burn}</dd></div>
+          <div><dt>Times logged</dt><dd>${all.length}</dd></div>
+          <div><dt>Tracking since</dt><dd>${esc(all[0].d)}</dd></div>
+        </div>
+        ${suggest?`<div class="${parGap?"unver":"okbox"}" style="margin-top:9px">
+          At this rate you get through about ${per90} every 90 days.
+          ${i.par===""?`A par level around ${suggest} would cover that with room to spare.`
+            :parGap?`Your par of ${esc(i.par)} may be low — around ${suggest} would give more headroom.`
+            :`Your par of ${esc(i.par)} covers that.`}</div>`
+        :`<p class="hint">Log use a few more times and this will suggest a par level.</p>`}
+        ${uses.length?`<div class="sect">Recent</div><div class="kv">${uses.map(u=>
+          `<div><dt>${esc(u.d)}</dt><dd>used ${esc(u.n)}</dd></div>`).join("")}</div>`:""}`})()}
 
-    <div class="actbar">
-      <button class="primary" data-loguse="${i.id}">Log use</button>
-      <button data-adjust="${i.id}">Adjust qty</button>
+    <div class="actbar"${isRequest(i)?' style="grid-template-columns:1fr 1fr"':""}>
+      ${isRequest(i)?"":`<button class="primary" data-loguse="${i.id}">Log use</button>
+      <button data-adjust="${i.id}">Adjust qty</button>`}
+      ${isRequest(i)?`<button class="primary" data-editreq="${i.id}">Request details</button>`:""}
       <button data-edititem="${i.id}">Edit</button>
     </div>`;
 }
 
-function openItem(id,from){curItem=id;prevView=from||view;view="itemdetail";
+function openItem(id,from){rememberScroll();curItem=id;prevView=from||view;view="itemdetail";
   $$(".view").forEach(v=>v.classList.toggle("on",v.id==="v-itemdetail"));
   window.scrollTo&&window.scrollTo(0,0);render()}
 
 document.addEventListener("click",e=>{
   const bk=e.target.closest("[data-back]");
   if(bk){view=prevView;$$(".view").forEach(v=>v.classList.toggle("on",v.id==="v-"+view));
-    window.scrollTo&&window.scrollTo(0,0);return render()}
+    render();return restoreScroll(view)}
   const fv=e.target.closest("[data-fav]");
   if(fv){const i=S.items.find(x=>x.id===fv.dataset.fav);
     if(i){i.fav=!i.fav;save();renderItemDetail();toast(i.fav?"Added to quick find":"Removed from quick find")}return}
@@ -964,6 +1194,42 @@ document.addEventListener("click",e=>{
       i.source=$("#sc").value.trim();i.verified=$("#sv").value;
       save();closeSheet();renderItemDetail();toast("Instructions saved")};
     return}
+  const el=e.target.closest("[data-editlinks]");
+  if(el){const i=S.items.find(x=>x.id===el.dataset.editlinks); if(!i)return;
+    openSheet(`<h3>Guides and documents</h3>
+      <p style="margin:0 0 12px;color:var(--ink2);font-size:14.5px;line-height:1.5">
+        One per line. Put a name before the address if you want a label.</p>
+      <pre class="fmt">FARO Focus manual | https://example.com/manual.pdf
+https://example.com/training-video</pre>
+      <textarea id="lk" rows="5" placeholder="Name | https://...">${esc(linksText(i))}</textarea>
+      <button class="btn" id="lksave" style="max-width:none;margin-top:10px">Save links</button>
+      <button class="btn sec" id="lkx" style="max-width:none">Cancel</button>`);
+    $("#lkx").onclick=closeSheet;
+    $("#lksave").onclick=()=>{const raw=$("#lk").value;
+      const parsed=parseLinks(raw);
+      const bad=raw.split(/\r?\n/).filter(l=>l.trim()).length-parsed.length;
+      i.links=parsed;save();closeSheet();renderItemDetail();
+      toast(bad?bad+" line"+(bad===1?"":"s")+" skipped — needs http:// or https://":"Links saved")};
+    return}
+  const eq=e.target.closest("[data-editreq]");
+  if(eq){const i=S.items.find(x=>x.id===eq.dataset.editreq); if(!i)return;
+    openSheet(`<h3>Request details</h3>
+      <p style="margin:0 0 12px;color:var(--ink2);font-size:14.5px;line-height:1.5">
+        What someone needs to know at a scene to get hold of ${esc(i.name)}.</p>
+      <label class="fld"><span>Who to contact</span>
+        <input type="text" id="rc" value="${esc(i.contact||"")}" placeholder="Regional lab, evidence unit"></label>
+      <div class="two"><label class="fld"><span>Phone</span>
+        <input type="text" id="rp" inputmode="tel" value="${esc(i.phone||"")}" placeholder="555-0100"></label>
+      <label class="fld"><span>Lead time</span>
+        <input type="text" id="rl" value="${esc(i.lead||"")}" placeholder="2 to 4 hours"></label></div>
+      <label class="fld"><span>Notes</span><textarea id="rn" rows="3" placeholder="Approval needed, who signs off, cost">${esc(i.note||"")}</textarea></label>
+      <button class="btn" id="rsave" style="max-width:none;margin:0">Save</button>
+      <button class="btn sec" id="rx" style="max-width:none">Cancel</button>`);
+    $("#rx").onclick=closeSheet;
+    $("#rsave").onclick=()=>{i.contact=$("#rc").value.trim();i.phone=$("#rp").value.trim();
+      i.lead=$("#rl").value.trim();i.note=$("#rn").value.trim();
+      save();closeSheet();renderItemDetail();toast("Saved")};
+    return}
   const er=e.target.closest("[data-editrel]");
   if(er){const it=S.items.find(x=>x.id===er.dataset.editrel);if(it)relSheet(it);return}
   const ei=e.target.closest("[data-edititem]");
@@ -979,11 +1245,11 @@ document.addEventListener("click",e=>{
       <button class="btn sec" id="idel" style="max-width:none;color:var(--red);border-color:var(--red)">Delete item</button>
       <button class="btn sec" id="icancel" style="max-width:none">Cancel</button>`);
     $("#icancel").onclick=closeSheet;
-    $("#idel").onclick=()=>{if(!confirm("Delete "+i.name+"?"))return;
+    $("#idel").onclick=()=>askConfirm("Delete item","Remove "+i.name+" from the van entirely. This can't be undone here, though the GitHub history keeps it.","Delete item",true,()=>{
       S.items=S.items.filter(x=>x.id!==i.id);
       S.items.forEach(o=>{if(o.rel)o.rel=o.rel.filter(x=>x!==i.id)});
-      save();closeSheet();
-      view=prevView;$$(".view").forEach(v=>v.classList.toggle("on",v.id==="v-"+view));render();toast("Deleted")};
+      save();
+      view=prevView;$$(".view").forEach(v=>v.classList.toggle("on",v.id==="v-"+view));render();toast("Deleted")});
     $("#isave").onclick=()=>{
       Object.assign(i,{name:$("#in").value.trim()||i.name,loc:$("#il").value.trim().toUpperCase(),
         date:$("#id").value,cat:$("#ic").value,cls:$("#ik").value,note:$("#io").value.trim()});
@@ -1058,8 +1324,469 @@ function renderPrint(){
     </div>`;
 }
 
+/* ---------- form fields and filled copies ---------- */
+const FTYPES=["text","textarea","date","time","number","check","table"];
+function parseFields(t){
+  return (t||"").split(/\r?\n/).map(l=>l.trim()).filter(Boolean).map((l,ix)=>{
+    const b=l.split("|").map(x=>x.trim());
+    const label=b[0]; let type=(b[1]||"text").toLowerCase();
+    if(!FTYPES.includes(type))type="text";
+    const cols=type==="table"?(b[2]||"Item").split(",").map(x=>x.trim()).filter(Boolean):null;
+    return {id:"f"+ix+"_"+label.toLowerCase().replace(/[^a-z0-9]+/g,"").slice(0,12),label,type,cols};
+  });
+}
+const fieldsText=f=>(f.fields||[]).map(x=>
+  x.type==="table"?x.label+" | table | "+(x.cols||[]).join(", ")
+  :x.type==="text"?x.label:x.label+" | "+x.type).join("\n");
+
+function newFill(f){
+  const rec={id:newId(),formId:f.id,formName:f.name,rev:f.rev||"",cat:f.cat||"",
+    started:new Date().toISOString(),values:{}};
+  (f.fields||[]).forEach(x=>{rec.values[x.id]=x.type==="table"?[{}]:x.type==="check"?false:""});
+  S.fills.push(rec); saveLocal(); return rec;
+}
+function fillTitle(r){
+  const f=S.forms.find(x=>x.id===r.formId);
+  const first=(f&&(f.fields||[]).find(x=>["text","number"].includes(x.type)));
+  const v=first?String(r.values[first.id]||"").trim():"";
+  return v||("Started "+r.started.slice(0,16).replace("T"," "));
+}
+
+
+
+/* ---------- sketch objects ---------- */
+const VBW=1000, VBH=750;
+const SHAPES={
+ wall:      (w,hh)=>`<rect x="0" y="${hh*.35}" width="${w}" height="${hh*.3}" class="k-solid"/>`,
+ door:      (w,hh)=>`<path d="M0 ${hh} L0 0 A ${w} ${hh} 0 0 1 ${w} ${hh} Z" class="k-line"/><rect x="0" y="${hh-4}" width="${w*.18}" height="4" class="k-solid"/>`,
+ window:    (w,hh)=>`<rect x="0" y="${hh*.4}" width="${w}" height="${hh*.2}" class="k-line"/><line x1="0" y1="${hh*.5}" x2="${w}" y2="${hh*.5}" class="k-stroke"/>`,
+ stairs:    (w,hh)=>{let s="";for(let i=0;i<6;i++)s+=`<line x1="0" y1="${hh*i/6}" x2="${w}" y2="${hh*i/6}" class="k-stroke"/>`;return `<rect width="${w}" height="${hh}" class="k-line"/>${s}`},
+ room:      (w,hh)=>`<rect width="${w}" height="${hh}" class="k-line"/>`,
+ table:     (w,hh)=>`<rect width="${w}" height="${hh}" rx="3" class="k-line"/>`,
+ roundtable:(w,hh)=>`<ellipse cx="${w/2}" cy="${hh/2}" rx="${w/2}" ry="${hh/2}" class="k-line"/>`,
+ chair:     (w,hh)=>`<rect width="${w}" height="${hh*.8}" rx="3" class="k-line"/><rect y="${hh*.8}" width="${w}" height="${hh*.2}" class="k-solid"/>`,
+ sofa:      (w,hh)=>`<rect width="${w}" height="${hh}" rx="5" class="k-line"/><rect x="${w*.1}" y="${hh*.25}" width="${w*.8}" height="${hh*.75}" class="k-line"/>`,
+ bed:       (w,hh)=>`<rect width="${w}" height="${hh}" rx="3" class="k-line"/><rect x="2" y="2" width="${w-4}" height="${hh*.28}" class="k-line"/>`,
+ desk:      (w,hh)=>`<rect width="${w}" height="${hh}" class="k-line"/><line x1="${w*.6}" y1="0" x2="${w*.6}" y2="${hh}" class="k-stroke"/>`,
+ cabinet:   (w,hh)=>`<rect width="${w}" height="${hh}" class="k-line"/><line x1="${w/2}" y1="0" x2="${w/2}" y2="${hh}" class="k-stroke"/>`,
+ counter:   (w,hh)=>`<rect width="${w}" height="${hh}" class="k-line"/><rect x="${w*.55}" y="${hh*.2}" width="${w*.3}" height="${hh*.6}" rx="3" class="k-stroke"/>`,
+ fridge:    (w,hh)=>`<rect width="${w}" height="${hh}" rx="3" class="k-line"/><line x1="0" y1="${hh*.35}" x2="${w}" y2="${hh*.35}" class="k-stroke"/>`,
+ stove:     (w,hh)=>`<rect width="${w}" height="${hh}" class="k-line"/>`+[[.3,.3],[.7,.3],[.3,.7],[.7,.7]].map(([a,b])=>`<circle cx="${w*a}" cy="${hh*b}" r="${Math.min(w,hh)*.13}" class="k-stroke"/>`).join(""),
+ sink:      (w,hh)=>`<rect width="${w}" height="${hh}" rx="4" class="k-line"/><ellipse cx="${w/2}" cy="${hh*.55}" rx="${w*.3}" ry="${hh*.28}" class="k-stroke"/>`,
+ toilet:    (w,hh)=>`<rect x="${w*.25}" width="${w*.5}" height="${hh*.3}" class="k-line"/><ellipse cx="${w/2}" cy="${hh*.65}" rx="${w*.35}" ry="${hh*.32}" class="k-line"/>`,
+ bath:      (w,hh)=>`<rect width="${w}" height="${hh}" rx="8" class="k-line"/><rect x="${w*.08}" y="${hh*.12}" width="${w*.84}" height="${hh*.76}" rx="6" class="k-stroke"/>`,
+ tv:        (w,hh)=>`<rect width="${w}" height="${hh*.8}" class="k-line"/><rect x="${w*.35}" y="${hh*.8}" width="${w*.3}" height="${hh*.2}" class="k-solid"/>`,
+ car:       (w,hh)=>`<rect x="0" y="${hh*.18}" width="${w}" height="${hh*.64}" rx="${hh*.2}" class="k-line"/><rect x="${w*.22}" y="${hh*.26}" width="${w*.34}" height="${hh*.48}" rx="3" class="k-stroke"/>`+[[.18,.12],[.18,.88],[.78,.12],[.78,.88]].map(([a,b])=>`<rect x="${w*a}" y="${hh*b-hh*.09}" width="${w*.1}" height="${hh*.18}" rx="2" class="k-solid"/>`).join(""),
+ truck:     (w,hh)=>`<rect x="0" y="${hh*.2}" width="${w*.42}" height="${hh*.6}" rx="4" class="k-line"/><rect x="${w*.42}" y="${hh*.14}" width="${w*.58}" height="${hh*.72}" class="k-line"/>`,
+ motorcycle:(w,hh)=>`<circle cx="${w*.18}" cy="${hh/2}" r="${hh*.3}" class="k-stroke"/><circle cx="${w*.82}" cy="${hh/2}" r="${hh*.3}" class="k-stroke"/><line x1="${w*.18}" y1="${hh/2}" x2="${w*.82}" y2="${hh/2}" class="k-stroke"/>`,
+ bicycle:   (w,hh)=>`<circle cx="${w*.2}" cy="${hh*.6}" r="${hh*.32}" class="k-stroke"/><circle cx="${w*.8}" cy="${hh*.6}" r="${hh*.32}" class="k-stroke"/><path d="M${w*.2} ${hh*.6} L${w*.45} ${hh*.25} L${w*.8} ${hh*.6}" class="k-stroke"/>`,
+ tree:      (w,hh)=>`<circle cx="${w/2}" cy="${hh*.42}" r="${Math.min(w,hh)*.4}" class="k-line"/><rect x="${w*.45}" y="${hh*.75}" width="${w*.1}" height="${hh*.25}" class="k-solid"/>`,
+ bush:      (w,hh)=>`<ellipse cx="${w/2}" cy="${hh*.6}" rx="${w*.5}" ry="${hh*.4}" class="k-line"/>`,
+ fence:     (w,hh)=>{let s=`<line x1="0" y1="${hh/2}" x2="${w}" y2="${hh/2}" class="k-stroke"/>`;
+   for(let i=0;i<=6;i++)s+=`<line x1="${w*i/6}" y1="${hh*.2}" x2="${w*i/6}" y2="${hh*.8}" class="k-stroke"/>`;return s},
+ pole:      (w,hh)=>`<circle cx="${w/2}" cy="${hh/2}" r="${Math.min(w,hh)*.28}" class="k-solid"/>`,
+ dumpster:  (w,hh)=>`<path d="M${w*.08} ${hh} L0 ${hh*.25} L${w} ${hh*.25} L${w*.92} ${hh} Z" class="k-line"/>`,
+ building:  (w,hh)=>`<rect width="${w}" height="${hh}" class="k-line"/><path d="M0 0 L${w} ${hh} M${w} 0 L0 ${hh}" class="k-thin"/>`,
+ road:      (w,hh)=>`<rect width="${w}" height="${hh}" class="k-line"/><line x1="0" y1="${hh/2}" x2="${w}" y2="${hh/2}" class="k-dash"/>`,
+ marker:    (w,hh)=>`<path d="M${w*.15} 0 L${w*.85} 0 L${w*.85} ${hh*.75} L${w*.5} ${hh} L${w*.15} ${hh*.75} Z" class="k-fill"/>`,
+ casing:    (w,hh)=>`<rect x="${w*.3}" y="${hh*.15}" width="${w*.4}" height="${hh*.7}" rx="${w*.2}" class="k-solid"/>`,
+ firearm:   (w,hh)=>`<path d="M0 ${hh*.3} L${w*.7} ${hh*.3} L${w*.7} ${hh*.5} L${w*.45} ${hh*.5} L${w*.3} ${hh} L${w*.12} ${hh} L${w*.2} ${hh*.5} L0 ${hh*.5} Z" class="k-line"/>`,
+ knife:     (w,hh)=>`<path d="M0 ${hh*.5} L${w*.6} ${hh*.28} L${w*.6} ${hh*.72} Z" class="k-line"/><rect x="${w*.6}" y="${hh*.42}" width="${w*.4}" height="${hh*.16}" class="k-solid"/>`,
+ blood:     (w,hh)=>`<ellipse cx="${w*.5}" cy="${hh*.55}" rx="${w*.42}" ry="${hh*.36}" class="k-fill"/><circle cx="${w*.82}" cy="${hh*.25}" r="${Math.min(w,hh)*.09}" class="k-fill"/>`,
+ shoe:      (w,hh)=>`<path d="M${w*.3} 0 L${w*.7} 0 L${w*.78} ${hh*.6} L${w*.7} ${hh} L${w*.3} ${hh} L${w*.22} ${hh*.6} Z" class="k-line"/><line x1="${w*.25}" y1="${hh*.6}" x2="${w*.75}" y2="${hh*.6}" class="k-stroke"/>`,
+ tiretrack: (w,hh)=>{let s="";for(let i=0;i<8;i++)s+=`<rect x="${w*i/8+2}" y="${hh*.25}" width="${w/8-4}" height="${hh*.5}" class="k-stroke"/>`;return s},
+ phone:     (w,hh)=>`<rect x="${w*.28}" width="${w*.44}" height="${hh}" rx="4" class="k-line"/>`,
+ glass:     (w,hh)=>`<path d="M0 ${hh*.7} L${w*.3} 0 L${w*.55} ${hh*.55} L${w*.8} ${hh*.1} L${w} ${hh} Z" class="k-line"/>`,
+ packet:    (w,hh)=>`<rect width="${w}" height="${hh}" rx="2" class="k-line"/><line x1="0" y1="${hh*.25}" x2="${w}" y2="${hh*.25}" class="k-stroke"/>`,
+ body:      (w,hh)=>`<ellipse cx="${w/2}" cy="${hh*.13}" rx="${w*.16}" ry="${hh*.11}" class="k-line"/><path d="M${w*.5} ${hh*.24} L${w*.5} ${hh*.62} M${w*.5} ${hh*.32} L${w*.14} ${hh*.5} M${w*.5} ${hh*.32} L${w*.86} ${hh*.5} M${w*.5} ${hh*.62} L${w*.26} ${hh} M${w*.5} ${hh*.62} L${w*.74} ${hh}" class="k-thick"/>`,
+ arrow:     (w,hh)=>`<line x1="0" y1="${hh/2}" x2="${w*.78}" y2="${hh/2}" class="k-thick"/><polygon points="${w},${hh/2} ${w*.75},${hh*.28} ${w*.75},${hh*.72}" class="k-fill"/>`,
+ line:      (w,hh)=>`<line x1="0" y1="${hh/2}" x2="${w}" y2="${hh/2}" class="k-thick"/>`,
+ rect:      (w,hh)=>`<rect width="${w}" height="${hh}" class="k-dash"/>`,
+ circle:    (w,hh)=>`<ellipse cx="${w/2}" cy="${hh/2}" rx="${w/2}" ry="${hh/2}" class="k-dash"/>`,
+ north:     (w,hh)=>`<line x1="${w/2}" y1="${hh}" x2="${w/2}" y2="${hh*.2}" class="k-thick"/><polygon points="${w/2},0 ${w*.3},${hh*.25} ${w*.7},${hh*.25}" class="k-fill"/>`
+};
+const PALETTE=[
+ ["Structure",[["room","Room"],["wall","Wall"],["door","Door"],["window","Window"],["stairs","Stairs"],["building","Building"]]],
+ ["Furniture",[["table","Table"],["roundtable","Round table"],["chair","Chair"],["sofa","Sofa"],["bed","Bed"],["desk","Desk"],["cabinet","Cabinet"],["counter","Counter"],["fridge","Fridge"],["stove","Stove"],["sink","Sink"],["toilet","Toilet"],["bath","Bath"],["tv","TV"]]],
+ ["Vehicles",[["car","Car"],["truck","Truck"],["motorcycle","Motorcycle"],["bicycle","Bicycle"]]],
+ ["Outdoor",[["tree","Tree"],["bush","Bush"],["fence","Fence"],["pole","Pole"],["dumpster","Dumpster"],["road","Road"]]],
+ ["Evidence",[["marker","Marker"],["casing","Casing"],["firearm","Firearm"],["knife","Knife"],["blood","Blood"],["shoe","Shoe print"],["tiretrack","Tire track"],["phone","Phone"],["glass","Glass"],["packet","Packet"],["body","Body"]]],
+ ["Notes",[["text","Text"],["arrow","Arrow"],["line","Line"],["rect","Box"],["circle","Circle"],["north","North"]]]
+];
+const DEFSIZE={room:[380,260],wall:[240,26],door:[70,70],window:[120,26],stairs:[120,150],building:[220,160],
+ table:[150,90],roundtable:[110,110],chair:[54,54],sofa:[170,70],bed:[150,200],desk:[160,80],cabinet:[130,50],
+ counter:[190,60],fridge:[70,70],stove:[80,80],sink:[80,60],toilet:[60,80],bath:[160,75],tv:[100,30],
+ car:[220,100],truck:[250,110],motorcycle:[130,60],bicycle:[120,60],tree:[90,90],bush:[80,55],fence:[220,30],
+ pole:[30,30],dumpster:[120,80],road:[420,110],marker:[42,50],casing:[26,34],firearm:[70,50],knife:[70,34],
+ blood:[70,55],shoe:[40,80],tiretrack:[200,50],phone:[34,54],glass:[70,50],packet:[44,34],body:[110,170],
+ text:[160,34],arrow:[130,40],line:[160,20],rect:[150,110],circle:[110,110],north:[46,64]};
+const SHAPENAME=t=>{for(const[,list]of PALETTE){const f=list.find(x=>x[0]===t);if(f)return f[1]}return t};
+
+/* ---------- forms ---------- */
+function formStale(f){ if(!f.verified)return false;
+  const t=Date.parse(f.verified); return !isNaN(t)&&(Date.now()-t)/86400000>365 }
+function renderForms(){
+  $("#title").textContent="Forms";
+  const fs=S.forms.slice().sort((a,b)=>a.name.localeCompare(b.name));
+  const open=S.fills.slice().sort((a,b)=>b.started.localeCompare(a.started));
+  const openBlock=open.length?`<div class="sect">In progress on this phone — ${open.length}</div><div class="rows">`
+    +open.map(r=>`<button class="row" data-fill="${r.id}">
+      <span><span class="code">${esc(r.formName)}</span>
+      <span class="desc">${esc(fillTitle(r))}</span></span>
+      <span class="rt"><span class="badge b-attn">Not exported</span><span class="chev">&#8250;</span></span></button>`).join("")
+    +`</div><p class="hint">These are on this phone only. Export each one and clear it.</p>`:"";
+  const seg=`<div class="seg"><button class="${sceneTab==="forms"?"on":""}" data-scene="forms">Forms</button>
+    <button class="${sceneTab==="sketch"?"on":""}" data-scene="sketch">Sketches</button></div>`;
+  if(sceneTab==="sketch")return renderSketchList(seg);
+  const bar=seg+`<div class="editbar"><button id="addform">Add a form</button></div>`;
+  if(!fs.length){$("#v-forms").innerHTML=bar+`<div class="empty"><strong>No forms yet</strong>
+    <p>Keep the blank forms you actually use here — what each is for, its revision, and a link to the current version.</p></div>`+openBlock;return}
+  const stale=fs.filter(formStale).length, unver=fs.filter(f=>!f.verified).length;
+  const g={}; fs.forEach(f=>{const k=f.cat||"Admin";(g[k]=g[k]||[]).push(f)});
+  const badge=f=>formStale(f)?`<span class="badge b-action">Re-check</span>`
+    :!f.verified?`<span class="badge b-attn">Unverified</span>`
+    :`<span class="badge b-good">${esc(f.verified.slice(0,7))}</span>`;
+  $("#v-forms").innerHTML=bar
+    +((stale||unver)?`<div class="unver">${stale?stale+(stale===1?" form hasn't":" forms haven't")+" been checked in over a year. ":""}${unver?unver+(unver===1?" has":" have")+" no checked date. ":""}Forms get revised — confirm you're carrying the current one.</div>`:"")
+    +FORMCATS.filter(k=>g[k]).concat(Object.keys(g).filter(k=>!FORMCATS.includes(k))).map(k=>
+      `<div class="sect">${esc(k)}</div><div class="rows">`+g[k].map(f=>
+        `<button class="row" data-form="${f.id}">
+          <span><span class="code">${esc(f.name)}</span>
+          <span class="desc">${esc(f.rev?"Rev "+f.rev+" · ":"")}${esc(f.desc||"No description")}</span></span>
+          <span class="rt">${(f.fields||[]).length?`<span class="badge b-req">Fillable</span>`:""}${badge(f)}<span class="chev">&#8250;</span></span></button>`).join("")+`</div>`).join("")
+    +openBlock;
+}
+let curForm=null;
+function renderSketchList(seg){
+  $("#title").textContent="Scene";
+  const sks=S.sketches.slice().sort((a,b)=>(b.when||"").localeCompare(a.when||""));
+  $("#v-forms").innerHTML=seg
+    +`<div class="editbar"><button id="newsketch">Start a sketch</button></div>`
+    +(sks.length?`<div class="rows">`+sks.map(sk=>
+        `<button class="row" data-sk="${sk.id}">
+          <span><span class="code">${esc(sk.caseNo||"Untitled sketch")}</span>
+          <span class="desc">${esc(sk.addr||"No address")} · ${(sk.objs||[]).length} object${(sk.objs||[]).length===1?"":"s"} · ${esc((sk.when||"").slice(0,10))}</span></span>
+          <span class="rt"><span class="chev">&#8250;</span></span></button>`).join("")+`</div>`
+      :`<div class="empty"><strong>No sketches yet</strong>
+        <p>A blank page you drag objects onto — rooms, furniture, vehicles, evidence markers. Label them and they build a legend.</p></div>`)
+    +`<p class="hint">Sketches stay on this phone only.</p>`;
+}
+let curForm2=null;
+function formSheet(f){
+  const isNew=!f; curForm=f;
+  openSheet(`<h3>${isNew?"Add a form":esc(f.name)}</h3>
+    ${isNew?"":`<div class="kv" style="margin-bottom:12px">
+      ${f.rev?`<div><dt>Revision</dt><dd>${esc(f.rev)}</dd></div>`:""}
+      <div><dt>Last checked</dt><dd>${esc(f.verified||"never")}</dd></div>
+      ${f.desc?`<div style="display:block"><dt style="margin-bottom:3px">When to use it</dt><dd style="text-align:left">${esc(f.desc)}</dd></div>`:""}
+    </div>
+    ${(f.links||[]).length?`<div class="links" style="margin-bottom:12px">`+(f.links||[]).map(l=>
+      `<a class="lnk" href="${esc(l.url)}" target="_blank" rel="noopener">
+        <span class="ln">${esc(l.label)}</span>
+        <span class="lu">${esc(l.url.replace(/^https?:\/\//,"").split("/")[0])}</span></a>`).join("")+`</div>`
+      :`<p class="hint" style="margin:0 0 12px">No link to the blank form yet.</p>`}`}
+    ${isNew?"":`<button class="btn" id="fmfill" style="max-width:none;margin:0 0 9px">${(f.fields||[]).length?"Fill this in":"Add fields to fill it in"}</button>`}
+    <div id="formedit" style="display:${isNew?"block":"none"}">
+      <label class="fld"><span>Form name</span><input type="text" id="fmn" value="${isNew?"":esc(f.name)}" placeholder="Evidence submission form"></label>
+      <div class="two"><label class="fld"><span>Category</span><select id="fmc">${FORMCATS.map(c=>
+        `<option${!isNew&&c===f.cat?" selected":""}>${c}</option>`).join("")}</select></label>
+      <label class="fld"><span>Revision</span><input type="text" id="fmr" value="${isNew?"":esc(f.rev||"")}" placeholder="2024-A"></label></div>
+      <label class="fld"><span>When to use it</span><textarea id="fmd" rows="2" placeholder="Every item leaving the scene">${isNew?"":esc(f.desc||"")}</textarea></label>
+      <label class="fld"><span>Link to the blank form, one per line</span>
+        <textarea id="fml" rows="3" placeholder="Blank PDF | https://...">${isNew?"":esc((f.links||[]).map(l=>l.label===l.url?l.url:l.label+" | "+l.url).join("\n"))}</textarea></label>
+      <label class="fld"><span>Date you checked it's current</span><input type="date" id="fmv" value="${isNew?"":esc(f.verified||"")}"></label>
+      <label class="fld"><span>Fields, one per line</span>
+        <textarea id="fmf" rows="6" placeholder="Case number">${isNew?"":esc(fieldsText(f))}</textarea></label>
+      <pre class="fmt">Case number
+Date of scene | date
+Arrival time | time
+Consent obtained | check
+Narrative | textarea
+Persons present | table | Name, Agency, In, Out</pre>
+    </div>
+    <button class="btn" id="fmsave" style="max-width:none;margin:0">${isNew?"Add form":"Save"}</button>
+    ${isNew?"":`<button class="btn sec" id="fmedit" style="max-width:none">Edit details</button>
+      <button class="btn sec" id="fmdel" style="max-width:none;color:var(--red);border-color:var(--red)">Delete form</button>`}
+    <button class="btn sec" id="fmx" style="max-width:none">Close</button>`);
+  if(!isNew){$("#fmsave").style.display="none";
+    $("#fmedit").onclick=()=>{$("#formedit").style.display="block";
+      $("#fmedit").style.display="none";$("#fmsave").style.display="block"};
+    $("#fmdel").onclick=()=>askConfirm("Delete form","Remove "+f.name+" from the list. The form itself is wherever it lives; only this entry goes.","Delete",true,()=>{
+      S.forms=S.forms.filter(x=>x.id!==f.id);save();renderForms();toast("Deleted")})}
+  $("#fmx").onclick=closeSheet;
+  $("#fmsave").onclick=()=>{
+    const nm=$("#fmn").value.trim(); if(!nm)return toast("Needs a name");
+    const rec=f||{id:newId()};
+    Object.assign(rec,{name:nm,cat:$("#fmc").value,rev:$("#fmr").value.trim(),
+      desc:$("#fmd").value.trim(),links:parseLinks($("#fml").value),verified:$("#fmv").value,
+      fields:parseFields($("#fmf").value)});
+    if(isNew)S.forms.push(rec);
+    save();closeSheet();renderForms();toast(isNew?"Form added":"Saved")};
+}
+
+let curFill=null;
+function renderFill(){
+  const r=S.fills.find(x=>x.id===curFill);
+  if(!r){view="forms";return renderForms()}
+  const f=S.forms.find(x=>x.id===r.formId)||{fields:[]};
+  $("#title").textContent=r.formName;
+  const ctl=x=>{
+    const v=r.values[x.id];
+    if(x.type==="textarea")return `<textarea rows="3" data-fv="${x.id}">${esc(v||"")}</textarea>`;
+    if(x.type==="check")return `<button class="chk${v?" on":""}" data-fchk="${x.id}"><i>${v?"&#10003;":""}</i>${esc(x.label)}</button>`;
+    if(x.type==="table"){
+      const rows=Array.isArray(v)?v:[{}];
+      return `<div class="ftab">${rows.map((row,ri)=>`<div class="frow">
+          <span class="fnum">${ri+1}</span>
+          ${(x.cols||[]).map(c=>`<input type="text" placeholder="${esc(c)}" data-ftab="${x.id}" data-tr="${ri}" data-tc="${esc(c)}" value="${esc(row[c]||"")}">`).join("")}
+          ${rows.length>1?`<button class="frem" data-frem="${x.id}" data-tr="${ri}" aria-label="Remove row">&#215;</button>`:""}
+        </div>`).join("")}
+        <button class="btn sec" data-fadd="${x.id}" style="margin:8px 0 0;max-width:none">Add a row</button></div>`;
+    }
+    const t=x.type==="date"?"date":x.type==="time"?"time":"text";
+    const im=x.type==="number"?' inputmode="numeric"':"";
+    return `<input type="${t}"${im} data-fv="${x.id}" value="${esc(v||"")}">`;
+  };
+  $("#v-fill").innerHTML=`
+    <button class="back" data-go="forms">&#8249; Forms</button>
+    <div class="cdhead"><h2>${esc(r.formName)}</h2>
+      <div class="sub">${esc(r.rev?"Rev "+r.rev+" · ":"")}Started ${esc(r.started.slice(0,16).replace("T"," "))}</div></div>
+    ${(f.fields||[]).length?(f.fields||[]).map(x=>x.type==="check"
+      ? `<div class="fld">${ctl(x)}</div>`
+      : `<label class="fld"><span>${esc(x.label)}</span>${ctl(x)}</label>`).join("")
+      :`<div class="empty"><strong>This form has no fields yet</strong>
+        <p>Open it from the Forms tab and add fields before filling it in.</p></div>`}
+    <div class="actbar" style="grid-template-columns:1fr 1fr">
+      <button class="primary" data-export="${r.id}">Export PDF</button>
+      <button data-discard="${r.id}">Discard</button>
+    </div>
+    <p class="hint">Filled forms stay on this phone only. They are never pushed to GitHub or included in a backup file. Export, then clear.</p>`;
+}
+
+/* ---------- pdf ---------- */
+let jsPDFlib=null;
+function loadPDF(){
+  if(jsPDFlib)return Promise.resolve(jsPDFlib);
+  return new Promise((res,rej)=>{
+    const s=document.createElement("script");
+    s.src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
+    s.onload=()=>{jsPDFlib=(window.jspdf||{}).jsPDF;
+      jsPDFlib?res(jsPDFlib):rej(new Error("PDF library loaded oddly"))};
+    s.onerror=()=>rej(new Error("Couldn't load the PDF tool. Do one export on wifi and it stays cached."));
+    document.head.appendChild(s);
+  });
+}
+async function exportFill(r){
+  const f=S.forms.find(x=>x.id===r.formId)||{fields:[]};
+  let JsPDF; try{ JsPDF=await loadPDF() }catch(e){ return toast(e.message) }
+  const doc=new JsPDF({unit:"pt",format:"letter"});
+  const M=54, W=doc.internal.pageSize.getWidth(), H=doc.internal.pageSize.getHeight();
+  let y=M;
+  const page=()=>{doc.setFontSize(8);doc.setTextColor(120);
+    doc.text("Captured "+new Date().toISOString().slice(0,16).replace("T"," ")+"  ·  page "+doc.internal.getNumberOfPages(),M,H-28);
+    doc.setTextColor(0)};
+  const need=n=>{if(y+n>H-56){page();doc.addPage();y=M}};
+  doc.setFont("helvetica","bold");doc.setFontSize(16);
+  doc.text(String(r.formName),M,y);y+=20;
+  doc.setFont("helvetica","normal");doc.setFontSize(9);doc.setTextColor(90);
+  doc.text([r.rev?"Revision "+r.rev:"",r.cat||""].filter(Boolean).join("  ·  "),M,y);y+=12;
+  doc.text("Started "+r.started.slice(0,16).replace("T"," "),M,y);y+=8;
+  doc.setTextColor(0);doc.setDrawColor(30);doc.setLineWidth(1);
+  doc.line(M,y,W-M,y);y+=20;
+  (f.fields||[]).forEach(x=>{
+    const v=r.values[x.id];
+    if(x.type==="table"){
+      const rows=(Array.isArray(v)?v:[]).filter(row=>Object.values(row||{}).some(s=>String(s||"").trim()));
+      need(40);doc.setFont("helvetica","bold");doc.setFontSize(9);doc.text(String(x.label),M,y);y+=13;
+      const cols=x.cols||[],cw=(W-2*M)/Math.max(1,cols.length);
+      doc.setFontSize(8);doc.setTextColor(90);
+      cols.forEach((c,i)=>doc.text(String(c),M+i*cw+3,y));
+      doc.setTextColor(0);y+=4;doc.setLineWidth(.5);doc.setDrawColor(150);
+      doc.line(M,y,W-M,y);y+=12;
+      doc.setFont("helvetica","normal");doc.setFontSize(9);
+      (rows.length?rows:[{}]).forEach(row=>{need(18);
+        cols.forEach((c,i)=>{const cell=doc.splitTextToSize(String(row[c]||""),cw-6);
+          doc.text(cell.slice(0,1),M+i*cw+3,y)});
+        y+=13;doc.setDrawColor(220);doc.line(M,y-4,W-M,y-4)});
+      y+=8;return;
+    }
+    const val=x.type==="check"?(v?"Yes":"No"):String(v||"");
+    const lines=doc.splitTextToSize(val||"—",W-2*M);
+    need(18+lines.length*12);
+    doc.setFont("helvetica","bold");doc.setFontSize(8);doc.setTextColor(90);
+    doc.text(String(x.label).toUpperCase(),M,y);y+=12;
+    doc.setFont("helvetica","normal");doc.setFontSize(10);doc.setTextColor(0);
+    doc.text(lines,M,y);y+=lines.length*12+10;
+  });
+  page();
+  const safe=String(r.formName).replace(/[^a-z0-9]+/gi,"-").toLowerCase();
+  const name=safe+"-"+new Date().toISOString().slice(0,10)+".pdf";
+  const blob=doc.output("blob");
+  try{
+    const file=new File([blob],name,{type:"application/pdf"});
+    if(navigator.canShare&&navigator.canShare({files:[file]})){
+      await navigator.share({files:[file],title:r.formName});
+      return afterExport(r);
+    }
+  }catch(e){ if(e&&e.name==="AbortError")return; }
+  const u=URL.createObjectURL(blob);const a=document.createElement("a");
+  a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(u),1500);
+  afterExport(r);
+}
+function afterExport(r){
+  askConfirm("Exported","Once it's safely in email or Drive, clear it from this phone. Filled forms aren't backed up anywhere.",
+    "Clear it from the phone",false,()=>{
+      S.fills=S.fills.filter(x=>x.id!==r.id);saveLocal();
+      view="forms";$$(".view").forEach(v=>v.classList.toggle("on",v.id==="v-forms"));
+      render();toast("Cleared")});
+}
+
+
+
+/* ---------- sketch canvas ---------- */
+let curSketch=null, sceneTab="forms", selObj=null, palCat=0;
+function newSketch(){
+  const sk={id:newId(),caseNo:"",addr:"",when:new Date().toISOString().slice(0,16),by:"",objs:[]};
+  S.sketches.push(sk);saveLocal();return sk;
+}
+const objAt=id=>{const sk=S.sketches.find(x=>x.id===curSketch);return sk&&(sk.objs||[]).find(o=>o.id===id)};
+function objSVG(o,sel){
+  const inner=o.t==="text"
+    ? `<text x="0" y="${o.h*.7}" class="k-text" style="font-size:${Math.max(11,o.h*.72)}px">${esc(o.label||"Text")}</text>`
+    : (SHAPES[o.t]||SHAPES.rect)(o.w,o.h);
+  const tag=o.t!=="text"&&o.label?`<text x="${o.w/2}" y="${o.h+15}" class="k-tag">${esc(o.label)}</text>`:"";
+  const num=o.t==="marker"?`<text x="${o.w/2}" y="${o.h*.55}" class="k-num">${esc(o.n||"")}</text>`:"";
+  return `<g data-obj="${o.id}" transform="translate(${o.x},${o.y}) rotate(${o.r||0} ${o.w/2} ${o.h/2})">
+    <rect width="${o.w}" height="${o.h}" fill="transparent"/>
+    ${inner}${num}${tag}
+    ${sel?`<rect width="${o.w}" height="${o.h}" class="k-sel"/>
+      <rect data-handle="${o.id}" x="${o.w-13}" y="${o.h-13}" width="26" height="26" class="k-handle"/>`:""}
+  </g>`;
+}
+function canvasSVG(sk){
+  return `<svg id="skcanvas" viewBox="0 0 ${VBW} ${VBH}" class="skcanvas">
+    <rect width="${VBW}" height="${VBH}" fill="#fff"/>
+    ${(sk.objs||[]).map(o=>objSVG(o,o.id===selObj)).join("")}
+  </svg>`;
+}
+function renderSketch(){
+  const sk=S.sketches.find(x=>x.id===curSketch);
+  if(!sk){view="forms";return renderForms()}
+  $("#title").textContent=sk.caseNo||"Sketch";
+  const sel=objAt(selObj);
+  const legend=(sk.objs||[]).filter(o=>o.label&&o.t!=="text");
+  $("#v-sketch").innerHTML=`
+    <button class="back" data-go="forms">&#8249; Scene</button>
+    <div class="cdhead"><h2>${esc(sk.caseNo||"Untitled sketch")}</h2>
+      <div class="sub">${esc(sk.addr||"No address")} · ${esc((sk.when||"").replace("T"," "))}${sk.by?" · "+esc(sk.by):""}</div></div>
+    <div class="editbar"><button data-skedit="1">Scene details</button>
+      <button data-skpdf="1">Export PDF</button></div>
+    <div class="canvaswrap">${canvasSVG(sk)}</div>
+    ${sel?`<div class="objbar">
+        <button data-olabel="${sel.id}">${sel.label?"Label":"Add label"}</button>
+        <button data-orot="${sel.id}">Rotate</button>
+        <button data-odup="${sel.id}">Duplicate</button>
+        <button data-ofwd="${sel.id}">Front</button>
+        <button data-odel="${sel.id}" class="danger">Delete</button>
+      </div><p class="hint" style="margin-top:6px">${esc(SHAPENAME(sel.t))}${sel.label?" · "+esc(sel.label):""} — drag to move, pull the corner to resize.</p>`
+      :`<p class="hint" style="margin-top:6px">Tap an object to select it. Tap the page to deselect.</p>`}
+    <div class="filters">${PALETTE.map(([c],ix)=>
+      `<button data-pal="${ix}" class="${ix===palCat?"sel":""}">${esc(c)}</button>`).join("")}</div>
+    <div class="palette">${PALETTE[palCat][1].map(([t,nm])=>
+      `<button data-add="${t}"><span class="pv">${palPreview(t)}</span><span class="pn">${esc(nm)}</span></button>`).join("")}</div>
+    ${legend.length?`<div class="sect">Legend</div><div class="rows">`+legend.map(o=>
+      `<button class="row" data-osel="${o.id}">
+        <span><span class="code">${o.t==="marker"&&o.n?esc(o.n)+" · ":""}${esc(o.label)}</span>
+        <span class="desc">${esc(SHAPENAME(o.t))}</span></span>
+        <span class="rt"><span class="chev">&#8250;</span></span></button>`).join("")+`</div>`
+      :`<p class="hint">Label an object and it appears in the legend.</p>`}
+    <div class="actbar" style="grid-template-columns:1fr 1fr">
+      <button class="primary" data-skpdf="1">Export PDF</button>
+      <button data-skdel="1">Delete sketch</button></div>`;
+}
+function palPreview(t){
+  if(t==="text")return `<svg viewBox="0 0 40 30" class="pvs"><text x="20" y="21" class="k-text" style="font-size:16px" text-anchor="middle">Aa</text></svg>`;
+  const[w,hh]=DEFSIZE[t]||[40,30], s=Math.min(34/w,26/hh), W=w*s, H=hh*s;
+  return `<svg viewBox="0 0 ${W} ${H}" class="pvs">${(SHAPES[t]||SHAPES.rect)(W,H)}</svg>`;
+}
+function addObj(t){
+  const sk=S.sketches.find(x=>x.id===curSketch); if(!sk)return;
+  const[w,hh]=DEFSIZE[t]||[120,80];
+  const o={id:newId(),t,x:Math.round(VBW/2-w/2),y:Math.round(VBH/2-hh/2),w,h:hh,r:0,label:""};
+  if(t==="marker")o.n=String((sk.objs||[]).filter(x=>x.t==="marker").length+1);
+  if(t==="text")o.label="Text";
+  sk.objs.push(o);selObj=o.id;saveLocal();renderSketch();
+}
+
+/* drag and resize */
+let drag=null;
+function canvasPt(e){
+  const svg=document.getElementById("skcanvas"); if(!svg)return null;
+  const r=svg.getBoundingClientRect();
+  return {x:(e.clientX-r.left)/r.width*VBW, y:(e.clientY-r.top)/r.height*VBH};
+}
+document.addEventListener("pointerdown",e=>{
+  const svg=document.getElementById("skcanvas");
+  if(!svg||!svg.contains(e.target))return;
+  const hEl=e.target.closest("[data-handle]"), gEl=e.target.closest("[data-obj]");
+  const p=canvasPt(e); if(!p)return;
+  if(hEl){const o=objAt(hEl.dataset.handle); if(!o)return;
+    drag={mode:"size",o,px:p.x,py:p.y,w:o.w,h:o.h};
+    e.preventDefault();return}
+  if(gEl){const o=objAt(gEl.dataset.obj); if(!o)return;
+    if(selObj!==o.id){selObj=o.id;renderSketch()}
+    drag={mode:"move",o,px:p.x,py:p.y,x:o.x,y:o.y};
+    e.preventDefault();return}
+  if(selObj){selObj=null;renderSketch()}
+},{passive:false});
+document.addEventListener("pointermove",e=>{
+  if(!drag)return;
+  const p=canvasPt(e); if(!p)return;
+  const o=drag.o, dx=p.x-drag.px, dy=p.y-drag.py;
+  if(drag.mode==="move"){
+    o.x=Math.max(-o.w*.4,Math.min(VBW-o.w*.6,drag.x+dx));
+    o.y=Math.max(-o.h*.4,Math.min(VBH-o.h*.6,drag.y+dy));
+  }else{
+    o.w=Math.max(16,drag.w+dx); o.h=Math.max(16,drag.h+dy);
+  }
+  const g=document.querySelector(`[data-obj="${o.id}"]`);
+  if(g){const parent=g.parentNode;
+    g.outerHTML=objSVG(o,true);}
+  e.preventDefault();
+},{passive:false});
+document.addEventListener("pointerup",()=>{ if(!drag)return;
+  drag.o.x=Math.round(drag.o.x);drag.o.y=Math.round(drag.o.y);
+  drag.o.w=Math.round(drag.o.w);drag.o.h=Math.round(drag.o.h);
+  drag=null;saveLocal();renderSketch();});
+
+function sketchMetaSheet(sk){
+  openSheet(`<h3>Scene details</h3>
+    <label class="fld"><span>Case number</span><input type="text" id="skc" value="${esc(sk.caseNo||"")}"></label>
+    <label class="fld"><span>Address or location</span><input type="text" id="ska" value="${esc(sk.addr||"")}"></label>
+    <div class="two"><label class="fld"><span>Date and time</span><input type="text" id="skw" value="${esc(sk.when||"")}"></label>
+      <label class="fld"><span>Sketched by</span><input type="text" id="skb" value="${esc(sk.by||"")}"></label></div>
+    <button class="btn" id="sksave" style="max-width:none;margin:0">Save</button>
+    <button class="btn sec" id="skx" style="max-width:none">Cancel</button>`);
+  $("#skx").onclick=closeSheet;
+  $("#sksave").onclick=()=>{Object.assign(sk,{caseNo:$("#skc").value.trim(),addr:$("#ska").value.trim(),
+    when:$("#skw").value.trim(),by:$("#skb").value.trim()});
+    saveLocal();closeSheet();renderSketch();toast("Saved")};
+}
+function labelSheet(o){
+  openSheet(`<h3>Label</h3>
+    <label class="fld"><span>What is it</span><input type="text" id="olb" value="${esc(o.label||"")}" placeholder="Kitchen table"></label>
+    ${o.t==="marker"?`<label class="fld"><span>Marker number</span><input type="text" id="onm" value="${esc(o.n||"")}"></label>`:""}
+    <button class="btn" id="olsv" style="max-width:none;margin:0">Save</button>
+    <button class="btn sec" id="olx" style="max-width:none">Cancel</button>`);
+  $("#olx").onclick=closeSheet;
+  $("#olsv").onclick=()=>{o.label=$("#olb").value.trim();
+    if(o.t==="marker"&&$("#onm"))o.n=$("#onm").value.trim();
+    saveLocal();closeSheet();renderSketch();toast("Saved")};
+}
+
 /* ---------- inventory ---------- */
-let invGroup="loc";
+let invGroup="loc", invAll=false;
 function renderInventory(){
   $("#title").textContent="Inventory";
   const L=live();
@@ -1077,22 +1804,47 @@ function renderInventory(){
     <span><span class="code">${esc(i.name)}</span>
     <span class="desc">${esc(i.loc||"—")} · ${esc(i.qty)} in stock${i.par?" · par "+esc(i.par):""}</span></span>
     <span class="rt">${flag(i)}<span class="chev">&#8250;</span></span></button>`;
+  let shown=0; const CAP=invAll?1e9:150;
   const body=invGroup==="az"
-    ? `<div class="rows">`+L.slice().sort((a,b)=>a.name.localeCompare(b.name)).map(rowOf).join("")+`</div>`
-    : Object.keys(g).sort().map(k=>`<div class="sect">${esc(k)} — ${g[k].length}</div>`
-        +`<div class="rows">`+g[k].slice().sort((a,b)=>a.name.localeCompare(b.name)).map(rowOf).join("")+`</div>`).join("");
+    ? `<div class="rows">`+L.slice().sort((a,b)=>a.name.localeCompare(b.name))
+        .filter(()=>shown++<CAP).map(rowOf).join("")+`</div>`
+    : Object.keys(g).sort().map(k=>{
+        if(shown>=CAP)return "";
+        const rows=g[k].slice().sort((a,b)=>a.name.localeCompare(b.name)).filter(()=>shown++<CAP);
+        if(!rows.length)return "";
+        return `<div class="sect">${esc(k)} — ${g[k].length}</div>`
+          +`<div class="rows">`+rows.map(rowOf).join("")+`</div>`}).join("");
   $("#v-inventory").innerHTML=`<div class="filters">${opts.map(([k,l])=>
     `<button data-invg="${k}" class="${invGroup===k?"sel":""}">${l}</button>`).join("")}</div>
-    <div class="sect">${L.length} items</div>${body}`;
+    <div class="sect">${L.length} items</div>${body}
+    ${!invAll&&L.length>CAP?`<button class="btn sec" id="invall" style="margin:14px auto 0">Show all ${L.length}</button>
+      <p class="hint" style="text-align:center">Showing ${CAP} for speed. Search is faster than scrolling.</p>`:""}`;
 }
 
 /* ---------- guide ---------- */
 function renderGuide(){
   $("#title").textContent="Guide";
-  const L=live(), withS=L.filter(i=>(i.steps||[]).length), without=L.filter(i=>!(i.steps||[]).length);
+  const L=live(), withS=L.concat(requests()).filter(i=>(i.steps||[]).length), without=L.filter(i=>!(i.steps||[]).length);
+  const reqs=requests().sort((a,b)=>a.name.localeCompare(b.name));
+  const reqBlock=`<div class="sect">Available on request — ${reqs.length}</div>`
+    +(reqs.length?`<div class="rows">`+reqs.map(i=>`<button class="row" data-item="${i.id}">
+        <span><span class="code">${esc(i.name)}</span>
+        <span class="desc">${esc(i.contact||"No contact recorded")}${i.lead?" · "+esc(i.lead):""}</span></span>
+        <span class="rt"><span class="badge b-req">On request</span><span class="chev">&#8250;</span></span></button>`).join("")+`</div>`
+      :`<div class="empty" style="padding:20px 16px"><strong>Nothing logged</strong>
+        <p>Gear you don't carry but can call for — a scanner, a drone, a specialist kit.</p></div>`)
+    +`<button class="btn sec" id="addreq" style="margin:9px 0 0;max-width:none">Add something available on request</button>`;
   const bar=`<div class="editbar"><button id="bulkopen">Paste instructions</button></div>`;
+  const missingList=without.length?`<div class="sect">No instructions yet — ${without.length}</div><div class="rows">`
+      +without.slice().sort((a,b)=>a.name.localeCompare(b.name)).slice(0,40).map(i=>
+        `<button class="row" data-item="${i.id}">
+          <span><span class="code">${esc(i.name)}</span>
+          <span class="desc">${esc(i.loc||"—")} · ${esc(catName(i.cat))}</span></span>
+          <span class="rt"><span class="chev">&#8250;</span></span></button>`).join("")
+      +`</div>`+(without.length>40?`<p class="hint">Showing 40 of ${without.length}. Work down the list and they move up into the sections above.</p>`:""):"";
   if(!withS.length){$("#v-guide").innerHTML=bar+`<div class="empty"><strong>No instructions yet</strong>
-    <p>Add the steps from a manufacturer sheet or your SOP, on any item. They show up here, browsable by name.</p></div>`;return}
+    <p>Add the steps from a manufacturer sheet or your SOP, on any item. Use Paste instructions to do a batch at once.</p></div>`
+    +missingList+reqBlock;return}
   const g={};withS.forEach(i=>{const k=i.cat+" · "+catName(i.cat);(g[k]=g[k]||[]).push(i)});
   const badge=i=>!i.verified?`<span class="badge b-attn">Unverified</span>`
     :isStale(i)?`<span class="badge b-action">Re-check</span>`
@@ -1106,13 +1858,7 @@ function renderGuide(){
         <span><span class="code">${esc(i.name)}</span>
         <span class="desc">${(i.steps||[]).length} steps · ${esc(i.loc||"—")}${i.source?" · "+esc(i.source):""}</span></span>
         <span class="rt">${badge(i)}<span class="chev">&#8250;</span></span></button>`).join("")+`</div>`).join("")
-    +(without.length?`<div class="sect">No instructions yet — ${without.length}</div><div class="rows">`
-      +without.sort((a,b)=>a.name.localeCompare(b.name)).slice(0,40).map(i=>
-        `<button class="row" data-item="${i.id}">
-          <span><span class="code">${esc(i.name)}</span>
-          <span class="desc">${esc(i.loc||"—")} · ${esc(catName(i.cat))}</span></span>
-          <span class="rt"><span class="chev">&#8250;</span></span></button>`).join("")
-      +`</div>`+(without.length>40?`<p class="hint">Showing the first 40.</p>`:""):"")}
+    +missingList+reqBlock}
 
 
 /* ---------- bulk instructions ---------- */
@@ -1189,22 +1935,27 @@ function gapSheet(existing){
     <label class="fld"><span>Category</span><select id="gc">${CATS.map(c=>
       `<option value="${c[0]}"${i&&c[0]===i.cat?" selected":""}>${c[0]} · ${c[1]}</option>`).join("")}</select></label>
     <label class="fld"><span>Why not carried</span><select id="gt">
-      <option value="gap"${i&&i.gapType!=="deliberate"?" selected":""}>Gap — we should have it</option>
+      <option value="gap"${i&&i.gapType==="gap"?" selected":(!i?"":"")}>Gap — we should have it</option>
+      <option value="request"${i&&i.gapType==="request"?" selected":""}>Available on request — someone else has it</option>
       <option value="deliberate"${i&&i.gapType==="deliberate"?" selected":""}>Deliberate — we don't need it</option></select></label>
     <label class="fld"><span>Note</span><textarea id="go" rows="3" placeholder="Cost, who to ask, why not">${i?esc(i.note):""}</textarea></label>
     <button class="btn" id="gsave" style="max-width:none;margin:0">${i?"Save":"Log it"}</button>
     ${i?`<button class="btn sec" id="gdel" style="max-width:none;color:var(--red);border-color:var(--red)">Delete</button>`:""}
     <button class="btn sec" id="gcancel" style="max-width:none">Cancel</button>`);
   $("#gcancel").onclick=closeSheet;
-  if(i)$("#gdel").onclick=()=>{if(!confirm("Delete "+i.name+"?"))return;
-    S.items=S.items.filter(x=>x.id!==i.id);save();closeSheet();view="home";renderList("gaps");toast("Deleted")};
+  if(i)$("#gdel").onclick=()=>askConfirm("Delete","Remove "+i.name+" from the list.","Delete",true,()=>{
+    S.items=S.items.filter(x=>x.id!==i.id);save();view="home";renderList("gaps");toast("Deleted")});
   $("#gsave").onclick=()=>{
     const nm=$("#gn").value.trim(); if(!nm)return toast("Needs a name");
     if(i)Object.assign(i,{name:nm,cat:$("#gc").value,gapType:$("#gt").value,note:$("#go").value.trim()});
     else S.items.push({id:newId(),name:nm,loc:"",cat:$("#gc").value,cls:"Consumable",qty:0,par:"",
       date:"",status:"Not carried",gapType:$("#gt").value,note:$("#go").value.trim(),
-      steps:[],source:"",verified:"",uses:[],fav:false});
-    save();closeSheet();view="home";renderList("gaps");toast(i?"Saved":"Logged")};
+      steps:[],source:"",verified:"",uses:[],fav:false,rel:[],links:[],contact:"",phone:"",lead:""});
+    save();closeSheet();
+    const t=$("#gt")?$("#gt").value:"gap";
+    if(t==="request"){view="guide";$$(".view").forEach(v=>v.classList.toggle("on",v.id==="v-guide"));render()}
+    else {view="home";renderList("gaps")}
+    toast(i?"Saved":"Logged")};
 }
 
 /* ---------- data and backup ---------- */
@@ -1230,7 +1981,7 @@ function ingest(text,replace){
   text=(text||"").trim(); if(!text)return toast("Nothing pasted");
   if(text[0]==="{"){let o;try{o=JSON.parse(text)}catch(e){return toast("That backup didn't parse")}
     if(!o.items)return toast("No items in that file");
-    if(replace){S.items=o.items;S.comps=o.comps||[];if(o.walls)S.walls=o.walls;S.demo=!!o.demo}
+    if(replace){S.items=o.items;S.comps=o.comps||[];S.forms=o.forms||[];if(o.walls)S.walls=o.walls;S.demo=!!o.demo}
     else o.items.forEach(x=>{x.id=newId();S.items.push(x)});
     save();renderData();return toast(o.items.length+" items "+(replace?"restored":"added"))}
   const rows=parseCSV(text); if(rows.length<2)return toast("Nothing to import");
@@ -1257,6 +2008,7 @@ function renderData(){
       <div><dt>Items</dt><dd>${L.length}</dd></div>
       <div><dt>Compartments</dt><dd>${S.comps.length}</dd></div>
       <div><dt>Gaps logged</dt><dd>${gp.length}</dd></div>
+      <div><dt>Forms</dt><dd>${S.forms.length}</dd></div>
       <div><dt>Last export</dt><dd>${esc(S.lastBackup||"never")}</dd></div>
     </div>
     ${L.length&&stale?`<div class="unver">Everything lives in Safari on this device only. Download a backup — if the browser clears its data, there's no other copy.</div>`:""}
@@ -1325,15 +2077,34 @@ function renderList(key){
 function renderSearch(){
   $("#title").textContent="Search";
   const q=query.toLowerCase();
-  const hits=live().filter(i=>(i.name+" "+i.loc+" "+i.cat+" "+catName(i.cat)+" "+i.cls).toLowerCase().includes(q)).slice(0,40);
+  const notCarried=S.items.filter(i=>i.status==="Not carried"&&i.gapType!=="request");
+  const pool=live().concat(requests(),notCarried);
+  const hay=i=>(i.name+" "+i.loc+" "+i.cat+" "+catName(i.cat)+" "+i.cls+" "+(i.contact||"")
+    +" "+(i.note||"")+" "+(i.steps||[]).join(" ")
+    +" "+((S.comps.find(c=>c.code===i.loc)||{}).desc||"")).toLowerCase();
+  const all=pool.filter(i=>hay(i).includes(q));
+  const hits=all.slice(0,40);
+  const fhits=S.forms.filter(f=>((f.name||"")+" "+(f.desc||"")+" "+(f.cat||"")+" "+(f.rev||"")).toLowerCase().includes(q)).slice(0,8);
   $("#v-search").innerHTML=hits.length
-    ? `<div class="sect">${hits.length} result${hits.length===1?"":"s"}</div><div class="rows">`
+    ? `<div class="sect">${all.length>hits.length?"Showing "+hits.length+" of "+all.length:hits.length+" result"+(hits.length===1?"":"s")}</div><div class="rows">`
       +hits.map(i=>{const cp=S.comps.find(c=>c.code===i.loc);
         return `<button class="row" data-item="${i.id}">
           <span><span class="code">${esc(i.name)}</span>
-          <span class="desc">${esc(i.loc||"—")}${cp&&cp.desc?" · "+esc(cp.desc):""} · ${esc(i.qty)} in stock</span></span>
-          <span class="rt"><span class="chev">&#8250;</span></span></button>`}).join("")+`</div>`
+          <span class="desc">${isRequest(i)?esc(i.contact||"Not in the van")
+            :i.status==="Not carried"?"Not in the van"+(i.note?" · "+esc(i.note):"")
+            :esc(i.loc||"—")+(cp&&cp.desc?" · "+esc(cp.desc):"")+" · "+esc(i.qty)+" in stock"}</span></span>
+          <span class="rt">${isRequest(i)?`<span class="badge b-req">On request</span>`
+            :i.status==="Not carried"?`<span class="badge b-${i.gapType==="deliberate"?"unchecked":"action"}">${i.gapType==="deliberate"?"Not carried":"Gap"}</span>`
+            :""}<span class="chev">&#8250;</span></span></button>`}).join("")+`</div>`
     : `<div class="empty"><strong>Nothing found</strong><p>No item, compartment, or category matches that.</p></div>`;
+  if(fhits.length)$("#v-search").insertAdjacentHTML("beforeend",
+    `<div class="sect">Forms — ${fhits.length}</div><div class="rows">`+fhits.map(f=>
+      `<button class="row" data-form="${f.id}">
+        <span><span class="code">${esc(f.name)}</span>
+        <span class="desc">${esc(f.rev?"Rev "+f.rev+" · ":"")}${esc(f.cat||"")}</span></span>
+        <span class="rt"><span class="badge b-req">Form</span><span class="chev">&#8250;</span></span></button>`).join("")+`</div>`);
+  if(all.length>hits.length)$("#v-search").insertAdjacentHTML("beforeend",
+    `<p class="hint">Add another word to narrow it down.</p>`);
 }
 
 /* ---------- sweep ---------- */
@@ -1341,7 +2112,10 @@ function renderSweep(){
   $("#title").textContent="Sweep";
   const cur=S.curLoc, cs=comps(), here=live().filter(i=>i.loc===cur);
   $("#v-sweep").innerHTML=`
-    <div class="chips">${cs.map(c=>`<button data-loc="${esc(c.code)}" class="${c.code===cur?"on":""}">${esc(c.code)}</button>`).join("")}</div>
+    <button class="back" data-go="home">&#8249; Home</button>
+    <div class="chips">${cs.map(c=>{const st=compState(c.code);
+      return `<button data-loc="${esc(c.code)}" class="ch-${st.k}${c.code===cur?" on":""}">
+        <i></i>${esc(c.code)}</button>`}).join("")}</div>
     <div class="card" style="margin-bottom:14px">
       <div class="two"><label class="fld"><span>New compartment</span>
         <input type="text" id="nc" placeholder="BIN-7" autocapitalize="characters"></label>
@@ -1370,6 +2144,9 @@ function renderSweep(){
 /* ---------- events ---------- */
 document.addEventListener("click",e=>{
   const g=e.target.closest("[data-go]"); if(g)return go(g.dataset.go);
+  const bg=e.target.closest("[data-back]"); if(bg&&view==="compdetail"){
+    view="compartments";$$(".view").forEach(v=>v.classList.toggle("on",v.id==="v-compartments"));
+    render();return restoreScroll("compartments")}
   const l=e.target.closest("[data-list]"); if(l){view="home";return renderList(l.dataset.list)}
   const ed=e.target.closest("[data-edit]");
   if(ed){editing=ed.dataset.edit==="on";if(!editing)editSel=null;return renderComps()}
@@ -1384,9 +2161,41 @@ document.addEventListener("click",e=>{
     save();renderComps();return toast(c.code+" resized")}
   const c=e.target.closest("[data-comp]");
   if(c){ if(editing){editSel=c.dataset.comp;return renderComps()}
-    curComp=c.dataset.comp;view="compdetail";
+    rememberScroll();curComp=c.dataset.comp;view="compdetail";
     $$(".view").forEach(v=>v.classList.toggle("on",v.id==="v-compdetail"));
     window.scrollTo&&window.scrollTo(0,0);return render()}
+  const ec=e.target.closest("[data-editcomp]");
+  if(ec){const c=S.comps.find(x=>x.code===ec.dataset.editcomp); if(!c)return;
+    const held=live().filter(i=>i.loc===c.code).length;
+    openSheet(`<h3>Edit compartment</h3>
+      <div class="two"><label class="fld"><span>Code</span>
+        <input type="text" id="cc" value="${esc(c.code)}" autocapitalize="characters"></label>
+      <label class="fld"><span>Side of the van</span><select id="cs">
+        <option value="">Not placed</option>${SIDES.map(z=>`<option${z===c.side?" selected":""}>${z}</option>`).join("")}</select></label></div>
+      <label class="fld"><span>Where it is, in plain words</span>
+        <input type="text" id="cd" value="${esc(c.desc||"")}" placeholder="Drawer 3, left"></label>
+      <p class="hint" style="margin:0 0 14px">${held?"Renaming moves all "+held+" item"+(held===1?"":"s")+" in here with it.":"Nothing logged in here yet."}</p>
+      <button class="btn" id="csave" style="max-width:none;margin:0">Save</button>
+      <button class="btn sec" id="cdel" style="max-width:none;color:var(--red);border-color:var(--red)">Delete compartment</button>
+      <button class="btn sec" id="cx" style="max-width:none">Cancel</button>`);
+    $("#cx").onclick=closeSheet;
+    $("#cdel").onclick=()=>askConfirm("Delete compartment",
+      held?"The "+held+" item"+(held===1?"":"s")+" in "+c.code+" stay in the van but lose their compartment. You can reassign them from each item.":"Nothing is in "+c.code+", so nothing else changes.",
+      "Delete compartment",true,()=>{
+        S.items.forEach(i=>{if(i.loc===c.code)i.loc=""});
+        S.comps=S.comps.filter(x=>x.code!==c.code);
+        if(S.curLoc===c.code)S.curLoc="";
+        save();go("compartments");toast(c.code+" deleted")});
+    $("#csave").onclick=()=>{
+      const nu=$("#cc").value.trim().toUpperCase();
+      if(!nu)return toast("Needs a code");
+      if(nu!==c.code&&S.comps.some(x=>x.code===nu))return toast(nu+" already exists");
+      const old=c.code;
+      if(nu!==old){S.items.forEach(i=>{if(i.loc===old)i.loc=nu});
+        if(S.curLoc===old)S.curLoc=nu; c.code=nu; curComp=nu}
+      c.side=$("#cs").value; c.desc=$("#cd").value.trim();
+      save();closeSheet();renderCompDetail();toast("Saved")};
+    return}
   const ah=e.target.closest("[data-addhere]");
   if(ah){S.curLoc=ah.dataset.addhere;save();return go("sweep")}
   const ck=e.target.closest("[data-check]");
@@ -1394,16 +2203,90 @@ document.addEventListener("click",e=>{
     if(cc){cc.checked=new Date().toISOString().slice(0,10);save();renderCompDetail();toast(cc.code+" marked swept")}
     return}
   if(e.target.closest("#doprint")){window.print&&window.print();return}
+  if(e.target.closest("#syncnow")){
+    if(conflict){view="data";$$(".view").forEach(v=>v.classList.toggle("on",v.id==="v-data"));return render()}
+    syncErr="";retries=0;renderSyncBar();toast("Retrying");ghPush(false);return}
+  const sc=e.target.closest("[data-scene]");
+  if(sc){sceneTab=sc.dataset.scene;return renderForms()}
+  if(e.target.closest("#newsketch")){const sk=newSketch();curSketch=sk.id;view="sketch";
+    $$(".view").forEach(v=>v.classList.toggle("on",v.id==="v-sketch"));
+    render();return sketchMetaSheet(sk)}
+  const sko=e.target.closest("[data-sk]");
+  if(sko){curSketch=sko.dataset.sk;view="sketch";
+    $$(".view").forEach(v=>v.classList.toggle("on",v.id==="v-sketch"));
+    window.scrollTo&&window.scrollTo(0,0);return render()}
+  const skc=S.sketches.find(x=>x.id===curSketch);
+  if(e.target.closest("[data-skedit]")&&skc)return sketchMetaSheet(skc);
+  const pl=e.target.closest("[data-pal]"); if(pl){palCat=+pl.dataset.pal;return renderSketch()}
+  const ad=e.target.closest("[data-add]"); if(ad)return addObj(ad.dataset.add);
+  const ol=e.target.closest("[data-olabel]"); if(ol)return labelSheet(objAt(ol.dataset.olabel));
+  const orr=e.target.closest("[data-orot]");
+  if(orr){const o=objAt(orr.dataset.orot);if(o){o.r=((o.r||0)+15)%360;saveLocal();renderSketch()}return}
+  const od=e.target.closest("[data-odup]");
+  if(od){const o=objAt(od.dataset.odup);if(o&&skc){const c=Object.assign({},o,{id:newId(),x:o.x+24,y:o.y+24});
+    if(c.t==="marker")c.n=String(skc.objs.filter(x=>x.t==="marker").length+1);
+    skc.objs.push(c);selObj=c.id;saveLocal();renderSketch()}return}
+  const of_=e.target.closest("[data-ofwd]");
+  if(of_&&skc){const i=skc.objs.findIndex(x=>x.id===of_.dataset.ofwd);
+    if(i>-1){skc.objs.push(skc.objs.splice(i,1)[0]);saveLocal();renderSketch()}return}
+  const oz=e.target.closest("[data-odel]");
+  if(oz&&skc){const o=objAt(oz.dataset.odel);if(!o)return;
+    return askConfirm("Delete object","Remove "+SHAPENAME(o.t)+(o.label?" \u201c"+o.label+"\u201d":"")+" from the sketch.","Delete",true,()=>{
+      skc.objs=skc.objs.filter(x=>x.id!==o.id);selObj=null;saveLocal();renderSketch()})}
+  const os=e.target.closest("[data-osel]");
+  if(os){selObj=os.dataset.osel;renderSketch();
+    const el=document.querySelector(".canvaswrap");if(el&&el.scrollIntoView)el.scrollIntoView({block:"center"});return}
+  if(e.target.closest("[data-skdel]")&&skc)
+    return askConfirm("Delete sketch","Everything measured for "+(skc.caseNo||"this sketch")+" is removed. Export first if you need it.","Delete sketch",true,()=>{
+      S.sketches=S.sketches.filter(x=>x.id!==skc.id);saveLocal();sceneTab="sketch";go("forms");toast("Deleted")});
+  if(e.target.closest("#addform"))return formSheet(null);
+  if(e.target.closest("#fmfill")){
+    const f=curForm; if(!f)return;
+    if(!(f.fields||[]).length){$("#formedit").style.display="block";
+      const b=$("#fmedit");if(b)b.style.display="none";
+      const s=$("#fmsave");if(s)s.style.display="block";
+      return toast("Add fields, then save")}
+    const r=newFill(f);closeSheet();curFill=r.id;view="fill";
+    $$(".view").forEach(v=>v.classList.toggle("on",v.id==="v-fill"));
+    window.scrollTo&&window.scrollTo(0,0);return render()}
+  const fl=e.target.closest("[data-fill]");
+  if(fl){curFill=fl.dataset.fill;view="fill";
+    $$(".view").forEach(v=>v.classList.toggle("on",v.id==="v-fill"));
+    window.scrollTo&&window.scrollTo(0,0);return render()}
+  const fa=e.target.closest("[data-fadd]");
+  if(fa){const r=S.fills.find(x=>x.id===curFill);if(!r)return;
+    const k=fa.dataset.fadd;if(!Array.isArray(r.values[k]))r.values[k]=[];
+    r.values[k].push({});saveLocal();return renderFill()}
+  const fr=e.target.closest("[data-frem]");
+  if(fr){const r=S.fills.find(x=>x.id===curFill);if(!r)return;
+    r.values[fr.dataset.frem].splice(+fr.dataset.tr,1);saveLocal();return renderFill()}
+  const fc=e.target.closest("[data-fchk]");
+  if(fc){const r=S.fills.find(x=>x.id===curFill);if(!r)return;
+    r.values[fc.dataset.fchk]=!r.values[fc.dataset.fchk];saveLocal();return renderFill()}
+  const ex=e.target.closest("[data-export]");
+  if(ex){const r=S.fills.find(x=>x.id===ex.dataset.export);
+    if(r){toast("Building PDF");exportFill(r)}return}
+  const dc=e.target.closest("[data-discard]");
+  if(dc){const r=S.fills.find(x=>x.id===dc.dataset.discard);if(!r)return;
+    return askConfirm("Discard this form","Nothing is exported and nothing is kept. This can't be undone.","Discard",true,()=>{
+      S.fills=S.fills.filter(x=>x.id!==r.id);saveLocal();
+      view="forms";$$(".view").forEach(v=>v.classList.toggle("on",v.id==="v-forms"));
+      render();toast("Discarded")})}
+  const fm=e.target.closest("[data-form]");
+  if(fm){const f=S.forms.find(x=>x.id===fm.dataset.form); if(f)formSheet(f); return}
   if(e.target.closest("#bulkopen"))return bulkSheet();
+  if(e.target.closest("#addreq")){gapSheet(null);
+    const s=$("#gt"); if(s)s.value="request"; return}
   if(e.target.closest("#addgap"))return gapSheet(null);
   const ig=e.target.closest("[data-invg]");
-  if(ig){invGroup=ig.dataset.invg;return renderInventory()}
+  if(ig){invGroup=ig.dataset.invg;invAll=false;return renderInventory()}
+  if(e.target.closest("#invall")){invAll=true;return renderInventory()}
   if(e.target.closest("#gear")){view="data";
     $$(".view").forEach(v=>v.classList.toggle("on",v.id==="v-data"));
     $("#q").value="";query="";$("#qclear").style.display="none";
     window.scrollTo&&window.scrollTo(0,0);return render()}
   if(e.target.closest("#dlj")){
-    const safe=Object.assign({},S);delete safe.gh;
+    const safe=Object.assign({},S);delete safe.gh;delete safe.fills;delete safe.sketches;
     return toast(download(JSON.stringify(safe,null,1),"van-backup-"+today()+".json","application/json")
       ?"Backup downloaded":"Download blocked — use Copy CSV")}
   if(e.target.closest("#dlc")){
@@ -1418,32 +2301,55 @@ document.addEventListener("click",e=>{
       path:$("#ghp").value.trim()||"data.json",token:$("#ght").value.trim(),sha:"",last:""};
     if(!ghOn()){S.gh.token="";return toast("Owner, repository and token are all needed")}
     store.set(S);toast("Checking...");
-    ghPull(true).then(r=>{
-      if(r==="error"){S.gh.token="";store.set(S);renderData();return toast("Couldn't reach that repo — check the token")}
-      renderData();toast(r==="empty"?"Connected. Push to create the file.":"Connected and pulled")});
+    const localCount=S.items.length;
+    (async()=>{
+      let r;
+      try{ r=await fetch(ghURL()+"?t="+Date.now(),{headers:ghHead(),cache:"no-store"}) }
+      catch(err){ S.gh.token="";store.set(S);renderData();return toast("Couldn't reach GitHub") }
+      if(r.status===404){ S.gh.sha="";store.set(S);renderData();
+        return toast(localCount?"Connected. Push now to upload what's on this phone.":"Connected. Push to create the file.") }
+      if(!r.ok){ S.gh.token="";store.set(S);renderData();
+        return toast(r.status===401?"Token rejected":r.status===403?"No access to that repo":"GitHub error "+r.status) }
+      const j=await r.json();
+      let remote; try{ remote=JSON.parse(b64dec(j.content)) }catch(err){ remote=null }
+      const remoteCount=remote&&remote.items?remote.items.length:0;
+      if(localCount&&remoteCount){
+        S.gh.sha=j.sha;store.set(S);renderData();
+        return askConfirm("Both have data",
+          "This phone has "+localCount+" item"+(localCount===1?"":"s")+" and the repo has "+remoteCount+
+          ". They can't be merged — pick which one survives.",
+          "Use the repo's copy",true,()=>{
+            S.items=remote.items||[];S.comps=remote.comps||[];if(remote.walls)S.walls=remote.walls;
+            S.demo=!!remote.demo;S.gh.last=new Date().toISOString();dirty=false;
+            store.set(S);render();toast("Pulled "+S.items.length+" items")});
+      }
+      if(remoteCount){ await ghPull(true); renderData(); return toast("Connected and pulled") }
+      S.gh.sha=j.sha;store.set(S);renderData();
+      return toast(localCount?"Connected. Push now to upload what's on this phone.":"Connected");
+    })();
     return}
   if(e.target.closest("#ghpush")){toast("Pushing...");ghPush(conflict);return}
   if(e.target.closest("#ghpull")){toast("Pulling...");ghPull(false);return}
-  if(e.target.closest("#ghoff")){
-    if(!confirm("Disconnect this device? The data stays in the repo and on this device."))return;
-    S.gh={owner:"",repo:"",path:"data.json",token:"",sha:"",last:""};store.set(S);
-    renderData();return toast("Disconnected")}
+  if(e.target.closest("#ghoff"))
+    return askConfirm("Disconnect sync","The token is removed from this device. Your data stays both in the repo and on this phone.","Disconnect",true,()=>{
+      S.gh={owner:"",repo:"",path:"data.json",token:"",sha:"",last:""};store.set(S);
+      renderData();toast("Disconnected")});
   if(e.target.closest("#impadd"))return ingest($("#imp").value,false);
-  if(e.target.closest("#imprep")){
-    if(confirm("Replace everything currently in the app?"))ingest($("#imp").value,true);return}
-  if(e.target.closest("#cleardemo2")){
-    if(!confirm("Remove all sample data? Anything you added yourself stays."))return;
-    clearDemo();renderData();return toast("Sample cleared")}
-  if(e.target.closest("#wipe")){
-    if(!confirm("Erase every item and compartment? Download a backup first if you need one."))return;
-    S.items=[];S.comps=[];S.curLoc="";S.demo=false;save();return go("home")}
+  if(e.target.closest("#imprep")){const t=$("#imp").value;
+    return askConfirm("Replace everything","Everything currently in the app is discarded and replaced by what you pasted.","Replace",true,()=>ingest(t,true))}
+  if(e.target.closest("#cleardemo2"))
+    return askConfirm("Clear sample data","The sample compartments and their items are removed. Anything you added yourself stays.","Clear sample",false,()=>{
+      clearDemo();renderData();toast("Sample cleared")});
+  if(e.target.closest("#wipe"))
+    return askConfirm("Erase everything","Every item and compartment is deleted. Download a backup first if you might want any of it.","Erase everything",true,()=>{
+      S.items=[];S.comps=[];S.forms=[];S.curLoc="";S.demo=false;save();go("home");toast("Erased")});
   if(e.target.closest("#loaddemo")){loadDemo();return go("home")}
-  if(e.target.closest("#cleardemo")){
-    if(!confirm("Remove all sample data? Anything you added yourself stays."))return;
-    clearDemo();return go("home")}
+  if(e.target.closest("#cleardemo"))
+    return askConfirm("Clear sample data","The 20 sample compartments and their items are removed. Anything you added yourself stays.","Clear sample",false,()=>{
+      clearDemo();go("home");toast("Sample cleared")});
   const di=e.target.closest("[data-item]");
   if(di){const it=S.items.find(x=>x.id===di.dataset.item);
-    if(it&&it.status==="Not carried")return gapSheet(it);
+    if(it&&it.status==="Not carried"&&!isRequest(it))return gapSheet(it);
     return openItem(di.dataset.item)}
   if(e.target.closest("[data-loc]")){S.curLoc=e.target.closest("[data-loc]").dataset.loc;save();return renderSweep()}
   if(e.target.closest("#addc")){
@@ -1454,24 +2360,44 @@ document.addEventListener("click",e=>{
     S.curLoc=code;save();renderSweep();return toast("Added "+code)}
   if(e.target.closest("#add")){
     const nm=$("#f-name").value.trim(); if(!nm)return toast("Item needs a name");
+    const dupHere=live().find(i=>i.loc===S.curLoc&&i.name.toLowerCase()===nm.toLowerCase());
+    const dupElse=live().find(i=>i.loc!==S.curLoc&&i.name.toLowerCase()===nm.toLowerCase());
+    if(dupHere&&!dupOK){
+      return askConfirm("Already in "+S.curLoc,
+        "\u201c"+dupHere.name+"\u201d is already logged here with "+dupHere.qty+
+        " in stock. Adding it again makes a second entry rather than increasing the count.",
+        "Add it anyway",false,()=>{dupOK=true;$("#add").click();dupOK=false})}
+    if(dupElse&&!dupOK){
+      return askConfirm("Already in "+(dupElse.loc||"the van"),
+        "\u201c"+dupElse.name+"\u201d is logged in "+(dupElse.loc||"another compartment")+
+        ". If the van keeps it in both places that's fine, otherwise you may want to move it instead.",
+        "Add it here too",false,()=>{dupOK=true;$("#add").click();dupOK=false})}
     S.lastCat=$("#f-cat").value;S.lastCls=$("#f-cls").value;
     S.items.push({id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),name:nm,loc:S.curLoc,
       cat:S.lastCat,cls:S.lastCls,qty:n($("#f-qty").value),par:$("#f-par").value.trim(),
-      date:$("#f-date").value||"",status:"Stocked",gapType:"",note:"",steps:[],source:"",verified:"",uses:[]});
+      date:$("#f-date").value||"",status:"Stocked",gapType:"",note:"",steps:[],source:"",
+      verified:"",uses:[],rel:[],links:[],fav:false});
     save();renderSweep();toast("Added to "+S.curLoc);const f=$("#f-name");f&&f.focus()}
 });
 
 function placeholder(el,t,b){$(el).innerHTML=`<div class="empty"><strong>${t}</strong><p>${b}</p></div>`}
 function fitHeader(){
   const hd=document.querySelector(".hdr"); if(!hd)return;
-  if(window.matchMedia("(min-width:820px)").matches){document.body.style.paddingTop="";return}
+  const wide=window.matchMedia&&window.matchMedia("(min-width:820px)").matches;
+  if(wide){document.body.style.paddingTop="";return}
   document.body.style.paddingTop=hd.offsetHeight+"px";
 }
 window.addEventListener("resize",fitHeader);
+window.addEventListener("online",()=>{if(ghOn()&&(dirty||syncErr)){syncErr="";renderSyncBar();ghPush(false)}});
+window.addEventListener("offline",()=>renderSyncBar());
+document.addEventListener("visibilitychange",()=>{
+  if(document.visibilityState!=="visible"||!ghOn())return;
+  if(dirty||syncErr){retries=0;ghPush(false)} else ghPull(true);
+});
 window.addEventListener("orientationchange",()=>setTimeout(fitHeader,200));
 
 function render(){
-  buildTabs();renderDemoBar();
+  buildTabs();renderDemoBar();renderSyncBar();
   if(view==="search")return renderSearch();
   if(view==="itemdetail")return renderItemDetail();
   if(view==="compdetail")return renderCompDetail();
@@ -1481,6 +2407,9 @@ function render(){
   if(view==="compartments")return renderComps();
   if(view==="sweep")return renderSweep();
   $("#title").textContent=(TABS.find(t=>t[0]===view)||[,""])[1];
+  if(view==="sketch")return renderSketch();
+  if(view==="fill")return renderFill();
+  if(view==="forms")return renderForms();
   if(view==="inventory")return renderInventory();
   if(view==="guide")return renderGuide();
 }
