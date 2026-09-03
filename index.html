@@ -252,6 +252,10 @@ body.skfull .skgrid.full.notools{grid-template-columns:minmax(0,1fr);grid-templa
 .row .code{font-size:16.5px;font-weight:600;letter-spacing:-.01em;display:block}
 .row .desc{font-size:13.5px;color:var(--ink2);margin-top:1px;display:block}
 .row .rt{margin-left:auto;display:flex;align-items:center;gap:9px;flex:0 0 auto}
+.badge .bico{width:14px;height:14px;flex:0 0 auto;margin-right:5px;vertical-align:-2px}
+.badge.b-unchecked .bico{color:var(--amber)}
+.cdtags .badge{display:inline-flex;align-items:center;font-size:13px;padding:6px 13px;
+  border-radius:20px;font-weight:600}
 .badge{font-size:12.5px;font-weight:600;padding:3px 9px;border-radius:20px;white-space:nowrap}
 .b-action{background:var(--redbg);color:var(--red)}
 .b-attn{background:var(--amberbg);color:var(--amber)}
@@ -328,23 +332,33 @@ body.skfull .skgrid.full.notools{grid-template-columns:minmax(0,1fr);grid-templa
 .chips button.on i{background:#fff}
 .demobar button{margin-left:auto;background:var(--amber);color:var(--card);border:0;
   border-radius:8px;padding:7px 12px;font-size:13px;font-weight:600;flex:0 0 auto}
-.bayhead{display:grid;grid-template-columns:1fr 2fr;gap:14px;align-items:center;
-  background:var(--card);border:.5px solid var(--line2);border-radius:16px;
-  padding:13px 30px 13px 13px;margin-bottom:12px;position:relative;
-  width:100%;text-align:left;color:inherit;font-family:inherit}
-.bayhead .baychev{position:absolute;right:12px;top:50%;transform:translateY(-50%);
-  color:var(--ink3);font-size:20px}
-.bayinfo{min-width:0}
-.bayinfo h2{font-size:19px;font-weight:800;letter-spacing:-.02em;margin:0 0 2px}
-.bayinfo .sub{font-size:12.5px;color:var(--ink2);line-height:1.35;margin-bottom:8px}
+.bayhead{display:grid;grid-template-columns:minmax(0,1fr) 122px;
+  gap:6px 16px;align-items:start;
+  background:var(--card);border:.5px solid var(--line2);border-radius:20px;
+  padding:18px 20px;margin-bottom:13px;width:100%;text-align:left;
+  color:inherit;font-family:inherit}
+.bayinfo{min-width:0;grid-column:1;grid-row:1}
+.bayinfo h2{font-size:22px;font-weight:800;letter-spacing:-.025em;margin:0 0 4px;line-height:1.15}
+.bayinfo .sub{font-size:14.5px;color:var(--ink2);line-height:1.35;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media (max-width:420px){ .bayinfo .sub{font-size:13.5px} .bayinfo h2{font-size:20px} }
+@media (max-width:360px){
+  .bayhead{grid-template-columns:minmax(0,1fr) 96px;padding:15px 16px;gap:5px 12px}
+  .bayinfo .sub{font-size:12.5px}
+}
+.bayhead .vankey{grid-column:2;grid-row:1;align-self:center}
 .vankey .vanwrap{aspect-ratio:2.55/1;max-height:none;margin:0}
-.vankey .here{background:var(--red);border:1px solid #fff;border-radius:2px}
+.vankey .here{background:var(--red);border:1px solid rgba(255,255,255,.85);border-radius:3px;
+  box-shadow:0 0 12px 3px rgba(255,107,94,.55)}
 .keyends{display:flex;justify-content:space-between;font-size:9px;color:var(--ink3);
   font-family:var(--mono);margin-top:4px;white-space:nowrap}
-.bayhead.mini{grid-template-columns:78px 1fr;gap:12px;padding:10px 12px;margin-bottom:14px}
-.bayhead.mini .bayinfo h2{font-size:16px;font-weight:700}
-.bayhead.mini .bayinfo .sub{font-size:11.5px;color:var(--ink3);margin-bottom:6px}
-.bayhead.mini .badge{font-size:10px;padding:2px 7px}
+.bayhead .cdtags{grid-column:1/-1;grid-row:2;justify-content:center;margin-top:10px}
+.bayhead.mini{grid-template-columns:minmax(0,1fr) 88px;padding:12px 14px;
+  margin-bottom:14px;border-radius:16px;gap:5px 12px}
+.bayhead.mini .bayinfo h2{font-size:18px}
+.bayhead.mini .bayinfo .sub{font-size:12.5px}
+.bayhead.mini .cdtags{margin-top:8px}
+.bayhead.mini .badge{font-size:11px;padding:4px 11px}
 @media (hover:hover) and (pointer:fine){.bayhead:hover{border-color:var(--line)}}
 .cdtags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
 .bayplan{display:grid;gap:5px;margin-top:14px;
@@ -372,7 +386,11 @@ body.skfull .skgrid.full.notools{grid-template-columns:minmax(0,1fr);grid-templa
 .cdhead h2{margin:0;font-size:24px;font-weight:700;letter-spacing:-.02em}
 .cdhead .sub{font-size:14.5px;color:var(--ink2);margin-top:2px}
 .cdstats{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.back{background:none;border:0;color:var(--blue);font-size:16px;padding:0;margin-bottom:12px;font-weight:500}
+.back{background:var(--card);border:.5px solid var(--line);border-radius:11px;
+  color:var(--blue);font-size:15px;font-weight:600;padding:11px 16px;
+  margin:0 0 14px;display:inline-flex;align-items:center;gap:6px;
+  white-space:nowrap;flex:0 0 auto}
+@media (hover:hover) and (pointer:fine){.back:hover{border-color:var(--blue)}}
 .acts{display:flex;gap:8px;margin-bottom:16px}
 .acts button{flex:1;padding:12px 4px;font-size:13.5px;border-radius:11px;border:.5px solid var(--line);
   background:var(--card);color:var(--blue);font-size:14.5px;font-weight:600}
@@ -875,14 +893,17 @@ function vanKey(bay,showEnds){
   </div>`;
 }
 const BAYNAME={"1":"Bin wall","2":"Drawer bank","3":"Open shelving"};
+const WARN=`<svg viewBox="0 0 24 24" class="bico" fill="currentColor"><path d="M12 2.6 1.3 21h21.4L12 2.6Zm0 5.9c.6 0 1 .4 1 1v5a1 1 0 1 1-2 0v-5c0-.6.4-1 1-1Zm0 10.7a1.2 1.2 0 1 1 0-2.4 1.2 1.2 0 0 1 0 2.4Z"/></svg>`;
+const TICK=`<svg viewBox="0 0 24 24" class="bico" fill="none" stroke="currentColor" stroke-width="2.4"
+  stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 9.5 18 20 6.5"/></svg>`;
 function bayTally(bay){
   const cs=comps().filter(c=>bayOf(c.code)===bay).map(c=>compState(c.code));
   const a=cs.filter(s=>s.k==="action").length, t=cs.filter(s=>s.k==="attn").length,
         u=cs.filter(s=>s.k==="unchecked").length;
-  return `${a?`<span class="badge b-action">${a} action</span>`:""}
-          ${t?`<span class="badge b-attn">${t} attention</span>`:""}
-          ${u?`<span class="badge b-unchecked">${u} not checked</span>`:""}
-          ${!a&&!t&&!u?`<span class="badge b-good">All good</span>`:""}`;
+  return `${a?`<span class="badge b-action">${WARN}${a} need action</span>`:""}
+          ${t?`<span class="badge b-attn">${WARN}${t} attention</span>`:""}
+          ${u?`<span class="badge b-unchecked">${WARN}${u} not checked</span>`:""}
+          ${!a&&!t&&!u?`<span class="badge b-good">${TICK}All good</span>`:""}`;
 }
 function groupsFor(side){
   const cs=comps().filter(c=>c.side===side), by={};
@@ -1451,14 +1472,15 @@ function renderComps(){
     const b=bayBounds(bay);
     const where=b.side+", "+(b.x+b.w/2 > (S.walls[b.side]||{cols:144}).cols/2
       ? (b.side==="Driver side"?"front":"rear") : (b.side==="Driver side"?"rear":"front"));
+    const sideOnly=b.side, endOnly=where.split(", ")[1]||"";
     return `<button class="bayhead" data-bay="${esc(bay)}">
-      ${vanKey(bay,true)}
       <div class="bayinfo">
         <h2>${esc(BAYNAME[bay]||"Bay "+bay)}</h2>
-        <div class="sub">${esc(where)} · ${b.w}&Prime; wide · ${b.n} compartments</div>
-        <div class="cdtags">${bayTally(bay)}</div>
+        <div class="sub">${esc(sideOnly)}${endOnly?", "+esc(endOnly):""}</div>
+        <div class="sub">${b.w}-inch &nbsp;|&nbsp; ${b.n} compartments</div>
       </div>
-      <span class="baychev">&#8250;</span></button>`;
+      ${vanKey(bay,false)}
+      <div class="cdtags">${bayTally(bay)}</div></button>`;
   };
   const unplaced=cs.filter(c=>!SIDES.includes(c.side));
   const W0=S.walls["Driver side"]||{cols:24,rows:12};
@@ -1493,12 +1515,13 @@ function renderBay(){
   $("#v-bay").innerHTML=`
     <button class="back" data-go="compartments">&#8249; Compartments</button>
     <div class="bayhead mini">
-      ${vanKey(curBay,false)}
       <div class="bayinfo">
         <h2>${esc(BAYNAME[curBay]||"Bay "+curBay)}</h2>
-        <div class="sub">${esc(side)} · ${W}&Prime; · ${cs.length} compartments</div>
-        <div class="cdtags">${bayTally(curBay)}</div>
+        <div class="sub">${esc(side)}</div>
+        <div class="sub">${W}-inch &nbsp;|&nbsp; ${cs.length} compartments</div>
       </div>
+      ${vanKey(curBay,false)}
+      <div class="cdtags">${bayTally(curBay)}</div>
     </div>
     <div class="bayplan" style="--cols:${W};--rows:${H}">
       ${cs.map(c=>{const s=compState(c.code);
@@ -1896,8 +1919,8 @@ function renderPrint(){
       <td class="pn">${it.length}</td></tr>`}).join("");
 
   $("#v-print").innerHTML=`
-    <div class="noprint" style="display:flex;gap:8px;margin-bottom:14px">
-      <button class="btn sec" data-go="compartments" style="margin:0;max-width:none">&#8249; Back</button>
+    <div class="noprint" style="display:flex;gap:8px;margin-bottom:14px;align-items:center">
+      <button class="back" data-go="compartments" style="margin:0;align-self:center">&#8249; Compartments</button>
       <button class="btn" id="doprint" style="margin:0;max-width:none">Print</button></div>
     <p class="hint noprint" style="margin:0 0 16px">A page per unit plus a full index, to tape inside
       the van. Print from Safari on a computer if the Print button does nothing — the home screen
@@ -3000,7 +3023,7 @@ function renderList(key){
   const [t,arr]=map[key]||map.all;
   $("#title").textContent=t;
   listKey=key;
-  $("#v-home").innerHTML=`<button class="btn sec" data-go="home" style="margin:0 0 14px;max-width:200px">&#8249; Home</button>`
+  $("#v-home").innerHTML=`<button class="back" data-go="home">&#8249; Home</button>`
     +(key==="gaps"?`<button class="btn sec" id="addgap" style="margin:0 0 14px;max-width:none">Log something we don't carry</button>`:"")
     +(arr.length?`<div class="rows">`+arr.map(i=>{
       const s=isOut(i)?["action","Out"]:isExpired(i)?["action","Expired"]:isLow(i)?["attn","Below par"]
