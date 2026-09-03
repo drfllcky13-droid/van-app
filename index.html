@@ -96,8 +96,8 @@ input,select,textarea{font-size:16px}
 .pcard{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:0;
   border-radius:14px;padding:15px 16px;color:#fff}
 .pcard:active{opacity:.9}
-.pcard .n{font-size:21px;font-weight:700;letter-spacing:-.02em;line-height:1.15}
-.pcard .s{font-size:13.5px;opacity:.92;margin-top:2px}
+.pcard .n{display:block;font-size:21px;font-weight:700;letter-spacing:-.02em;line-height:1.18}
+.pcard .s{display:block;font-size:13.5px;opacity:.92;margin-top:3px;line-height:1.3}
 .pcard .ch{margin-left:auto;font-size:20px;opacity:.85}
 .pcard svg{width:22px;height:22px;flex:0 0 auto}
 .p-red{background:var(--redsolid)}
@@ -163,8 +163,9 @@ input,select,textarea{font-size:16px}
 .legend{display:flex;gap:14px;flex-wrap:wrap;margin:4px 2px 16px;font-size:12.5px;color:var(--ink2)}
 .legend span{display:flex;align-items:center;gap:6px}
 .legend i{width:9px;height:9px;border-radius:50%;display:block}
-.demobar{background:var(--amberbg);color:var(--amber);padding:10px 16px;font-size:13px;
-  display:flex;align-items:center;gap:10px;line-height:1.35}
+.demobar{background:var(--amberbg);color:var(--amber);padding:11px 16px;font-size:13px;
+  display:flex;align-items:center;gap:12px;line-height:1.35}
+.demobar span{flex:1;min-width:0}
 .demobar button{margin-left:auto;background:var(--amber);color:var(--card);border:0;
   border-radius:8px;padding:7px 12px;font-size:13px;font-weight:600;flex:0 0 auto}
 .cdhead{background:var(--card);border:.5px solid var(--line2);border-radius:14px;padding:16px;margin-bottom:14px}
@@ -265,8 +266,55 @@ input[type=text],input[type=date],select,textarea{width:100%;padding:11px 12px;b
   font-size:14px;font-weight:600}
 .actbar button:active{background:var(--card2)}
 .actbar button.primary{background:var(--blue);color:#fff}
+.rel{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.reltile{background:var(--card);border:.5px solid var(--line2);border-radius:11px;
+  padding:11px 12px;text-align:left;display:flex;flex-direction:column;gap:2px;min-height:78px}
+.reltile .rn{font-size:14px;font-weight:600;line-height:1.25;letter-spacing:-.01em}
+.reltile .rl{font-size:12.5px;color:var(--blue);font-weight:600}
+.reltile .rq{font-size:11.5px;font-weight:600;margin-top:auto;padding:2px 7px;
+  border-radius:20px;align-self:flex-start}
+.rellist{max-height:44vh;overflow-y:auto;border:.5px solid var(--line2);border-radius:11px;background:var(--card)}
+.relrow{display:flex;align-items:center;gap:11px;width:100%;text-align:left;background:none;
+  border:0;border-bottom:.5px solid var(--line2);padding:11px 13px}
+.relrow:last-child{border-bottom:0}
+.relrow .tick{width:22px;height:22px;border-radius:6px;border:1.5px solid var(--line);
+  display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff;flex:0 0 auto}
+.relrow.on .tick{background:var(--blue);border-color:var(--blue)}
+.relrow .rn{display:block;font-size:15px;font-weight:500;line-height:1.25}
+.relrow .rl{display:block;font-size:12.5px;color:var(--ink2)}
+.okbox{background:var(--greenbg);color:var(--green);border-radius:10px;padding:10px 12px;font-size:13px;line-height:1.45}
+.fmt{background:var(--card2);border:.5px solid var(--line2);border-radius:9px;padding:10px 11px;
+  font-family:var(--mono);font-size:11.5px;line-height:1.5;overflow-x:auto;margin:0 0 12px;white-space:pre}
 .unver{background:var(--amberbg);color:var(--amber);border-radius:10px;padding:10px 12px;
   font-size:13px;line-height:1.45;margin-top:9px}
+.psheet{background:#fff;color:#000;border:.5px solid var(--line);border-radius:10px;padding:18px}
+.phead{display:flex;justify-content:space-between;align-items:baseline;
+  border-bottom:1.5px solid #000;padding-bottom:7px;margin-bottom:14px}
+.phead b{font-size:17px;font-weight:700}
+.phead span{font-size:12px;color:#555}
+.pwall{margin-bottom:16px;break-inside:avoid}
+.pwall h3{margin:0 0 3px;font-size:14px;font-weight:700}
+.porient{display:flex;justify-content:space-between;font-size:10px;color:#666;margin-bottom:4px}
+.pgrid{display:grid;gap:3px;height:150px;border:1.5px solid #000;padding:4px;border-radius:4px}
+.pslot{border:1px solid #000;border-radius:3px;padding:3px 4px;overflow:hidden;background:#fff}
+.pslot b{display:block;font-size:11px;font-weight:700;line-height:1.15}
+.pslot i{display:block;font-size:9px;font-style:normal;color:#444;line-height:1.15;margin-top:1px}
+.plist{font-size:14px;font-weight:700;margin:16px 0 6px}
+.ptab{width:100%;border-collapse:collapse;font-size:11.5px}
+.ptab th{text-align:left;border-bottom:1.5px solid #000;padding:4px 6px;font-size:10px;
+  text-transform:uppercase;letter-spacing:.05em}
+.ptab td{border-bottom:.5px solid #bbb;padding:4px 6px}
+.ptab .pc{font-weight:700;width:64px}
+.ptab .pn{text-align:right;width:44px}
+@media print{
+  body{padding:0!important;background:#fff!important;display:block!important}
+  .hdr,.tabs,.side,.noprint,.toast,.scrim,.sheet,.demobar{display:none!important}
+  .view{display:none!important;padding:0!important}
+  #v-print{display:block!important}
+  .psheet{border:0;border-radius:0;padding:0}
+  .pgrid{height:130px}
+  @page{margin:12mm}
+}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(var(--bot) + 16px);
   background:var(--ink);color:var(--bg);padding:11px 18px;border-radius:10px;z-index:70;
   font-size:15px;font-weight:500;opacity:0;pointer-events:none;transition:opacity .15s;max-width:88%}
@@ -284,7 +332,7 @@ input[type=text],input[type=date],select,textarea{width:100%;padding:11px 12px;b
     <button id="qclear" style="display:none">Clear</button>
   </div>
   <div class="titlerow"><h1 id="title">Van</h1>
-    <button id="gear" aria-label="Data and backup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.8v2.4M12 18.8v2.4M4.5 4.5l1.7 1.7M17.8 17.8l1.7 1.7M2.8 12h2.4M18.8 12h2.4M4.5 19.5l1.7-1.7M17.8 6.2l1.7-1.7"/></svg></button></div>
+    <button id="gear" aria-label="Data and backup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><circle cx="12" cy="12" r="3.1"/><path d="M19.1 14.4a1.5 1.5 0 00.3 1.7l.1.1a1.8 1.8 0 11-2.6 2.6l-.1-.1a1.5 1.5 0 00-1.7-.3 1.5 1.5 0 00-.9 1.4v.2a1.8 1.8 0 11-3.6 0v-.1a1.5 1.5 0 00-1-1.4 1.5 1.5 0 00-1.7.3l-.1.1a1.8 1.8 0 11-2.6-2.6l.1-.1a1.5 1.5 0 00.3-1.7 1.5 1.5 0 00-1.4-.9h-.2a1.8 1.8 0 110-3.6h.1a1.5 1.5 0 001.4-1 1.5 1.5 0 00-.3-1.7l-.1-.1a1.8 1.8 0 112.6-2.6l.1.1a1.5 1.5 0 001.7.3h.1a1.5 1.5 0 00.9-1.4v-.2a1.8 1.8 0 113.6 0v.1a1.5 1.5 0 00.9 1.4 1.5 1.5 0 001.7-.3l.1-.1a1.8 1.8 0 112.6 2.6l-.1.1a1.5 1.5 0 00-.3 1.7v.1a1.5 1.5 0 001.4.9h.2a1.8 1.8 0 110 3.6h-.1a1.5 1.5 0 00-1.4.9z"/></svg></button></div>
 </header>
 
 <main class="main">
@@ -297,6 +345,7 @@ input[type=text],input[type=date],select,textarea{width:100%;padding:11px 12px;b
 <section class="view" id="v-compdetail"></section>
 <section class="view" id="v-itemdetail"></section>
 <section class="view" id="v-data"></section>
+<section class="view" id="v-print"></section>
 <section class="view" id="v-search"></section>
 </main>
 
@@ -338,6 +387,7 @@ S.comps.forEach(c=>{if(c.zone&&!c.side)c.side=(c.zone==="Rear")?"Rear doors":(c.
   if(c.x==null||c.y==null){c.x=null;c.y=null}});
 S.items.forEach(i=>{if(i.date&&/^\d{4}-\d{2}$/.test(i.date))i.date=i.date+"-01";
   if(!i.uses)i.uses=[];
+  if(!i.rel)i.rel=[];
   if(i.loc&&!S.comps.some(x=>x.code===i.loc))S.comps.push({code:i.loc,desc:"",side:"",x:null,y:null,w:6,h:4})});
 const save=()=>{store.set(S);if(typeof queuePush==='function')queuePush()};
 
@@ -664,7 +714,8 @@ function renderComps(){
   $("#v-compartments").innerHTML=
     `<div class="ph">Placeholder proportions. Each wall is ${S.walls["Driver side"].cols} units long and ${S.walls["Driver side"].rows} tall — set each compartment to its real size, or send photos and I'll set them.</div>
      <div class="editbar">
-       <button data-edit="${editing?"off":"on"}" class="${editing?"on":""}">${editing?"Done editing":"Edit layout"}</button></div>
+       <button data-edit="${editing?"off":"on"}" class="${editing?"on":""}">${editing?"Done editing":"Edit layout"}</button>
+       <button data-go="print">Printable map</button></div>
      ${panel}
      <div class="legend">
        <span><i style="background:var(--green)"></i>Good</span>
@@ -771,11 +822,24 @@ function renderItemDetail(){
     <div class="idsect">How to use</div>
     ${steps.length?`<div class="steps">${steps.map((s,x)=>
       `<div class="step"><i>${x+1}</i><p>${esc(s)}</p></div>`).join("")}</div>
-      ${!i.verified?`<div class="unver">No verified date on these instructions. Check them against the manufacturer sheet or your SOP before relying on them at a scene.</div>`:""}`
+      ${!i.verified?`<div class="unver">No verified date on these instructions. Check them against the manufacturer sheet or your SOP before relying on them at a scene.</div>`
+        :isStale(i)?`<div class="unver" style="background:var(--redbg);color:var(--red)">Last checked ${esc(i.verified)}, over a year ago. Confirm against the current sheet.</div>`:""}`
     :`<div class="empty" style="padding:20px 16px"><strong>No instructions yet</strong>
        <p>Paste the steps from the manufacturer sheet or your SOP, and record where they came from.</p>
        <button class="btn sec" data-editsteps="${i.id}" style="margin-top:12px">Add instructions</button></div>`}
     ${steps.length?`<button class="btn sec" data-editsteps="${i.id}" style="margin:10px 0 0;max-width:none">Edit instructions</button>`:""}
+
+    <div class="idsect">Works with</div>
+    ${(()=>{const r=(i.rel||[]).map(id=>S.items.find(x=>x.id===id)).filter(Boolean);
+      return r.length?`<div class="rel">`+r.map(o=>{const rs=itemStatus(o);
+        return `<button class="reltile" data-item="${o.id}">
+          <span class="rn">${esc(o.name)}</span>
+          <span class="rl">${esc(o.loc||"—")}</span>
+          <span class="rq b-${rs[0]}">${esc(o.qty)} in stock</span></button>`}).join("")+`</div>
+        <button class="btn sec" data-editrel="${i.id}" style="margin:10px 0 0;max-width:none">Edit what it works with</button>`
+      :`<div class="empty" style="padding:18px 16px"><strong>Nothing linked</strong>
+         <p>Link the gear you need alongside this — applicator, lifters, a scale — so it's one tap away at a scene.</p>
+         <button class="btn sec" data-editrel="${i.id}" style="margin-top:12px">Link items</button></div>`})()}
 
     <div class="idsect">Details</div>
     <div class="kv">
@@ -849,6 +913,8 @@ document.addEventListener("click",e=>{
       i.source=$("#sc").value.trim();i.verified=$("#sv").value;
       save();closeSheet();renderItemDetail();toast("Instructions saved")};
     return}
+  const er=e.target.closest("[data-editrel]");
+  if(er){const it=S.items.find(x=>x.id===er.dataset.editrel);if(it)relSheet(it);return}
   const ei=e.target.closest("[data-edititem]");
   if(ei){const i=S.items.find(x=>x.id===ei.dataset.edititem);if(!i)return;
     openSheet(`<h3>Edit item</h3>
@@ -863,7 +929,9 @@ document.addEventListener("click",e=>{
       <button class="btn sec" id="icancel" style="max-width:none">Cancel</button>`);
     $("#icancel").onclick=closeSheet;
     $("#idel").onclick=()=>{if(!confirm("Delete "+i.name+"?"))return;
-      S.items=S.items.filter(x=>x.id!==i.id);save();closeSheet();
+      S.items=S.items.filter(x=>x.id!==i.id);
+      S.items.forEach(o=>{if(o.rel)o.rel=o.rel.filter(x=>x!==i.id)});
+      save();closeSheet();
       view=prevView;$$(".view").forEach(v=>v.classList.toggle("on",v.id==="v-"+view));render();toast("Deleted")};
     $("#isave").onclick=()=>{
       Object.assign(i,{name:$("#in").value.trim()||i.name,loc:$("#il").value.trim().toUpperCase(),
@@ -873,6 +941,71 @@ document.addEventListener("click",e=>{
     return}
 });
 
+
+function relSheet(it){
+  const draw=(q)=>{
+    const ql=(q||"").toLowerCase();
+    const list=live().filter(o=>o.id!==it.id)
+      .filter(o=>!ql||(o.name+" "+o.loc+" "+catName(o.cat)).toLowerCase().includes(ql))
+      .sort((a,b)=>{const s=(it.rel||[]).includes(b.id)-(it.rel||[]).includes(a.id);
+        return s||a.name.localeCompare(b.name)}).slice(0,60);
+    $("#rellist").innerHTML=list.map(o=>{const on=(it.rel||[]).includes(o.id);
+      return `<button class="relrow${on?" on":""}" data-pick="${o.id}">
+        <span class="tick">${on?"&#10003;":""}</span>
+        <span><span class="rn">${esc(o.name)}</span><span class="rl">${esc(o.loc||"—")} · ${esc(catName(o.cat))}</span></span>
+      </button>`}).join("")||`<p class="hint">Nothing matches that.</p>`;
+  };
+  openSheet(`<h3>Works with</h3>
+    <p style="margin:0 0 12px;color:var(--ink2);font-size:14.5px">Pick the gear used alongside ${esc(it.name)}. Links go both ways.</p>
+    <input type="text" id="relq" placeholder="Search items" autocomplete="off">
+    <div id="rellist" class="rellist" style="margin-top:10px"></div>
+    <button class="btn" id="reldone" style="max-width:none;margin-top:12px">Done</button>`);
+  draw("");
+  $("#relq").oninput=e=>draw(e.target.value);
+  $("#reldone").onclick=()=>{closeSheet();renderItemDetail()};
+  $("#rellist").onclick=e=>{
+    const b=e.target.closest("[data-pick]"); if(!b)return;
+    const o=S.items.find(x=>x.id===b.dataset.pick); if(!o)return;
+    it.rel=it.rel||[]; o.rel=o.rel||[];
+    if(it.rel.includes(o.id)){it.rel=it.rel.filter(x=>x!==o.id);o.rel=o.rel.filter(x=>x!==it.id)}
+    else{it.rel.push(o.id);o.rel.push(it.id)}
+    save();draw($("#relq").value);
+  };
+}
+
+
+/* ---------- printable van map ---------- */
+function renderPrint(){
+  $("#title").textContent="Printable map";
+  const cs=comps();
+  const wall=side=>{
+    const W=S.walls[side]||{cols:24,rows:12};
+    const mine=cs.filter(c=>c.side===side);
+    if(!mine.length)return "";
+    return `<section class="pwall">
+      <h3>${esc(side)}</h3>
+      <div class="porient"><span>Front of van</span><span>Rear doors</span></div>
+      <div class="pgrid" style="grid-template-columns:repeat(${W.cols},1fr);grid-template-rows:repeat(${W.rows},1fr)">
+        ${mine.map(c=>`<div class="pslot" style="grid-column:${c.x+1}/span ${c.w};grid-row:${c.y+1}/span ${c.h}">
+          <b>${esc(c.code)}</b>${c.desc?`<i>${esc(c.desc)}</i>`:""}</div>`).join("")}
+      </div></section>`};
+  const rows=cs.filter(c=>SIDES.includes(c.side)).map(c=>{
+    const it=live().filter(i=>i.loc===c.code);
+    return `<tr><td class="pc">${esc(c.code)}</td><td>${esc(c.desc||"")}</td>
+      <td class="pn">${it.length}</td></tr>`}).join("");
+  $("#v-print").innerHTML=`
+    <div class="noprint" style="display:flex;gap:8px;margin-bottom:14px">
+      <button class="btn sec" data-go="compartments" style="margin:0;max-width:none">&#8249; Back</button>
+      <button class="btn" id="doprint" style="margin:0;max-width:none">Print</button></div>
+    <p class="hint noprint" style="margin:0 0 16px">One page for the inside of the rear doors. Print from Safari on a computer if the Print button does nothing — the home screen version of the app has no print menu.</p>
+    <div class="psheet">
+      <div class="phead"><b>Van compartment map</b><span>${esc(today())}</span></div>
+      ${wall("Driver side")}${wall("Passenger side")}${wall("Rear doors")}${wall("Cab")}
+      <h3 class="plist">Compartment index</h3>
+      <table class="ptab"><thead><tr><th>Code</th><th>What it holds</th><th>Items</th></tr></thead>
+        <tbody>${rows}</tbody></table>
+    </div>`;
+}
 
 /* ---------- inventory ---------- */
 let invGroup="loc";
@@ -905,18 +1038,96 @@ function renderInventory(){
 /* ---------- guide ---------- */
 function renderGuide(){
   $("#title").textContent="Guide";
-  const L=live(), withS=L.filter(i=>(i.steps||[]).length), without=L.length-withS.length;
-  if(!withS.length){$("#v-guide").innerHTML=`<div class="empty"><strong>No instructions yet</strong>
-    <p>Open any item and add the steps from its manufacturer sheet or your SOP. They show up here, browsable by name.</p></div>`;return}
+  const L=live(), withS=L.filter(i=>(i.steps||[]).length), without=L.filter(i=>!(i.steps||[]).length);
+  const bar=`<div class="editbar"><button id="bulkopen">Paste instructions</button></div>`;
+  if(!withS.length){$("#v-guide").innerHTML=bar+`<div class="empty"><strong>No instructions yet</strong>
+    <p>Add the steps from a manufacturer sheet or your SOP, on any item. They show up here, browsable by name.</p></div>`;return}
   const g={};withS.forEach(i=>{const k=i.cat+" · "+catName(i.cat);(g[k]=g[k]||[]).push(i)});
-  $("#v-guide").innerHTML=Object.keys(g).sort().map(k=>
+  const badge=i=>!i.verified?`<span class="badge b-attn">Unverified</span>`
+    :isStale(i)?`<span class="badge b-action">Re-check</span>`
+    :`<span class="badge b-good">${esc(i.verified.slice(0,7))}</span>`;
+  const stale=withS.filter(isStale).length, unver=withS.filter(i=>!i.verified).length;
+  $("#v-guide").innerHTML=bar
+    +((stale||unver)?`<div class="unver">${stale?stale+" set"+(stale===1?"":"s")+" of instructions haven't been checked in over a year. ":""}${unver?unver+" have no verified date at all. ":""}Confirm them against the current sheet before relying on them.</div>`:"")
+    +Object.keys(g).sort().map(k=>
     `<div class="sect">${esc(k)}</div><div class="rows">`+g[k].sort((a,b)=>a.name.localeCompare(b.name)).map(i=>
       `<button class="row" data-item="${i.id}">
         <span><span class="code">${esc(i.name)}</span>
-        <span class="desc">${(i.steps||[]).length} steps · ${esc(i.loc||"—")}</span></span>
-        <span class="rt">${i.verified?`<span class="badge b-good">Verified ${esc(i.verified.slice(0,7))}</span>`
-          :`<span class="badge b-attn">Unverified</span>`}<span class="chev">&#8250;</span></span></button>`).join("")+`</div>`).join("")
-    +(without?`<p class="hint">${without} item${without===1?"":"s"} have no instructions. Open one and add them and it appears here.</p>`:"");
+        <span class="desc">${(i.steps||[]).length} steps · ${esc(i.loc||"—")}${i.source?" · "+esc(i.source):""}</span></span>
+        <span class="rt">${badge(i)}<span class="chev">&#8250;</span></span></button>`).join("")+`</div>`).join("")
+    +(without.length?`<div class="sect">No instructions yet — ${without.length}</div><div class="rows">`
+      +without.sort((a,b)=>a.name.localeCompare(b.name)).slice(0,40).map(i=>
+        `<button class="row" data-item="${i.id}">
+          <span><span class="code">${esc(i.name)}</span>
+          <span class="desc">${esc(i.loc||"—")} · ${esc(catName(i.cat))}</span></span>
+          <span class="rt"><span class="chev">&#8250;</span></span></button>`).join("")
+      +`</div>`+(without.length>40?`<p class="hint">Showing the first 40.</p>`:""):"")}
+
+
+/* ---------- bulk instructions ---------- */
+const STALE_MONTHS=12;
+function verifyAge(i){ if(!i.verified)return null;
+  const t=Date.parse(i.verified); if(isNaN(t))return null;
+  return (Date.now()-t)/86400000/30.44 }
+const isStale=i=>{const m=verifyAge(i);return m!==null&&m>STALE_MONTHS};
+
+function parseGuides(text){
+  const byName={}; live().forEach(i=>{byName[i.name.trim().toLowerCase()]=i});
+  const blocks=[]; let cur=null, afterBlank=true;
+  const isStep=l=>/^\s*(?:[-*\u2022]|\d+[.)])\s+/.test(l);
+  const strip=l=>l.replace(/^\s*(?:[-*\u2022]|\d+[.)])\s+/,"").trim();
+  text.split(/\r?\n/).forEach(raw=>{
+    const l=raw.trim();
+    if(!l){afterBlank=true;return}
+    const attr=/^(source|verified)\s*:/i.exec(l);
+    if(attr&&cur){cur[attr[1].toLowerCase()]=l.slice(l.indexOf(":")+1).trim();afterBlank=false;return}
+    if(afterBlank&&!isStep(l)){
+      const hit=byName[l.toLowerCase().replace(/:$/,"")];
+      cur={item:hit||null,name:l,steps:[],source:"",verified:""};
+      blocks.push(cur);afterBlank=false;return;
+    }
+    if(cur)cur.steps.push(isStep(l)?strip(l):l);
+    afterBlank=false;
+  });
+  return blocks;
+}
+function applyGuides(text){
+  const blocks=parseGuides(text);
+  const good=blocks.filter(b=>b.item&&b.steps.length);
+  const miss=blocks.filter(b=>!b.item&&b.steps.length).map(b=>b.name);
+  good.forEach(b=>{b.item.steps=b.steps;
+    if(b.source)b.item.source=b.source;
+    if(b.verified&&/^\d{4}-\d{2}-\d{2}$/.test(b.verified))b.item.verified=b.verified});
+  if(good.length)save();
+  return {n:good.length,miss:[...new Set(miss)]};
+}
+function bulkSheet(){
+  openSheet(`<h3>Paste instructions</h3>
+    <p style="margin:0 0 12px;color:var(--ink2);font-size:14.5px;line-height:1.5">
+      Write them on a computer and paste the lot in one go. Start each block with the item's exact name, then the steps. Leave a blank line between items.</p>
+    <pre class="fmt">Black magnetic powder, 1 lb
+source: 3M IFU rev C
+verified: 2026-09-02
+- Load the applicator from the jar
+- Pass over the surface without touching
+- Photograph with a scale before lifting
+
+Phenolphthalein kit
+source: SOP 4.2
+- Collect a sample on a clean swab</pre>
+    <textarea id="bulk" rows="9" placeholder="Paste here"></textarea>
+    <div id="bulkout"></div>
+    <button class="btn" id="bulkgo" style="max-width:none;margin-top:10px">Apply</button>
+    <button class="btn sec" id="bulkx" style="max-width:none">Cancel</button>`);
+  $("#bulkx").onclick=closeSheet;
+  $("#bulkgo").onclick=()=>{
+    const r=applyGuides($("#bulk").value);
+    if(!r.n&&!r.miss.length)return toast("Nothing to apply");
+    $("#bulkout").innerHTML=`<div class="${r.miss.length?"unver":"okbox"}" style="margin-top:10px">
+      ${r.n} item${r.n===1?"":"s"} updated.${r.miss.length?
+        " These names didn't match anything in the van: "+esc(r.miss.slice(0,8).join("; "))+
+        (r.miss.length>8?" and "+(r.miss.length-8)+" more.":""):""}</div>`;
+  };
 }
 
 /* ---------- gaps ---------- */
@@ -1131,6 +1342,8 @@ document.addEventListener("click",e=>{
   if(ck){const cc=S.comps.find(x=>x.code===ck.dataset.check);
     if(cc){cc.checked=new Date().toISOString().slice(0,10);save();renderCompDetail();toast(cc.code+" marked swept")}
     return}
+  if(e.target.closest("#doprint")){window.print&&window.print();return}
+  if(e.target.closest("#bulkopen"))return bulkSheet();
   if(e.target.closest("#addgap"))return gapSheet(null);
   const ig=e.target.closest("[data-invg]");
   if(ig){invGroup=ig.dataset.invg;return renderInventory()}
@@ -1198,12 +1411,21 @@ document.addEventListener("click",e=>{
 });
 
 function placeholder(el,t,b){$(el).innerHTML=`<div class="empty"><strong>${t}</strong><p>${b}</p></div>`}
+function fitHeader(){
+  const hd=document.querySelector(".hdr"); if(!hd)return;
+  if(window.matchMedia("(min-width:820px)").matches){document.body.style.paddingTop="";return}
+  document.body.style.paddingTop=hd.offsetHeight+"px";
+}
+window.addEventListener("resize",fitHeader);
+window.addEventListener("orientationchange",()=>setTimeout(fitHeader,200));
+
 function render(){
   buildTabs();renderDemoBar();
   if(view==="itemdetail")return renderItemDetail();
   if(query)return renderSearch();
   if(view==="compdetail")return renderCompDetail();
-  if(view==="data")return renderData();
+  if(view==="data"){renderData();return fitHeader()}
+  if(view==="print")return renderPrint();
   if(view==="home")return renderHome();
   if(view==="compartments")return renderComps();
   if(view==="sweep")return renderSweep();
@@ -1211,7 +1433,8 @@ function render(){
   if(view==="inventory")return renderInventory();
   if(view==="guide")return renderGuide();
 }
-render();
+render();fitHeader();
+if(typeof requestAnimationFrame==='function')requestAnimationFrame(fitHeader);
 if(ghOn())ghPull(true).then(()=>renderSyncPill());
 </script>
 </body>
