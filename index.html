@@ -136,7 +136,11 @@ body.skfull .skgrid.full{position:fixed;inset:0;z-index:80;background:var(--bg);
 .skgrid.full .skcanvas{width:100%;height:100%;display:block}
 .skgrid.full .skrail{min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch}
 .skgrid.full .editbar{margin:0;flex:0 0 auto}
-.skgrid.full .objset{flex:0 0 auto;max-height:32vh;overflow-y:auto}
+.skgrid.full .inkrow{display:flex;align-items:center;gap:7px;margin-top:11px;flex-wrap:wrap}
+.inkrow .inklab{font-size:12.5px;color:var(--ink2);margin-right:2px}
+.ink{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);padding:0;flex:0 0 auto}
+.ink.on{border-color:var(--blue);box-shadow:0 0 0 2px var(--bluebg)}
+.objset{flex:0 0 auto;max-height:32vh;overflow-y:auto}
 .skgrid.full .cdhead,.skgrid.full .back{display:none}
 @media (max-width:899px){ .skgrid.full .skrail{max-height:38vh} }
 body.skfull .skgrid.full.notools{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr)}
@@ -150,15 +154,15 @@ body.skfull .skgrid.full.notools{grid-template-columns:minmax(0,1fr);grid-templa
   padding:6px;margin-bottom:10px;touch-action:none}
 .skcanvas{width:100%;height:auto;display:block;border-radius:8px;touch-action:none;
   -webkit-user-select:none;user-select:none}
-.k-line{fill:none;stroke:#111;stroke-width:2.5}
-.k-thin{fill:none;stroke:#111;stroke-width:1.2}
-.k-thick{fill:none;stroke:#111;stroke-width:4;stroke-linecap:round}
-.k-stroke{fill:none;stroke:#111;stroke-width:2}
-.k-dash{fill:none;stroke:#111;stroke-width:2;stroke-dasharray:8 6}
-.k-solid{fill:#111;stroke:none}
-.k-fill{fill:#111;stroke:none}
-.k-text{fill:#111;font-family:var(--sys);font-weight:600}
-.k-tag{fill:#111;font-family:var(--sys);font-size:15px;text-anchor:middle}
+.k-line{fill:none;stroke:var(--kc,#111);stroke-width:2.5}
+.k-thin{fill:none;stroke:var(--kc,#111);stroke-width:1.2}
+.k-thick{fill:none;stroke:var(--kc,#111);stroke-width:4;stroke-linecap:round}
+.k-stroke{fill:none;stroke:var(--kc,#111);stroke-width:2}
+.k-dash{fill:none;stroke:var(--kc,#111);stroke-width:2;stroke-dasharray:8 6}
+.k-solid{fill:var(--kc,#111);stroke:none}
+.k-fill{fill:var(--kc,#111);stroke:none}
+.k-text{fill:var(--kc,#111);font-family:var(--sys);font-weight:600}
+.k-tag{fill:var(--kc,#111);font-family:var(--sys);font-size:15px;text-anchor:middle}
 .hcase{fill:#111;font-family:var(--sys);font-size:27px;font-weight:700;letter-spacing:-.5px}
 .haddr{fill:#111;font-family:var(--sys);font-size:16px}
 .hmeta{fill:#444;font-family:var(--sys);font-size:14px}
@@ -168,9 +172,9 @@ body.skfull .skgrid.full.notools{grid-template-columns:minmax(0,1fr);grid-templa
 .k-rot{fill:#0A62C4;stroke:#fff;stroke-width:2.5;cursor:grab}
 .k-rotstem{stroke:#0A62C4;stroke-width:2;stroke-dasharray:3 3}
 .skhead{pointer-events:none}
-.k-legt{fill:#111;font-family:var(--sys);font-weight:700}
-.k-legn{fill:#111;font-family:var(--sys);font-weight:700}
-.k-legr{fill:#111;font-family:var(--sys)}
+.k-legt{fill:var(--kc,#111);font-family:var(--sys);font-weight:700}
+.k-legn{fill:var(--kc,#111);font-family:var(--sys);font-weight:700}
+.k-legr{fill:var(--kc,#111);font-family:var(--sys)}
 .k-legu{fill:#8a8a8a;font-family:var(--sys);font-style:italic}
 .layers{background:var(--card);border:.5px solid var(--line2);border-radius:11px;overflow:hidden}
 .lay{display:flex;align-items:center;border-bottom:.5px solid var(--line2)}
@@ -547,6 +551,7 @@ body.wide .mslot.hit{font-size:13px}
 
 .filters{display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;
   padding:2px 0 12px;scrollbar-width:none}
+.filters.wrap{flex-wrap:wrap;overflow:visible}
 .filters::-webkit-scrollbar{display:none}
 .filters button{flex:0 0 auto;background:var(--card);border:.5px solid var(--line);
   border-radius:20px;padding:8px 15px;font-size:14.5px;font-weight:500;
@@ -2063,6 +2068,10 @@ const LOCKED=(()=>{const s=new Set();
   PALETTE.forEach(([cat,list])=>{if(!FREEFORM.has(cat))list.forEach(([t])=>s.add(t))});
   ["text","arrow","line","rect","circle","legend"].forEach(t=>s.delete(t));
   return s})();
+const INKS=[["","Black","#111111"],["red","Red","#C62828"],["blue","Blue","#1258A8"],
+ ["green","Green","#1E7A3C"],["orange","Orange","#C25E00"],["purple","Purple","#6B3FA0"],
+ ["brown","Brown","#6E4B2A"],["grey","Grey","#767679"]];
+const inkHex=k=>(INKS.find(i=>i[0]===(k||""))||INKS[0])[2];
 const SHAPENAME=t=>{for(const[,list]of PALETTE){const f=list.find(x=>x[0]===t);if(f)return f[1]}return t};
 
 /* ---------- forms ---------- */
@@ -2277,6 +2286,112 @@ async function exportFill(r){
   setTimeout(()=>URL.revokeObjectURL(u),1500);
   afterExport(r);
 }
+async function exportSketch(sk){
+  let JsPDF; try{ JsPDF=await loadPDF() }catch(e){ return toast(e.message) }
+  const portrait=!!sk.portrait;
+  const doc=new JsPDF({unit:"pt",format:"letter",orientation:portrait?"portrait":"landscape"});
+  const M=40, W=doc.internal.pageSize.getWidth(), H=doc.internal.pageSize.getHeight();
+  let y=M;
+
+  // header block, same information as the one drawn on the canvas
+  doc.setFont("helvetica","bold");doc.setFontSize(17);
+  doc.text(sk.caseNo||"Untitled sketch",M,y+4);
+  doc.setFont("helvetica","normal");doc.setFontSize(9);doc.setTextColor(90);
+  const right=[];
+  if(sk.when)right.push(String(sk.when).replace("T"," "));
+  if(sk.by)right.push("Sketched by "+sk.by);
+  right.forEach((t,i)=>doc.text(t,W-M,y-2+i*12,{align:"right"}));
+  y+=18;
+  if(sk.addr){doc.setFontSize(11);doc.setTextColor(0);doc.text(sk.addr,M,y);y+=8}
+  doc.setDrawColor(20);doc.setLineWidth(1.4);doc.line(M,y,W-M,y);y+=14;
+
+  // crop to what is actually drawn, so the sketch fills the page
+  const objs=sk.objs||[];
+  const PAD=45;
+  let bx=Math.min(...objs.map(o=>o.x))-PAD, by=Math.min(...objs.map(o=>o.y))-PAD;
+  let bw=Math.max(...objs.map(o=>o.x+o.w))+PAD-bx, bh=Math.max(...objs.map(o=>o.y+o.h))+PAD-by;
+  bx=Math.max(0,bx); by=Math.max(0,by);
+  bw=Math.min(bw,pageW(sk)-bx); bh=Math.min(bh,pageH(sk)-by);
+  const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${Math.round(bw*2)}" height="${Math.round(bh*2)}"
+      viewBox="${bx} ${by} ${bw} ${bh}"><rect x="${bx}" y="${by}" width="${bw}" height="${bh}" fill="#fff"/>
+      ${objs.map(o=>objSVG(o,false)).join("")}</svg>`;
+  const vbW=bw, vbH=bh;
+  const styled=svg.replace("</svg>",`<style>
+      .k-line{fill:none;stroke:var(--kc,#111);stroke-width:2}
+      .k-fill,.k-solid{fill:var(--kc,#111)}
+      .k-stroke{stroke:var(--kc,#111);stroke-width:1.6;fill:none}
+      .k-thin{stroke:var(--kc,#111);stroke-width:1;fill:none}
+      .k-thick{stroke:var(--kc,#111);stroke-width:3.4;fill:none;stroke-linecap:round}
+      .k-dash{stroke:var(--kc,#111);stroke-width:2;fill:none;stroke-dasharray:8 6}
+      .k-text,.k-tag{fill:var(--kc,#111);font-family:sans-serif}
+      .k-num{fill:#fff;font-family:sans-serif;font-weight:700}
+      .k-legt,.k-legn,.k-legr{fill:var(--kc,#111);font-family:sans-serif}
+      .k-legu{fill:#888;font-family:sans-serif;font-style:italic}
+    </style></svg>`);
+  const png=await svgToPNG(styled, Math.round(vbW*2), Math.round(vbH*2));
+  const hasOwnLegend=(sk.objs||[]).some(o=>o.t==="legend");
+  const markerList=hasOwnLegend?[]:(sk.objs||[]).filter(o=>o.t==="marker")
+    .sort((a,b)=>(parseInt(a.n,10)||0)-(parseInt(b.n,10)||0));
+  const legendH = markerList.length ? 34+markerList.length*13 : 0;
+  const availW=W-2*M, availH=H-y-M-legendH-24;
+  let dw=availW, dh=dw*vbH/vbW;
+  if(dh>availH){dh=availH;dw=dh*vbW/vbH}
+  doc.addImage(png,"PNG",M+(availW-dw)/2,y,dw,dh,undefined,"MEDIUM");
+  y+=dh+16;
+
+  // the marker index, printed rather than drawn, so nothing is cut off
+  const markers=markerList;
+  if(markers.length){
+    if(y>H-M-40){doc.addPage();y=M}
+    doc.setFont("helvetica","bold");doc.setFontSize(10);doc.setTextColor(0);
+    doc.text("Legend",M,y);y+=6;
+    doc.setDrawColor(120);doc.setLineWidth(.6);doc.line(M,y,W-M,y);y+=13;
+    doc.setFontSize(9.5);
+    markers.forEach((m,i)=>{
+      const ly=y+i*13;
+      doc.setFont("helvetica","bold");doc.text(String(m.n||"?"),M,ly);
+      doc.setFont("helvetica","normal");
+      const nm=(m.label||"").trim();
+      doc.setTextColor(nm?0:150);
+      doc.text(nm||"not named",M+20,ly);
+      doc.setTextColor(0);
+    });
+    y+=markers.length*13+6;
+  }
+  doc.setFontSize(8);doc.setTextColor(120);
+  doc.text("Not to scale unless marked. Exported "+new Date().toISOString().slice(0,16).replace("T"," "),
+    M,H-24);
+
+  const safe=String(sk.caseNo||"sketch").replace(/[^a-z0-9]+/gi,"-").toLowerCase();
+  const name=safe+"-sketch-"+new Date().toISOString().slice(0,10)+".pdf";
+  const blob=doc.output("blob");
+  try{
+    const file=new File([blob],name,{type:"application/pdf"});
+    if(navigator.canShare&&navigator.canShare({files:[file]})){
+      await navigator.share({files:[file],title:sk.caseNo||"Scene sketch"});
+      return toast("Shared");
+    }
+  }catch(e){ if(e&&e.name==="AbortError")return; }
+  const u=URL.createObjectURL(blob);const a=document.createElement("a");
+  a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(u),1500);
+  toast("Sketch exported");
+}
+function svgToPNG(svg,w,hh){
+  return new Promise((res,rej)=>{
+    const img=new Image();
+    const blob=new Blob([svg],{type:"image/svg+xml;charset=utf-8"});
+    const url=URL.createObjectURL(blob);
+    img.onload=()=>{
+      const c=document.createElement("canvas");c.width=w;c.height=hh;
+      const ctx=c.getContext("2d");ctx.fillStyle="#fff";ctx.fillRect(0,0,w,hh);
+      ctx.drawImage(img,0,0,w,hh);URL.revokeObjectURL(url);
+      res(c.toDataURL("image/png"));
+    };
+    img.onerror=()=>{URL.revokeObjectURL(url);rej(new Error("Couldn't render the sketch"))};
+    img.src=url;
+  });
+}
 function afterExport(r){
   askConfirm("Exported","Once it's safely in email or Drive, clear it from this phone. Filled forms aren't backed up anywhere.",
     "Clear it from the phone",false,()=>{
@@ -2314,7 +2429,8 @@ function legendSVG(o,sk){
   const rows=legendRows(sk);
   const pad=10, titleH=Math.min(26,Math.max(15,o.h*.14));
   const avail=o.h-titleH-pad*1.5;
-  const rowH=rows.length?Math.min(20,Math.max(9,avail/rows.length)):16;
+  // fixed row pitch so the box grows to hold more, rather than squeezing
+  const rowH=Math.max(13,Math.min(20,o.w*.055));
   const fit=Math.max(0,Math.floor(avail/rowH));
   const shown=rows.slice(0,fit);
   const fs=Math.max(7,Math.min(14,rowH*.72));
@@ -2325,7 +2441,7 @@ function legendSVG(o,sk){
       const named=(r.label||"").trim();
       return `<text x="${pad}" y="${y}" class="k-legn" style="font-size:${fs}px">${esc(r.n||"?")}</text>`
         +`<text x="${pad+Math.max(16,fs*1.7)}" y="${y}" class="${named?"k-legr":"k-legu"}" style="font-size:${fs}px">${esc(named||"not named yet")}</text>`}).join("")}
-    ${rows.length>fit?`<text x="${pad}" y="${o.h-6}" class="k-legr" style="font-size:${Math.max(7,fs*.85)}px">+${rows.length-fit} more, make it taller</text>`:""}
+    ${rows.length>fit?`<text x="${pad}" y="${o.h-6}" class="k-legr" style="font-size:${Math.max(8,fs*.85)}px">+${rows.length-fit} more \u2014 drag the corner down</text>`:""}
     ${!rows.length?`<text x="${pad}" y="${titleH+26}" class="k-legr" style="font-size:11px">Place evidence markers and they are listed here</text>`:""}`;
 }
 const objAt=id=>{const sk=S.sketches.find(x=>x.id===curSketch);return sk&&(sk.objs||[]).find(o=>o.id===id)};
@@ -2337,7 +2453,8 @@ function objSVG(o,sel){
     : (SHAPES[o.t]||SHAPES.rect)(o.w,o.h);
   const tag=o.t!=="text"&&o.label?`<text x="${o.w/2}" y="${o.h+15}" class="k-tag">${esc(o.label)}</text>`:"";
   const num=o.t==="marker"?`<text x="${o.w/2}" y="${o.h*.55}" class="k-num">${esc(o.n||"")}</text>`:"";
-  return `<g data-obj="${o.id}" transform="translate(${o.x},${o.y}) rotate(${o.r||0} ${o.w/2} ${o.h/2})">
+  return `<g data-obj="${o.id}" style="--kc:${inkHex(o.ink)}"
+    transform="translate(${o.x},${o.y}) rotate(${o.r||0} ${o.w/2} ${o.h/2})">
     <rect width="${o.w}" height="${o.h}" fill="transparent"/>
     ${inner}${num}${tag}
     ${sel?`<rect width="${o.w}" height="${o.h}" class="k-sel"/>
@@ -2400,6 +2517,10 @@ function renderSketch(){
             <input type="text" id="oname" value="${esc(sel.label||"")}"
               placeholder="${sel.t==="marker"?"Spent 9mm casing":"What it is"}"></label>
         </div>
+        <div class="inkrow"><span class="inklab">Colour</span>
+          ${INKS.map(([k,nm,hex])=>`<button class="ink${(sel.ink||"")===k?" on":""}"
+            data-ink="${k}" title="${nm}" aria-label="${nm}"
+            style="background:${hex}"></button>`).join("")}</div>
         <div class="objbar">
           <button data-orot="${sel.id}">Rotate 15&#176;</button>
           <button data-orot0="${sel.id}">Straighten</button>
@@ -2412,15 +2533,16 @@ function renderSketch(){
       :`<p class="hint" style="margin-top:6px">Tap an object to select it. Tap the page to deselect.</p>`}
     <p class="kbdhint">Arrow keys nudge, shift for bigger steps. D duplicates, Delete removes, Escape deselects.</p>
     </div><div class="skrail">
-    <div class="filters">${PALETTE.map(([c],ix)=>
+    <div class="filters wrap">${PALETTE.map(([c],ix)=>
       `<button data-pal="${ix}" class="${ix===palCat?"sel":""}">${esc(c)}</button>`).join("")}</div>
-    <div class="palette">${PALETTE[palCat][1].map(([t,nm])=>
-      `<button data-add="${t}"><span class="pv">${palPreview(t)}</span><span class="pn">${esc(nm)}</span></button>`).join("")}</div>
+    ${palCat>=0?`<div class="palette">${PALETTE[palCat][1].map(([t,nm])=>
+      `<button data-add="${t}"><span class="pv">${palPreview(t)}</span><span class="pn">${esc(nm)}</span></button>`).join("")}</div>`
+      :`<p class="hint" style="margin:0 0 12px">Pick a category above to place something.</p>`}
     ${(sk.objs||[]).length?`<div class="sect">Layers</div>
       <div class="layers">${(sk.objs||[]).slice().reverse().map((o,ix,arr)=>
         `<div class="lay${o.id===selObj?" on":""}">
           <button class="laypick" data-osel="${o.id}">
-            <span class="lp">${palPreview(o.t)}</span>
+            <span class="lp" style="--kc:${inkHex(o.ink)}">${palPreview(o.t)}</span>
             <span class="ln2">${esc(o.label||SHAPENAME(o.t))}${o.t==="marker"&&o.n?" "+esc(o.n):""}</span>
           </button>
           <button class="layb" data-lup="${o.id}" ${ix===0?"disabled":""} aria-label="Bring forward">&#9650;</button>
@@ -3036,9 +3158,18 @@ document.addEventListener("click",e=>{
     window.scrollTo&&window.scrollTo(0,0);return render()}
   const skc=S.sketches.find(x=>x.id===curSketch);
   if(e.target.closest("[data-skedit]")&&skc)return sketchMetaSheet(skc);
-  const pl=e.target.closest("[data-pal]"); if(pl){palCat=+pl.dataset.pal;return renderSketch()}
+  if(e.target.closest("[data-skpdf]")){
+    if(!skc)return;
+    if(!(skc.objs||[]).length)return toast("Nothing drawn yet");
+    toast("Building the PDF\u2026");
+    exportSketch(skc); return;
+  }
+  const pl=e.target.closest("[data-pal]");
+  if(pl){const n=+pl.dataset.pal; palCat = (palCat===n ? -1 : n); return renderSketch()}
   const ad=e.target.closest("[data-add]"); if(ad)return addObj(ad.dataset.add);
   const ol=e.target.closest("[data-olabel]"); if(ol)return labelSheet(objAt(ol.dataset.olabel));
+  const ik=e.target.closest("[data-ink]");
+  if(ik){const o=objAt(selObj); if(o){o.ink=ik.dataset.ink;saveLocal();renderSketch()} return}
   const or0=e.target.closest("[data-orot0]");
   if(or0){const o=objAt(or0.dataset.orot0);if(o){o.r=0;saveLocal();renderSketch()}return}
   const orr=e.target.closest("[data-orot]");
