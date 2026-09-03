@@ -430,6 +430,23 @@ input[type=text],input[type=date],select,textarea{width:100%;padding:11px 12px;b
   border:.5px solid var(--line);border-radius:10px;appearance:none;color:var(--ink)}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .card{background:var(--card);border:.5px solid var(--line2);border-radius:12px;padding:14px;max-width:600px}
+.nowbar{display:flex;align-items:center;gap:12px;background:var(--card);
+  border:.5px solid var(--line2);border-radius:14px;padding:12px 14px;margin-bottom:14px}
+.nowinfo{min-width:0;flex:1}
+.nowinfo .nc{display:block;font-size:19px;font-weight:800;letter-spacing:-.02em;font-family:var(--mono)}
+.nowinfo .nd{display:block;font-size:13px;color:var(--ink2);margin-top:1px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nowsw{flex:0 0 auto;background:var(--card2);border:.5px solid var(--line);border-radius:10px;
+  color:var(--blue);font-size:14px;font-weight:600;padding:9px 14px}
+.modebar{display:flex;gap:0;background:var(--card2);border-radius:11px;padding:3px;margin-bottom:14px}
+.modebar button{flex:1;background:none;border:0;border-radius:9px;padding:9px 6px;
+  font-size:14px;font-weight:600;color:var(--ink2)}
+.modebar button.on{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.35)}
+.justrow{display:flex;align-items:center;gap:9px;background:var(--card2);border-radius:10px;
+  padding:9px 11px;margin-top:8px;font-size:14px}
+.justrow .jn{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.justrow .jq{font-family:var(--mono);font-size:12.5px;color:var(--ink3)}
+.justrow .jx{background:none;border:0;color:var(--blue);font-size:13px;font-weight:600;padding:0 2px}
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
 .chips button{font-size:15px;font-weight:600;background:var(--card);border:.5px solid var(--line);
   border-radius:9px;padding:9px 12px;color:var(--ink)}
@@ -3076,32 +3093,45 @@ function renderSweep(){
   const cur=S.curLoc, cs=comps(), here=live().filter(i=>i.loc===cur);
   $("#v-sweep").innerHTML=`
     <button class="back" data-go="home">&#8249; Home</button>
+    ${cur?`<div class="nowbar">
+      <div class="nowinfo"><span class="nc">${esc(cur)}</span>
+        <span class="nd">${esc((cs.find(c=>c.code===cur)||{}).desc||"Not named yet")}</span></div>
+      <button class="nowsw" data-pick="${S.pick?0:1}">${S.pick?"Done":"Change"}</button>
+    </div>`:""}
+    ${(!cur||S.pick)?`
     <div class="chips">${cs.map(c=>{const st=compState(c.code);
       return `<button data-loc="${esc(c.code)}" class="ch-${st.k}${c.code===cur?" on":""}">
         <i></i>${esc(c.code)}</button>`}).join("")}</div>
-    <div class="card" style="margin-bottom:14px">
-      <div class="two"><label class="fld"><span>New compartment</span>
-        <input type="text" id="nc" placeholder="BIN-7" autocapitalize="characters"></label>
-        <label class="fld"><span>Where it is</span><input type="text" id="nd" placeholder="Drawer 3, left"></label></div>
-      <div class="two"><label class="fld"><span>Side of the van</span><select id="nz">
-        <option value="">Not placed yet</option>${SIDES.map(z=>`<option>${z}</option>`).join("")}</select></label>
-        <label class="fld"><span>Size on the wall</span>
-          <div style="display:flex;gap:6px"><input type="text" id="nw" inputmode="numeric" placeholder="W 6" style="text-align:center">
-          <input type="text" id="nh" inputmode="numeric" placeholder="H 4" style="text-align:center"></div></label></div>
-      <button class="btn sec" id="addc" style="margin:0;max-width:none">Add compartment</button></div>
+`:""}
     ${cur?`<div class="card">
-      <label class="fld"><span>Item</span><input type="text" id="f-name" placeholder="Black magnetic powder, 1 lb"></label>
-      <div class="two"><label class="fld"><span>Quantity</span><input type="text" id="f-qty" inputmode="numeric" value="1"></label>
-        <label class="fld"><span>Par level</span><input type="text" id="f-par" inputmode="numeric" placeholder="Blank for now"></label></div>
-      <div class="two"><label class="fld"><span>Category</span><select id="f-cat">${CATS.map(c=>`<option value="${c[0]}"${c[0]===S.lastCat?" selected":""}>${c[0]} · ${c[1]}</option>`).join("")}</select></label>
-        <label class="fld"><span>Class</span><select id="f-cls">${CLASSES.map(c=>`<option${c===S.lastCls?" selected":""}>${c}</option>`).join("")}</select></label></div>
-      <label class="fld"><span>Expiry or service date</span><input type="date" id="f-date"></label>
-      <button class="btn" id="add" style="margin:4px 0 0;max-width:none">Add to ${esc(cur)}</button></div>
-      ${here.length?`<div class="sect">In ${esc(cur)} — ${here.length}</div><div class="rows">`
+      <div class="modebar">
+        <button data-qa="1" class="${S.quick!==false?"on":""}">Quick add</button>
+        <button data-qa="0" class="${S.quick===false?"on":""}">Full details</button></div>
+      ${S.quick!==false?`
+        <label class="fld"><span>Item</span>
+          <input type="text" id="q-name" placeholder="Nitrile gloves, box"
+            autocomplete="off" autocapitalize="sentences" enterkeyhint="done"></label>
+        <button class="btn" id="qadd" style="margin:2px 0 0;max-width:none">Add to ${esc(cur)}</button>
+        <p class="hint" style="margin:9px 0 0">Saved as
+          ${esc((CATS.find(c=>c[0]===S.lastCat)||CATS[0])[1])} ·
+          ${esc(S.lastCls||CLASSES[0])} · qty 1. Type <b>x6</b> on the end to set a quantity.
+          Fill in dates and par levels later.</p>
+        <div id="qjust"></div>`
+      :`
+        <label class="fld"><span>Item</span><input type="text" id="f-name" placeholder="Black magnetic powder, 1 lb"></label>
+        <div class="two"><label class="fld"><span>Quantity</span><input type="text" id="f-qty" inputmode="numeric" value="1"></label>
+          <label class="fld"><span>Par level</span><input type="text" id="f-par" inputmode="numeric" placeholder="Blank for now"></label></div>
+        <div class="two"><label class="fld"><span>Category</span><select id="f-cat">${CATS.map(c=>`<option value="${c[0]}"${c[0]===S.lastCat?" selected":""}>${c[0]} · ${c[1]}</option>`).join("")}</select></label>
+          <label class="fld"><span>Class</span><select id="f-cls">${CLASSES.map(c=>`<option${c===S.lastCls?" selected":""}>${c}</option>`).join("")}</select></label></div>
+        <label class="fld"><span>Expiry or service date</span><input type="date" id="f-date"></label>
+        <button class="btn" id="add" style="margin:4px 0 0;max-width:none">Add to ${esc(cur)}</button>`}
+      </div>
+      <div id="sweeplist">${here.length?`<div class="sect">In ${esc(cur)} — ${here.length}</div><div class="rows">`
         +here.slice().reverse().map(i=>`<button class="row" data-item="${i.id}">
           <span><span class="code">${esc(i.name)}</span><span class="desc">${esc(i.qty)} in stock${i.par?" · par "+esc(i.par):""}</span></span>
-          <span class="rt"><span class="chev">&#8250;</span></span></button>`).join("")+`</div>`:""}`
-    :`<div class="empty"><strong>Pick a compartment</strong><p>Choose one above, or add a new code and say where it sits in the van.</p></div>`}`;
+          <span class="rt"><span class="chev">&#8250;</span></span></button>`).join("")+`</div>`:""}</div>`
+    :`<div class="empty"><strong>Pick a compartment</strong><p>Choose one above, then log what's inside it.</p></div>`}`;
+  paintJust();
 }
 
 /* ---------- events ---------- */
@@ -3356,13 +3386,9 @@ document.addEventListener("click",e=>{
   if(di){const it=S.items.find(x=>x.id===di.dataset.item);
     if(it&&it.status==="Not carried"&&!isRequest(it))return gapSheet(it);
     return openItem(di.dataset.item)}
-  if(e.target.closest("[data-loc]")){S.curLoc=e.target.closest("[data-loc]").dataset.loc;save();return renderSweep()}
-  if(e.target.closest("#addc")){
-    const code=$("#nc").value.trim().toUpperCase(); if(!code)return toast("Needs a code");
-    if(!S.comps.some(x=>x.code===code))
-      S.comps.push({code,desc:$("#nd").value.trim(),side:$("#nz").value,
-        x:null,y:null,w:n($("#nw").value)||6,h:n($("#nh").value)||4});
-    S.curLoc=code;save();renderSweep();return toast("Added "+code)}
+  if(e.target.closest("[data-loc]")){
+    S.curLoc=e.target.closest("[data-loc]").dataset.loc; S.pick=false; justAdded=[]; save();
+    renderSweep(); const f=$("#q-name")||$("#f-name"); f&&f.focus(); return}
   if(e.target.closest("#add")){
     const nm=$("#f-name").value.trim(); if(!nm)return toast("Item needs a name");
     const dupHere=live().find(i=>i.loc===S.curLoc&&i.name.toLowerCase()===nm.toLowerCase());
@@ -3383,7 +3409,55 @@ document.addEventListener("click",e=>{
       date:$("#f-date").value||"",status:"Stocked",gapType:"",note:"",steps:[],source:"",
       verified:"",uses:[],rel:[],links:[],fav:false});
     save();renderSweep();toast("Added to "+S.curLoc);const f=$("#f-name");f&&f.focus()}
+
+  const pk=e.target.closest("[data-pick]");
+  if(pk){S.pick=pk.dataset.pick==="1";save();renderSweep();
+    if(!S.pick){const f=$("#q-name")||$("#f-name");f&&f.focus()} return}
+  const qa=e.target.closest("[data-qa]");
+  if(qa){S.quick=qa.dataset.qa==="1";save();renderSweep();
+    const f=$("#q-name")||$("#f-name"); f&&f.focus(); return}
+  if(e.target.closest("#qadd"))return quickAdd();
+  const ju=e.target.closest("[data-undo]");
+  if(ju){S.items=S.items.filter(i=>i.id!==ju.dataset.undo);
+    save();paintJust();refreshSweepList();toast("Removed");return}
 });
+
+// quick add: name only, everything else inherited, focus never leaves the field
+let justAdded=[];
+function quickAdd(){
+  const f=$("#q-name"); if(!f)return;
+  let nm=f.value.trim(); if(!nm)return toast("Item needs a name");
+  let qty=1;
+  const m=nm.match(/\s+[x\u00d7*]\s?(\d{1,4})$/i);
+  if(m){qty=parseInt(m[1],10)||1; nm=nm.slice(0,m.index).trim()}
+  if(!nm)return toast("Item needs a name");
+  const it={id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),name:nm,loc:S.curLoc,
+    cat:S.lastCat||CATS[0][0],cls:S.lastCls||CLASSES[0],qty,par:"",date:"",
+    status:"Stocked",gapType:"",note:"",steps:[],source:"",verified:"",
+    uses:[],rel:[],links:[],fav:false};
+  S.items.push(it); save();
+  justAdded.unshift(it.id); justAdded=justAdded.slice(0,6);
+  f.value=""; f.focus();
+  paintJust(); refreshSweepList();
+}
+function paintJust(){
+  const box=$("#qjust"); if(!box)return;
+  const rows=justAdded.map(id=>S.items.find(i=>i.id===id)).filter(Boolean);
+  box.innerHTML=rows.length?`<p class="hint" style="margin:14px 0 6px">Just added</p>`
+    +rows.map(i=>`<div class="justrow">
+      <span class="jn">${esc(i.name)}</span>
+      <span class="jq">${esc(i.qty)}</span>
+      <button class="jx" data-item="${i.id}">Details</button>
+      <button class="jx" data-undo="${i.id}">Undo</button></div>`).join(""):"";
+}
+function refreshSweepList(){
+  const here=live().filter(i=>i.loc===S.curLoc);
+  const host=$("#sweeplist"); if(!host)return;
+  host.innerHTML=here.length?`<div class="sect">In ${esc(S.curLoc)} — ${here.length}</div><div class="rows">`
+    +here.slice().reverse().map(i=>`<button class="row" data-item="${i.id}">
+      <span><span class="code">${esc(i.name)}</span><span class="desc">${esc(i.qty)} in stock${i.par?" · par "+esc(i.par):""}</span></span>
+      <span class="rt"><span class="chev">&#8250;</span></span></button>`).join("")+`</div>`:"";
+}
 
 function placeholder(el,t,b){$(el).innerHTML=`<div class="empty"><strong>${t}</strong><p>${b}</p></div>`}
 function fitHeader(){
@@ -3394,6 +3468,7 @@ function fitHeader(){
 window.addEventListener("resize",()=>{applyMode();fitHeader();render();fitCanvas()});
 window.addEventListener("orientationchange",()=>setTimeout(()=>{render();fitCanvas()},250));
 document.addEventListener("keydown",e=>{
+  if(e.key==="Enter"&&e.target&&e.target.id==="q-name"){e.preventDefault();return quickAdd()}
   const typing=/^(INPUT|TEXTAREA|SELECT)$/.test((e.target||{}).tagName||"");
   if(e.key==="Escape"){
     if($("#sheet")&&$("#sheet").classList.contains("on"))return closeSheet();
