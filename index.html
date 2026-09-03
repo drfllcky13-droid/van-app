@@ -247,6 +247,18 @@ input[type=text],input[type=date],select,textarea{width:100%;padding:11px 12px;b
   background:var(--card2);display:flex;flex-direction:column;justify-content:center;min-width:88px}
 .loc .qn{font-size:22px;font-weight:700;letter-spacing:-.02em;line-height:1.1}
 .loc .ql{font-size:11.5px;color:var(--ink2)}
+.mini{background:var(--card);border:.5px solid var(--line2);border-radius:12px;
+  padding:11px 12px 9px;margin-top:9px}
+.minihead{font-size:12px;font-weight:600;color:var(--ink2);margin-bottom:7px}
+.minigrid{display:grid;gap:2px;height:88px;border:1px solid var(--line);
+  border-radius:6px;padding:3px;background:var(--card2)}
+.mslot{border:1px solid var(--line);border-radius:3px;background:transparent;opacity:.5}
+.mslot.hit{background:var(--blue);border-color:var(--blue);opacity:1;
+  display:flex;align-items:center;justify-content:center;color:#fff;
+  font-size:11px;font-weight:700;letter-spacing:-.01em;overflow:hidden}
+.miniorient{display:flex;justify-content:space-between;font-size:10.5px;
+  color:var(--ink3);margin-top:5px}
+@media (min-width:820px){.minigrid{height:120px}.mslot.hit{font-size:13px}}
 .parrow{display:flex;gap:16px;padding:10px 3px 0;font-size:14px;color:var(--ink2)}
 .parrow b{color:var(--ink);font-weight:600}
 .steps{background:var(--card);border:.5px solid var(--line2);border-radius:12px;padding:6px 4px}
@@ -620,11 +632,16 @@ function go(v){view=v;query="";$("#q").value="";$("#qclear").style.display="none
   $$(".view").forEach(s=>s.classList.toggle("on",s.id==="v-"+v));
   window.scrollTo&&window.scrollTo(0,0);render()}
 document.addEventListener("click",e=>{const b=e.target.closest("#tabs button,#side button");if(b)go(b.dataset.v)});
-$("#q").addEventListener("input",e=>{query=e.target.value.trim();
+let searchFrom="home";
+function applyQuery(){
   $("#qclear").style.display=query?"":"none";
-  $$(".view").forEach(s=>s.classList.toggle("on",query?s.id==="v-search":s.id==="v-"+view));render()});
-$("#qclear").onclick=()=>{$("#q").value="";query="";$("#qclear").style.display="none";
-  $$(".view").forEach(s=>s.classList.toggle("on",s.id==="v-"+view));render()};
+  if(query){ if(view!=="search"){searchFrom=view;view="search"} }
+  else if(view==="search"){ view=searchFrom||"home" }
+  $$(".view").forEach(s=>s.classList.toggle("on",s.id==="v-"+view));
+  window.scrollTo&&window.scrollTo(0,0);render();
+}
+$("#q").addEventListener("input",e=>{query=e.target.value.trim();applyQuery()});
+$("#qclear").onclick=()=>{$("#q").value="";query="";applyQuery()};
 
 /* ---------- home: priority strip ---------- */
 function renderHome(){
@@ -806,6 +823,24 @@ function itemStatus(i){
   if(isExpiring(i))return["attn","Expires in "+daysOut(i.date)+" days"];
   return["good","Good"];
 }
+function miniWall(code){
+  const c=S.comps.find(x=>x.code===code);
+  if(!c||!SIDES.includes(c.side))return "";
+  SIDES.forEach(autoPlace);
+  if(c.x==null||c.y==null)return "";
+  const W=S.walls[c.side]||{cols:24,rows:12};
+  const mine=comps().filter(o=>o.side===c.side&&o.x!=null);
+  return `<div class="mini">
+    <div class="minihead">${esc(c.side)}</div>
+    <div class="minigrid" style="grid-template-columns:repeat(${W.cols},1fr);grid-template-rows:repeat(${W.rows},1fr)">
+      ${mine.map(o=>`<div class="mslot${o.code===c.code?" hit":""}"
+        style="grid-column:${o.x+1}/span ${o.w};grid-row:${o.y+1}/span ${o.h}"
+        >${o.code===c.code?esc(o.code):""}</div>`).join("")}
+    </div>
+    <div class="miniorient"><span>Front of van</span><span>Rear doors</span></div>
+  </div>`;
+}
+
 function renderItemDetail(){
   const i=S.items.find(x=>x.id===curItem);
   if(!i){view=prevView;return render()}
@@ -831,6 +866,7 @@ function renderItemDetail(){
         <div class="ds">${esc(c?(c.desc||c.side||"No description"):"No compartment set")}</div></div>
       <div class="rgt"><div class="qn">${esc(i.qty)}</div><div class="ql">in stock</div></div>
     </div>
+    ${miniWall(i.loc)}
     <div class="parrow"><span>Par level <b>${esc(i.par||"not set")}</b></span>
       <span>Status <b style="color:var(--${st[0]==="action"?"red":st[0]==="attn"?"amber":"green"})">${esc(st[1])}</b></span></div>
 
@@ -875,7 +911,7 @@ function renderItemDetail(){
     </div>`;
 }
 
-function openItem(id,from){curItem=id;prevView=from||(query?"search":view);view="itemdetail";
+function openItem(id,from){curItem=id;prevView=from||view;view="itemdetail";
   $$(".view").forEach(v=>v.classList.toggle("on",v.id==="v-itemdetail"));
   window.scrollTo&&window.scrollTo(0,0);render()}
 
@@ -1436,8 +1472,8 @@ window.addEventListener("orientationchange",()=>setTimeout(fitHeader,200));
 
 function render(){
   buildTabs();renderDemoBar();
+  if(view==="search")return renderSearch();
   if(view==="itemdetail")return renderItemDetail();
-  if(query)return renderSearch();
   if(view==="compdetail")return renderCompDetail();
   if(view==="data"){renderData();return fitHeader()}
   if(view==="print")return renderPrint();
