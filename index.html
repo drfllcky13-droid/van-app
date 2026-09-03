@@ -232,6 +232,7 @@ body.skfull .skgrid.full.notools{grid-template-columns:minmax(0,1fr);grid-templa
 .sweepcard.live .n{color:var(--amber)}
 .sweepcard.live .s{color:var(--amber);opacity:.9}
 .sect{font-size:13px;font-weight:600;color:var(--ink2);margin:24px 2px 9px}
+.subsect{font-size:12.5px;font-weight:600;color:var(--ink3);margin:16px 2px 7px}
 .qf{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 .qf button{background:var(--card);border:.5px solid var(--line2);border-radius:12px;
   padding:12px 11px;text-align:left;min-height:84px;display:flex;flex-direction:column}
@@ -262,11 +263,12 @@ body.skfull .skgrid.full.notools{grid-template-columns:minmax(0,1fr);grid-templa
 .chev{color:var(--ink3);font-size:16px}
 
 /* ---------- van walls ---------- */
-.wall{margin-bottom:14px;container-type:inline-size}
+.wall{margin-bottom:14px;container-type:inline-size;container-name:wall}
 .slot.small{padding:2px 4px;gap:0}
 .slot.small .code{font-size:11px;line-height:1.1}
 .slot.small .st{font-size:9.5px;line-height:1.1}
-.slot.tiny{padding:1px 2px;gap:0;align-items:center;justify-content:center}
+.slot.tiny{padding:0 1px;gap:0;border-radius:2px;align-items:center;justify-content:center}
+.slot.small{border-radius:4px}
 .slot.tiny .code{font-size:9.5px;line-height:1}
 .wallhead{display:flex;align-items:center;gap:10px}
 .wallhead b{font-size:15px;font-weight:700;letter-spacing:-.01em;color:var(--ink)}
@@ -281,9 +283,10 @@ body.skfull .skgrid.full.notools{grid-template-columns:minmax(0,1fr);grid-templa
 .wheel{position:absolute;border-radius:50%;background:var(--card2);
   border:2.5px solid var(--ink3);height:19%;aspect-ratio:1;width:auto;top:71%}
 .wheel.f{left:8%}.wheel.r{left:76%}
-.cargo{position:absolute;left:19%;right:2.5%;top:7%;bottom:13%;display:grid;gap:3px}
+.cargo{position:absolute;left:19%;right:2.5%;top:7%;bottom:13%;display:grid;gap:3px;overflow:hidden}
 .slot{border-radius:6px;padding:4px 5px;text-align:left;border:.5px solid transparent;
-  overflow:hidden;display:flex;flex-direction:column;min-width:0;min-height:0;gap:1px}
+  overflow:hidden;display:flex;flex-direction:column;min-width:0;min-height:0;gap:1px;
+  container-type:size;container-name:slot}
 .slot>span{min-width:0;min-height:0;overflow:hidden;display:flex;flex-direction:column}
 .slot .code{font-size:11.5px;font-weight:700;letter-spacing:-.01em;line-height:1.15;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:0 0 auto}
@@ -657,30 +660,30 @@ body.xwide .dash .wall{margin-bottom:0}
 }
 
 /* wall panels adapt to their own width, must come last */
-@container (max-width:700px){
-  .wall .slot .dsc.two{-webkit-line-clamp:1;white-space:nowrap;text-overflow:ellipsis;display:block}
+@container wall (max-width:700px){
+  .wall .cargo .slot .dsc.two{-webkit-line-clamp:1;white-space:nowrap;text-overflow:ellipsis;display:block}
 }
-@container (max-width:560px){
-  .wall .slot .code{font-size:11px;line-height:1.1}
-  .wall .slot .dsc,.wall .slot .st{font-size:10px;line-height:1.15}
-  .wall .slot{padding:3px 5px;gap:0}
+@container wall (max-width:560px){
+  .wall .cargo .slot .code{font-size:11px;line-height:1.1}
+  .wall .cargo .slot .dsc,.wall .cargo .slot .st{font-size:10px;line-height:1.15}
+  .wall .cargo .slot{padding:3px 5px;gap:0}
 }
-@container (max-width:430px){
-  .wall .slot .dsc,.wall .slot .dsc.two{display:none}
-  .wall .slot{padding:1px 4px;gap:0}
-  .wall .slot .code{font-size:10px;line-height:1.05}
-  .wall .slot .st{font-size:9.5px;line-height:1.05}
+@container wall (max-width:430px){
+  .wall .cargo .slot .dsc,.wall .cargo .slot .dsc.two{display:none}
+  .wall .cargo .slot{padding:1px 4px;gap:0}
+  .wall .cargo .slot .code{font-size:10px;line-height:1.05}
+  .wall .cargo .slot .st{font-size:9.5px;line-height:1.05}
 }
-@container (max-width:900px){
-  .wall .slot.tiny .st{display:none}
-  .wall .slot.tiny .code{font-size:9px;line-height:1}
-  .wall .slot.small .st{display:none}
+@container wall (max-width:900px){
+  .wall .cargo .slot.tiny .st{display:none}
+  .wall .cargo .slot.tiny .code{font-size:9px;line-height:1}
+  .wall .cargo .slot.small .st{display:none}
 }
-@container (max-width:560px){
-  .wall .slot.tiny .code{display:none}
+@container wall (max-width:560px){
+  .wall .cargo .slot.tiny .code{display:none}
 }
-@container (max-width:300px){
-  .wall .slot .st{display:none}
+@container wall (max-width:300px){
+  .wall .cargo .slot .st{display:none}
 }
 
 /* ---------- dashboard, laid out to spec ---------- */
@@ -708,6 +711,39 @@ body.xwide .cellwrap .sweepcard .ch{display:none}
   body.xwide .cellwrap{grid-column:auto/span 6!important;grid-row:auto!important}
   body.xwide .cellwrap>*{min-height:120px}
 }
+
+/* ---------- slot contents sized to the slot itself ----------
+   container queries measure the CONTENT box, rules inside one cannot style
+   the container itself, and these must outrank the body.wide font sizes,
+   hence the .wall prefix                                                  */
+.wall .cargo .slot .dsc,.wall .cargo .slot .st{display:none}
+.wall .cargo .slot .code{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.walls.fine .slot{padding:2px 3px}
+
+@container slot (min-height:22px){ .wall .cargo .slot .st{display:block} }
+@container slot (max-width:60px){ .wall .cargo .slot .st{display:none} }
+
+/* tall enough to stack the name under the code */
+@container slot (min-width:54px) and (min-height:34px){
+  .wall .cargo .slot .dsc{display:-webkit-box;-webkit-line-clamp:1;white-space:normal}
+}
+@container slot (min-width:54px) and (min-height:52px){
+  .wall .cargo .slot .dsc{-webkit-line-clamp:2}
+}
+/* a drawer front: wide and shallow, so the name sits beside the code */
+@container slot (min-width:60px) and (min-height:13px) and (max-height:30px){
+  .wall .cargo .slot>span{flex-direction:row;align-items:baseline;gap:7px;flex:1;min-width:0}
+  .wall .cargo .slot .dsc{display:block;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;
+    margin:0;flex:1;min-width:0;font-size:9.5px;line-height:1}
+  .wall .cargo .slot .code{font-size:10.5px;line-height:1}
+  .wall .cargo .slot .st{display:none}
+}
+/* shrink the code to whatever the slot can actually hold */
+@container slot (max-width:36px){ .wall .cargo .slot .code{font-size:9.5px;line-height:1;letter-spacing:-.2px} }
+@container slot (max-width:16px){ .wall .cargo .slot .code{display:none} }
+@container slot (max-height:16px){ .wall .cargo .slot .code{font-size:9.5px;line-height:1} }
+@container slot (max-height:11px){ .wall .cargo .slot .code{font-size:8.5px;line-height:1} }
+@container slot (max-height:7px){ .wall .cargo .slot .code{display:none} }
 </style>
 </head>
 <body>
@@ -1288,16 +1324,11 @@ function renderComps(){
   SIDES.forEach(autoPlace);
 
   const slotFor=c=>{const s=compState(c.code);
-    const gw=(S.walls[c.side]||{cols:24}).cols, gh=(S.walls[c.side]||{rows:12}).rows;
-    // how much of the wall this slot actually occupies, so the text fits whatever the grid size
-    const fw=c.w/gw, fh=c.h/gh;
-    const tiny=fw<0.075||fh<0.14, small=fw<0.13||fh<0.22;
-    const showDesc=!small&&c.desc, twoLine=fh>=0.34, mid=!tiny;
-    const label=(fw<0.28&&(s.parts||[]).length>1)?s.parts[0]:s.label;
-    return `<button class="slot s-${s.k}${editSel===c.code?" sel":""}${tiny?" tiny":small?" small":""}" data-comp="${esc(c.code)}"
+    const label=(c.w<26&&(s.parts||[]).length>1)?s.parts[0]:s.label;
+    return `<button class="slot s-${s.k}${editSel===c.code?" sel":""}" data-comp="${esc(c.code)}"
       style="grid-column:${c.x+1}/span ${c.w};grid-row:${c.y+1}/span ${c.h}">
-      <span><span class="code">${esc(c.code)}</span>${showDesc?`<span class="dsc${twoLine?" two":""}">${esc(c.desc)}</span>`:""}</span>
-      ${mid?`<span class="st">${esc(label)}</span>`:""}</button>`};
+      <span><span class="code">${esc(c.code)}</span>${c.desc?`<span class="dsc">${esc(c.desc)}</span>`:""}</span>
+      <span class="st">${esc(label)}</span></button>`};
 
   const wall=side=>{
     const W=S.walls[side]||{cols:24,rows:12};
@@ -1313,7 +1344,7 @@ function renderComps(){
         <div class="vanwrap">
           <div class="wheel f"></div><div class="wheel r"></div>
           <div class="vanbody"><div class="vaninner"></div>
-            <div class="cargo" style="grid-template-columns:repeat(${W.cols},1fr);grid-template-rows:repeat(${W.rows},1fr)">
+            <div class="cargo" style="grid-template-columns:repeat(${W.cols},minmax(0,1fr));grid-template-rows:repeat(${W.rows},minmax(0,1fr));gap:${W.cols>60?1:3}px">
               ${mine.map(slotFor).join("")}</div></div></div>
         <div class="orient"><span>Front</span><span>Rear doors</span></div>
       </div></section>`;
@@ -1356,6 +1387,21 @@ function renderComps(){
      <div class="walls${SIDES.some(s=>(S.walls[s]||{cols:24}).cols>40)?" fine":""}">${wall("Driver side")}${wall("Passenger side")}
        ${cs.some(c=>c.side==="Rear doors")?wall("Rear doors"):""}
        ${cs.some(c=>c.side==="Cab")?wall("Cab"):""}</div>
+     ${(()=>{  // a fine grid draws too small to read on a phone, so list them too
+       const fine=SIDES.some(s=>(S.walls[s]||{cols:24}).cols>40);
+       if(!fine||!cs.length)return "";
+       let out=`<div class="sect">Every compartment — ${cs.length}</div>`;
+       SIDES.forEach(side=>{
+         const mine=cs.filter(c=>c.side===side).sort((a,b)=>a.x-b.x||a.y-b.y);
+         if(!mine.length)return;
+         out+=`<div class="subsect">${esc(side)} · front to back</div><div class="rows">`
+           +mine.map(c=>{const s=compState(c.code);
+             return `<button class="row" data-comp="${esc(c.code)}">
+               <span><span class="code">${esc(c.code)}</span>
+               <span class="desc">${esc(c.desc||"Not named yet")}</span></span>
+               <span class="rt"><span class="badge b-${s.k}">${esc(s.label)}</span>
+               <span class="chev">&#8250;</span></span></button>`}).join("")+`</div>`});
+       return out})()}
      ${unplaced.length?`<div class="sect">Not placed on a side yet — ${unplaced.length}</div>
        <div class="rows">`+unplaced.map(c=>{const s=compState(c.code);
          return `<button class="row" data-comp="${esc(c.code)}">
@@ -1440,7 +1486,7 @@ function miniWall(code){
   const mine=comps().filter(o=>o.side===c.side&&o.x!=null);
   return `<div class="mini">
     <div class="minihead">${esc(c.side)}</div>
-    <div class="minigrid" style="grid-template-columns:repeat(${W.cols},1fr);grid-template-rows:repeat(${W.rows},1fr)">
+    <div class="minigrid" style="grid-template-columns:repeat(${W.cols},minmax(0,1fr));grid-template-rows:repeat(${W.rows},minmax(0,1fr));gap:${W.cols>60?1:2}px">
       ${mine.map(o=>`<div class="mslot${o.code===c.code?" hit":""}"
         style="grid-column:${o.x+1}/span ${o.w};grid-row:${o.y+1}/span ${o.h}"
         >${o.code===c.code?esc(o.code):""}</div>`).join("")}
@@ -1721,7 +1767,7 @@ function renderPrint(){
     return `<section class="pwall">
       <h3>${esc(side)}</h3>
       <div class="porient"><span>Front of van</span><span>Rear doors</span></div>
-      <div class="pgrid" style="grid-template-columns:repeat(${W.cols},1fr);grid-template-rows:repeat(${W.rows},1fr)">
+      <div class="pgrid" style="grid-template-columns:repeat(${W.cols},minmax(0,1fr));grid-template-rows:repeat(${W.rows},minmax(0,1fr));gap:${W.cols>60?1:3}px">
         ${mine.map(c=>`<div class="pslot" style="grid-column:${c.x+1}/span ${c.w};grid-row:${c.y+1}/span ${c.h}">
           <b>${esc(c.code)}</b>${c.desc?`<i>${esc(c.desc)}</i>`:""}</div>`).join("")}
       </div></section>`};
