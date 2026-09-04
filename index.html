@@ -30,6 +30,7 @@ html.theme-light{color-scheme:light}
   --sys:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;
   --mono:ui-monospace,"SF Mono",Menlo,monospace;
   --cw:1760px;
+  --kpv:#111111;
   --top:calc(100px + env(safe-area-inset-top));
   --bot:calc(74px + env(safe-area-inset-bottom));
 }
@@ -44,8 +45,10 @@ html.theme-light{color-scheme:light}
   --green:#4CD07D;--greenbg:#13301F;--greensolid:#1C8746;
   --grey:#8E8E93;--greybg:#2C2C2E;
   --dark:#3A3F45;--darkink:#FFFFFF;
+  --kpv:#E8E8E8;
 }}
 html.theme-dark{
+  --kpv:#E8E8E8;
   --bg:#000000;--card:#1C1C1E;--card2:#2C2C2E;
   --ink:#FFFFFF;--ink2:#AEAEB2;--ink3:#8E8E93;
   --line:#38383A;--line2:#2C2C2E;
@@ -313,8 +316,9 @@ body.skfull .skgrid.full.notools{grid-template-columns:minmax(0,1fr);grid-templa
 .palette .pv{height:32px;display:flex;align-items:center;justify-content:center}
 .pvs{width:46px;height:32px;display:block;overflow:visible}
 .palette .pn{font-size:11.5px;color:var(--ink2);text-align:center;line-height:1.2}
-@media (prefers-color-scheme:dark){.pvs .k-line,.pvs .k-stroke,.pvs .k-thin,.pvs .k-thick,.pvs .k-dash{stroke:#ddd}
- .pvs .k-solid,.pvs .k-fill{fill:#ddd}.pvs .k-text{fill:#ddd}}
+/* previews sit on the card, not on paper: the ink follows the theme unless the object has its own */
+.pvs .k-line,.pvs .k-stroke,.pvs .k-thin,.pvs .k-thick,.pvs .k-dash,.pvs .k-ink{stroke:var(--kc,var(--kpv))}
+.pvs .k-solid,.pvs .k-fill,.pvs .k-text,.pvs .k-tag,.pvs .k-num{fill:var(--kc,var(--kpv))}
 .seg{display:grid;grid-template-columns:1fr 1fr;background:var(--greybg);
   border-radius:9px;padding:2px;margin-bottom:12px}
 .seg button{background:none;border:0;padding:8px 6px;border-radius:7px;
@@ -3129,6 +3133,8 @@ const INKS=[["","Black","#111111"],["red","Red","#C62828"],["blue","Blue","#1258
  ["green","Green","#1E7A3C"],["orange","Orange","#C25E00"],["purple","Purple","#6B3FA0"],
  ["brown","Brown","#6E4B2A"],["grey","Grey","#767679"]];
 const inkHex=k=>(INKS.find(i=>i[0]===(k||""))||INKS[0])[2];
+// the same ink as shown on a card rather than on paper: black follows the theme, named inks use the theme tint
+const inkUI=k=>({"":"var(--kpv)",red:"var(--red)",blue:"var(--blue)",green:"var(--green)",orange:"var(--amber)"})[k||""]||inkHex(k);
 const SHAPENAME=t=>{for(const[,list]of PALETTE){const f=list.find(x=>x[0]===t);if(f)return f[1]}return t};
 
 /* ---------- forms ---------- */
@@ -4691,7 +4697,7 @@ function renderSketch(){
           ${mine.length?mine.map(({o,i})=>
             `<div class="lay${o.id===selObj?" on":""}${L.locked?" locked":""}">
               <button class="laypick" data-osel="${o.id}">
-                <span class="lp" style="--kc:${inkHex(o.ink)}">${palPreview(o.t)}</span>
+                <span class="lp" style="--kc:${inkUI(o.ink)}">${palPreview(o.t)}</span>
                 <span class="ln2">${esc(o.label||SHAPENAME(o.t))}${(o.t==="marker"||o.t==="photopoint")&&o.n?" "+esc(o.n):""}</span>
               </button>
               <button class="laybig" data-omore="${o.id}" aria-label="Object options">&#8943;</button>
@@ -8331,8 +8337,9 @@ function appExtraClick9(e){
 /* ---------- reports and upkeep, round ten ----------
    report wording, auto-fill, photograph log, Word export, vector PDF, version stamp,
    vehicle check, part numbers, shift handover, service and calibration, help and change log. */
-const APP_VERSION="2026.09.04.14";
+const APP_VERSION="2026.09.04.15";
 const CHANGELOG=[
+  ["2026-09-04","Symbol previews in the sketch palette, the symbols sheet and the layer list are readable in dark mode, including when dark is chosen under Settings rather than by the device."],
   ["2026-09-04","Scan a label works on every device: a live camera view where the browser allows it, with a QR reader that loads on first use, and a Use the camera app button that takes a photo of the label and reads it."],
   ["2026-09-04","Settings is a button at the top of Home and at the foot of the side navigation. The settings page is a menu of sections, each showing its state at a glance and opening on its own: initials, automatic saving, back up, restore, case packages, templates, wording, display, labels, storage, activity, errors, reset."],
   ["2026-09-04","Hosted on GitHub Pages with a printable install sheet. Bundle order is report, entry log, evidence log, sketch, photo log; each photograph sits on its photo log row; measurement tables no longer split across pages."],

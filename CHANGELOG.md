@@ -1,5 +1,11 @@
 # FSU change log
 
+## 2026.09.04.15
+Sketch symbol previews (palette, symbols sheet, layer list) were near-black on the dark card when
+dark mode was chosen under Settings, and black-ink objects in the layer list were dark in every dark
+mode. Previews now take their ink from the theme; named inks use the theme tint. The drawing itself
+is unchanged: it is white paper with black ink in both modes, as it prints.
+
 ## 2026.09.04.14
 Scan a label works on every device. Chrome and Android use the built-in barcode reader; iPad and
 iPhone load a QR reader (jsQR) the first time and scan live from the camera. Every device also gets

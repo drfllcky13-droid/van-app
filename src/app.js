@@ -1848,6 +1848,8 @@ const INKS=[["","Black","#111111"],["red","Red","#C62828"],["blue","Blue","#1258
  ["green","Green","#1E7A3C"],["orange","Orange","#C25E00"],["purple","Purple","#6B3FA0"],
  ["brown","Brown","#6E4B2A"],["grey","Grey","#767679"]];
 const inkHex=k=>(INKS.find(i=>i[0]===(k||""))||INKS[0])[2];
+// the same ink as shown on a card rather than on paper: black follows the theme, named inks use the theme tint
+const inkUI=k=>({"":"var(--kpv)",red:"var(--red)",blue:"var(--blue)",green:"var(--green)",orange:"var(--amber)"})[k||""]||inkHex(k);
 const SHAPENAME=t=>{for(const[,list]of PALETTE){const f=list.find(x=>x[0]===t);if(f)return f[1]}return t};
 
 /* ---------- forms ---------- */
@@ -3410,7 +3412,7 @@ function renderSketch(){
           ${mine.length?mine.map(({o,i})=>
             `<div class="lay${o.id===selObj?" on":""}${L.locked?" locked":""}">
               <button class="laypick" data-osel="${o.id}">
-                <span class="lp" style="--kc:${inkHex(o.ink)}">${palPreview(o.t)}</span>
+                <span class="lp" style="--kc:${inkUI(o.ink)}">${palPreview(o.t)}</span>
                 <span class="ln2">${esc(o.label||SHAPENAME(o.t))}${(o.t==="marker"||o.t==="photopoint")&&o.n?" "+esc(o.n):""}</span>
               </button>
               <button class="laybig" data-omore="${o.id}" aria-label="Object options">&#8943;</button>
