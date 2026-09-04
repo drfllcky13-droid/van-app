@@ -152,8 +152,9 @@ package.
    holds regulated stock that has not been counted today.
 15. **Deep links.** `#c=CODE`, `#i=ID`, `#s=ID`, `#inc=ID` open a compartment, item, sketch or
    incident on load and on `hashchange`, then clear the hash. QR labels encode them with the
-   address under Settings › Labels. The in-app scanner needs `BarcodeDetector`; without it the sheet
-   says to use the camera app.
+   address under Settings › Labels. The in-app scanner (`scanSheet` in ext-van.js) uses `BarcodeDetector`
+   where it exists and otherwise loads jsQR from jsdelivr on first use; every device also gets a
+   photo route through a file input with `capture`, decoded the same way.
 16. **The settings page is a menu.** `renderData` draws `settingsMenu()` when `SET_SEC` is null and
    `settingsSection(SET_SEC)` otherwise; `openSettings(sec)` lands on a section from anywhere
    (Home uses `data-gosec`). Control ids (`#ghconnect`, `#dlj`, `#wipe`, `#whoin`…) are unchanged

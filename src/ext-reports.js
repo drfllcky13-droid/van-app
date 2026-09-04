@@ -1,8 +1,9 @@
 /* ---------- reports and upkeep, round ten ----------
    report wording, auto-fill, photograph log, Word export, vector PDF, version stamp,
    vehicle check, part numbers, shift handover, service and calibration, help and change log. */
-const APP_VERSION="2026.09.04.13";
+const APP_VERSION="2026.09.04.14";
 const CHANGELOG=[
+  ["2026-09-04","Scan a label works on every device: a live camera view where the browser allows it, with a QR reader that loads on first use, and a Use the camera app button that takes a photo of the label and reads it."],
   ["2026-09-04","Settings is a button at the top of Home and at the foot of the side navigation. The settings page is a menu of sections, each showing its state at a glance and opening on its own: initials, automatic saving, back up, restore, case packages, templates, wording, display, labels, storage, activity, errors, reset."],
   ["2026-09-04","Hosted on GitHub Pages with a printable install sheet. Bundle order is report, entry log, evidence log, sketch, photo log; each photograph sits on its photo log row; measurement tables no longer split across pages."],
   ["2026-09-04","Reports: wording snippets, auto-fill from the incident, a photograph log fed by photo points, Word export, a vector option for the sketch PDF. Upkeep: vehicle check, part numbers on the reorder list, shift handover, service and calibration on durable kit. Help page, change log and a version stamp on every export."],

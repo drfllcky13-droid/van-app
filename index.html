@@ -8139,7 +8139,7 @@ function renderLabels(){
       <button data-doprint="1">Print</button></div>
     <div class="filters">${["all"].concat(bays).map(b=>`<button data-labelbay="${b}" class="${sel===b?"sel":""}">${b==="all"?"All":esc(BAYNAME[b]||"Bay "+b)}</button>`).join("")}</div>
     <p class="hint" style="margin:0 0 12px">${appUrl()
-      ?"Scan one with the camera app and this app opens at that "+(kind==="comps"?"compartment":"item")+". Print on plain paper or label stock; three across."
+      ?"Scan one with the camera app, or with Scan a label inside this app, and it opens at that "+(kind==="comps"?"compartment":"item")+". Print on plain paper or label stock; three across."
       :"No web address is set under Settings › Labels, so these codes only work with the in-app scanner."}</p></div>
     <div class="labelgrid" id="labelgrid">${list.map(x=>labelHTML(kind,x)).join("")||`<p class="hint">Nothing to label yet.</p>`}</div>`;
   qrLib().then(()=>{ $$("#labelgrid .qr[data-qr]").forEach(el=>{
@@ -8166,23 +8166,68 @@ function handleHash(){
   try{history.replaceState(null,"",location.pathname+location.search)}catch(_){}
   openTarget(m[1],decodeURIComponent(m[2]));
 }
+/* the scanner: live camera when the browser allows it, a photo from the camera app otherwise.
+   BarcodeDetector where it exists (Chrome, Android), jsQR loaded on demand everywhere else (iPad, iPhone). */
+let JSQRP=null;
+function jsqrLib(){
+  if(window.jsQR)return Promise.resolve();
+  if(JSQRP)return JSQRP;
+  JSQRP=new Promise((res,rej)=>{const s=document.createElement("script");
+    s.src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js";
+    s.onload=res; s.onerror=()=>{JSQRP=null;rej(new Error("no network"))}; document.head.appendChild(s)});
+  return JSQRP;
+}
+const hasDetector=()=>"BarcodeDetector" in window;
+function loadStill(file){
+  if(typeof createImageBitmap==="function")return createImageBitmap(file);
+  return new Promise((res,rej)=>{const u=URL.createObjectURL(file), im=new Image();
+    im.onload=()=>{URL.revokeObjectURL(u);res(im)}; im.onerror=()=>{URL.revokeObjectURL(u);rej(new Error("not an image"))}; im.src=u});
+}
+// text of the first QR code in a video frame or a still, or null
+async function decodeFrame(src){
+  if(hasDetector()){
+    try{ const det=new BarcodeDetector({formats:["qr_code"]}); const codes=await det.detect(src); if(codes.length)return codes[0].rawValue }catch(e){}
+  }
+  await jsqrLib();
+  const sw=src.videoWidth||src.naturalWidth||src.width||0, sh=src.videoHeight||src.naturalHeight||src.height||0;
+  if(!sw||!sh)return null;
+  const k=Math.min(1,1024/sw), W=Math.round(sw*k), H=Math.round(sh*k);
+  const c=decodeFrame.c||(decodeFrame.c=document.createElement("canvas"));
+  c.width=W;c.height=H; const g=c.getContext("2d",{willReadFrequently:true}); g.drawImage(src,0,0,W,H);
+  const d=g.getImageData(0,0,W,H); const r=jsQR(d.data,W,H,{inversionAttempts:"dontInvert"});
+  return r&&r.data?r.data:null;
+}
 async function scanSheet(mode){
-  if(!("BarcodeDetector" in window)||!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){
-    openSheet(`<h3>Scan a label</h3><p class="hint" style="margin:0 0 12px">This browser has no built-in scanner. Point the camera app at the label instead — the code opens this app at the right place.</p>
-      <button class="btn sec" id="scx" style="max-width:none">Close</button>`); $("#scx").onclick=closeSheet; return }
-  openSheet(`<h3>Scan a label</h3><video id="scv" playsinline muted style="width:100%;border-radius:12px;background:#000;aspect-ratio:4/3"></video>
-    <p class="hint" id="scmsg" style="margin:10px 0">Hold the label in view.</p><button class="btn sec" id="scx" style="max-width:none">Cancel</button>`);
+  const canLive=!!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia);
+  openSheet(`<h3>Scan a label</h3>
+    ${canLive?`<video id="scv" playsinline muted style="width:100%;border-radius:12px;background:#000;aspect-ratio:4/3"></video>`:""}
+    <p class="hint" id="scmsg" style="margin:10px 0">${canLive?"Hold the label in view.":"Take a photo of the label and it opens here."}</p>
+    <label class="btn${canLive?" sec":""}" style="max-width:none;display:block;text-align:center;margin:0">${canLive?"Use the camera app instead":"Open the camera"}<input type="file" id="scfile" accept="image/*" capture="environment" style="display:none"></label>
+    <button class="btn sec" id="scx" style="max-width:none">Cancel</button>`);
   let stream=null; const stop=()=>{ if(stream)stream.getTracks().forEach(t=>t.stop()); stream=null };
+  const msg=t=>{const m=$("#scmsg"); if(m)m.textContent=t};
   $("#scx").onclick=()=>{stop();closeSheet()};
+  const done=text=>{stop();closeSheet();openScanned(text,mode)};
+  $("#scfile").onchange=async()=>{
+    const f=$("#scfile").files&&$("#scfile").files[0]; if(!f)return;
+    msg("Reading the photo…");
+    try{
+      const still=await loadStill(f);
+      const text=await decodeFrame(still);
+      if(text)return done(text);
+      msg("No code found in that photo. Fill the frame with the label and try again.");
+    }catch(e){ msg(e.message==="no network"?"The reader needs a connection the first time it is used.":"Could not read that photo.") }
+  };
+  if(!canLive)return;
   try{
     stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:"environment"}});
     const v=$("#scv"); if(!v){stop();return} v.srcObject=stream; await v.play();
-    const det=new BarcodeDetector({formats:["qr_code"]});
+    if(!hasDetector()){ try{ await jsqrLib() }catch(e){ msg("The reader needs a connection the first time it is used. Until then, use the camera app."); return } }
     const tick=async()=>{ if(!stream)return;
-      try{ const codes=await det.detect(v); if(codes.length){stop();closeSheet();openScanned(codes[0].rawValue,mode);return} }catch(e){}
-      setTimeout(tick,250) };
+      try{ const text=await decodeFrame(v); if(text)return done(text) }catch(e){}
+      setTimeout(tick,hasDetector()?250:120) };
     tick();
-  }catch(e){ const m=$("#scmsg"); if(m)m.textContent="Could not open the camera: "+(e.message||e) }
+  }catch(e){ msg("The camera could not be opened here. Use the camera app instead."); const v=$("#scv"); if(v)v.style.display="none" }
 }
 
 /* the click hook, checked first */
@@ -8286,8 +8331,9 @@ function appExtraClick9(e){
 /* ---------- reports and upkeep, round ten ----------
    report wording, auto-fill, photograph log, Word export, vector PDF, version stamp,
    vehicle check, part numbers, shift handover, service and calibration, help and change log. */
-const APP_VERSION="2026.09.04.13";
+const APP_VERSION="2026.09.04.14";
 const CHANGELOG=[
+  ["2026-09-04","Scan a label works on every device: a live camera view where the browser allows it, with a QR reader that loads on first use, and a Use the camera app button that takes a photo of the label and reads it."],
   ["2026-09-04","Settings is a button at the top of Home and at the foot of the side navigation. The settings page is a menu of sections, each showing its state at a glance and opening on its own: initials, automatic saving, back up, restore, case packages, templates, wording, display, labels, storage, activity, errors, reset."],
   ["2026-09-04","Hosted on GitHub Pages with a printable install sheet. Bundle order is report, entry log, evidence log, sketch, photo log; each photograph sits on its photo log row; measurement tables no longer split across pages."],
   ["2026-09-04","Reports: wording snippets, auto-fill from the incident, a photograph log fed by photo points, Word export, a vector option for the sketch PDF. Upkeep: vehicle check, part numbers on the reorder list, shift handover, service and calibration on durable kit. Help page, change log and a version stamp on every export."],

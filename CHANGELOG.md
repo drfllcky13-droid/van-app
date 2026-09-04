@@ -1,5 +1,11 @@
 # FSU change log
 
+## 2026.09.04.14
+Scan a label works on every device. Chrome and Android use the built-in barcode reader; iPad and
+iPhone load a QR reader (jsQR) the first time and scan live from the camera. Every device also gets
+a Use the camera app button that takes a photo of the label and reads the code from it, which is
+the route when the browser will not open the camera.
+
 ## 2026.09.04.13
 Settings is a button at the top of Home and the last entry in the side navigation. The old Data
 view is now a settings menu: grouped rows that each show their state (initials set, sync connected

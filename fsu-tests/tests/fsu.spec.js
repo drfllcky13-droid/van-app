@@ -242,6 +242,14 @@ test.describe("van flows",()=>{
     await expect(page.locator("#v-data #whoin")).toBeVisible();
   });
 
+  test("scan a label opens a sheet with a camera-app route",async({page})=>{
+    await page.evaluate(()=>go("compartments"));
+    await page.click("#v-compartments [data-scan]");
+    await expect(page.locator("#sheet #scfile")).toHaveCount(1);
+    await expect(page.locator("#sheet #scx")).toBeVisible();
+    await page.click("#sheet #scx");
+  });
+
   test("count mode walks the compartments",async({page})=>{
     await page.evaluate(()=>{live().slice(0,3).forEach((i,k)=>{i.loc=comps()[k].code;i.qty="2";i.par="3"}); save(); go("inventory")});
     await page.click("#v-inventory [data-countrun]");
