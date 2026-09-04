@@ -218,7 +218,7 @@ body.skfull .skgrid.full.notools{grid-template-columns:minmax(0,1fr);grid-templa
 .k-dimbg{fill:#fff;stroke:var(--kc,#111);stroke-width:.8}
 .k-dimt{fill:var(--kc,#111);font-family:var(--sys);font-size:10px;font-weight:600}
 .k-pnum{fill:#111;font-family:var(--sys);font-size:11px;font-weight:700}
-.k-num{fill:#fff;font-family:var(--sys);font-size:22px;font-weight:700;text-anchor:middle}
+.k-num{fill:var(--kc,#111);font-family:var(--sys);font-size:22px;font-weight:800;text-anchor:middle}
 .k-sel{fill:none;stroke:#0A62C4;stroke-width:2.5;stroke-dasharray:7 5}
 .k-handle{fill:#0A62C4;stroke:#fff;stroke-width:2.5}
 .k-rot{fill:#0A62C4;stroke:#fff;stroke-width:2.5;cursor:grab}
@@ -517,6 +517,16 @@ body.wide .slot .dsc, body.wide .slot .st{font-size:11px}
 .btn:active{opacity:.85}
 .btn.sec{background:var(--card);color:var(--blue);border:.5px solid var(--line)}
 .fld{display:block;margin-bottom:14px}
+/* short fields pack across the top so the table gets the room */
+.fgrid{display:grid;grid-template-columns:1fr;gap:0 14px}
+.fgrid .fld{margin-bottom:12px}
+@media (min-width:700px){.fgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:1080px){.fgrid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+/* narrative boxes are wider than a field but do not need the whole page */
+.fgrid.narr{grid-template-columns:1fr}
+@media (min-width:820px){.fgrid.narr{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.fgrid.narr textarea{min-height:96px}
+.fld.wide{margin-bottom:14px}
 .fld>span{display:block;font-size:13px;font-weight:600;color:var(--ink2);margin-bottom:5px}
 input[type=text],input[type=date],input[type=time],input[type=number],select,textarea{width:100%;padding:11px 12px;background:var(--card);
   border:.5px solid var(--line);border-radius:10px;appearance:none;color:var(--ink)}
@@ -575,9 +585,9 @@ input[type=text],input[type=date],input[type=time],input[type=number],select,tex
 .chips button{font-size:15px;font-weight:600;background:var(--card);border:.5px solid var(--line);
   border-radius:9px;padding:9px 12px;color:var(--ink)}
 .chips button.on{background:var(--blue);border-color:var(--blue);color:#fff}
-.scrim{position:fixed;inset:0;background:rgba(0,0,0,.42);z-index:60;display:none}
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.42);z-index:120;display:none}
 .scrim.on{display:block}
-.sheet{position:fixed;left:0;right:0;bottom:0;z-index:61;background:var(--bg);
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:121;background:var(--bg);
   pointer-events:none;visibility:hidden;
   border-radius:16px 16px 0 0;max-height:88vh;overflow-y:auto;
   padding:14px 16px calc(20px + env(safe-area-inset-bottom));
@@ -818,7 +828,14 @@ body.xwide .main.split .pane-detail{position:sticky;top:0;max-height:calc(100vh 
     padding-left:24px;padding-top:6px}
 body.xwide .main.split .pane-detail .back{display:none}
 body.xwide .main.split .pane-detail .actbar{position:static}
-body.xwide .skgrid{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:22px;align-items:start}
+body.xwide .skgrid{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:22px;align-items:start}
+/* only when the rail actually sits beside the canvas, not stacked under it */
+@media (min-width:1241px){
+  body.xwide .skgrid .skmain{position:sticky;top:12px;align-self:start}
+  body.xwide .skgrid .skrail{max-height:calc(100vh - 88px);
+    overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;
+    padding-right:4px;align-self:start}
+}
 body.xwide .skrail .filters{flex-wrap:wrap;overflow:visible}
 body.xwide .skrail .filters button{font-size:13px;padding:6px 11px}
 body.xwide .skmain{min-width:0}
@@ -2467,9 +2484,10 @@ const SHAPES={
  <circle cx="${w*.5}" cy="${hh*.5}" r="${w*.34}" class="k-stroke"/>
  <path d="M${w*.5} ${hh*.08} l 0 ${hh*.84} M${w*.08} ${hh*.5} l ${w*.84} 0" class="k-thin"/>
  <circle cx="${w*.5}" cy="${hh*.5}" r="${w*.11}" class="k-fill"/>`,
- baseline:(w,hh)=>{let s=`<path d="M${w*.04} ${hh*.5} L${w*.96} ${hh*.5}" class="k-thick"/>`;
- for(let i=0;i<=4;i++){const x=w*(.06+i*.22);
-  s+=`<path d="M${x.toFixed(1)} ${hh*.24} l 0 ${hh*.52}" class="k-stroke"/>`}
+ baseline:(w,hh)=>{const pitch=Math.max(18,hh*1.1), n=Math.max(2,Math.round(w/pitch));
+ let s=`<path d="M0 ${hh*.5} L${w} ${hh*.5}" class="k-thick"/>`;
+ for(let i=0;i<=n;i++){const x=(w/n)*i;
+   s+=`<path d="M${x.toFixed(1)} ${hh*.22} l 0 ${hh*.56}" class="k-stroke"/>`}
  return s},
  triangulate:(w,hh)=>`
  <circle cx="${w*.10}" cy="${hh*.86}" r="${w*.06}" class="k-fill"/>
@@ -2545,7 +2563,13 @@ const SHAPES={
  <rect x="0" y="${hh*.2}" width="${w}" height="${hh*.6}" class="k-fill"/>
  <rect x="${w*.05}" y="${hh*.35}" width="${w*.9}" height="${hh*.3}" fill="#fff"/>
  <line x1="${w*.5}" y1="0" x2="${w*.5}" y2="${hh}" class="k-stroke"/>`,
- stairs:    (w,hh)=>`<g transform="scale(${w/24},${hh/32}) translate(-8,-4)" class="k-stroke" fill="none"><rect x=\"8\" y=\"4\" width=\"24\" height=\"32\" fill=\"#fff\" stroke-width=\"2\"/> <line x1=\"8\" y1=\"10\" x2=\"32\" y2=\"10\"/> <line x1=\"8\" y1=\"16\" x2=\"32\" y2=\"16\"/> <line x1=\"8\" y1=\"22\" x2=\"32\" y2=\"22\"/> <line x1=\"8\" y1=\"28\" x2=\"32\" y2=\"28\"/> <path d=\"M20 32V12 M16 16l4-6 4 6\" stroke-width=\"1.2\"/></g>`,
+ stairs:    (w,hh)=>{const pitch=Math.max(11,w*.18), n=Math.max(3,Math.round(hh/pitch));
+ let s=`<rect x="0" y="0" width="${w}" height="${hh}" class="k-stroke"/>`;
+ for(let i=1;i<n;i++){const y=(hh/n)*i;
+   s+=`<line x1="0" y1="${y.toFixed(1)}" x2="${w}" y2="${y.toFixed(1)}" class="k-thin"/>`}
+ s+=`<path d="M${w*.5} ${hh*.88} L${w*.5} ${hh*.16}" class="k-stroke"/>
+   <path d="M${w*.34} ${hh*.28} L${w*.5} ${hh*.12} L${w*.66} ${hh*.28}" class="k-stroke"/>`;
+ return s},
  room:      (w,hh)=>`
  <rect x="${w*.05}" y="${hh*.05}" width="${w*.9}" height="${hh*.9}" class="k-stroke"/>`,
  table:     (w,hh)=>`<g transform="scale(${w/FURN.table[1]},${hh/FURN.table[2]})"><path d="${FURN.table[0]}" class="k-fill" fill-rule="evenodd"/></g>`,
@@ -2573,19 +2597,24 @@ const SHAPES={
  bicycle:   (w,hh)=>`<g transform="translate(${w/VEH.bicycle[3]*-VEH.bicycle[1]},${hh/VEH.bicycle[4]*-VEH.bicycle[2]}) scale(${w/VEH.bicycle[3]},${hh/VEH.bicycle[4]})"><path d="${VEH.bicycle[0]}" class="k-fill" fill-rule="evenodd"/></g>`,
  tree:      (w,hh)=>`<g transform="scale(${w/38.68},${hh/35.84}) translate(1.18,-2.61)" class="k-stroke" fill="none"><path d=\"M20 6c5-3 12 0 14 6 5 2 4 9 1 13 3 5-1 11-6 12-5 3-12 1-15-3-5 3-12-1-13-7-4-4-2-11 2-14-3-6 2-12 7-10z\"/> <circle cx=\"20\" cy=\"20\" r=\"3\" fill=\"#000\"/></g>`,
  bush:      (w,hh)=>`<path d="M${w*.5} ${hh*.08} q ${w*.30} ${hh*.06} ${w*.24} ${hh*.30} q ${w*.14} ${hh*.22} ${-w*.10} ${hh*.32} q ${-w*.28} ${hh*.10} ${-w*.52} ${-hh*.02} q ${-w*.20} ${-hh*.14} ${-w*.04} ${-hh*.32} q ${-w*.04} ${-hh*.24} ${w*.42} ${-hh*.28} Z" class="k-stroke"/>`,
- fence:     (w,hh)=>`
- <rect x="0" y="${hh*.4}" width="${w}" height="${hh*.2}" class="k-fill"/>
- <line x1="${w*.1}" y1="0" x2="${w*.1}" y2="${hh}" class="k-thick"/>
- <line x1="${w*.5} " y1="0" x2="${w*.5}" y2="${hh}" class="k-thick"/>
- <line x1="${w*.9}" y1="0" x2="${w*.9}" y2="${hh}" class="k-thick"/>`,
+ fence:     (w,hh)=>{const pitch=Math.max(14,hh*1.4), n=Math.max(2,Math.round(w/pitch));
+ let s=`<rect x="0" y="${hh*.40}" width="${w}" height="${hh*.20}" class="k-fill"/>`;
+ for(let i=0;i<=n;i++){const x=(w/n)*i;
+   s+=`<line x1="${x.toFixed(1)}" y1="0" x2="${x.toFixed(1)}" y2="${hh}" class="k-thick"/>`}
+ return s},
  pole:      (w,hh)=>`<circle cx="${w*.5}" cy="${hh*.5}" r="${w*.44}" class="k-stroke"/><circle cx="${w*.5}" cy="${hh*.5}" r="${w*.20}" class="k-fill"/>`,
  dumpster:  (w,hh)=>`<g transform="scale(${w/28},${hh/24}) translate(-6,-6)" class="k-stroke" fill="none"><rect x=\"6\" y=\"10\" width=\"28\" height=\"20\" rx=\"2\"/> <line x1=\"6\" y1=\"18\" x2=\"34\" y2=\"18\"/> <rect x=\"10\" y=\"6\" width=\"20\" height=\"4\" rx=\"1\"/></g>`,
  building:  (w,hh)=>`
  <rect x="${w*.05}" y="${hh*.05}" width="${w*.9}" height="${hh*.9}" class="k-fill"/>
  <rect x="${w*.2}" y="${hh*.2}" width="${w*.6}" height="${hh*.6}" fill="#fff"/>`,
- road:      (w,hh)=>`<path d="M0 ${hh*.06} L${w} ${hh*.06} M0 ${hh*.94} L${w} ${hh*.94}" class="k-stroke"/>
- <path d="M0 ${hh*.5} L${w} ${hh*.5}" class="k-stroke" stroke-dasharray="${w*.05} ${w*.04}"/>`,
- marker:    (w,hh)=>`<g transform="scale(${w/SYM.marker[4]},${hh/SYM.marker[5]}) translate(${-SYM.marker[2]},${-SYM.marker[3]})"><g transform="${SYM.marker[1]}" class="k-fill" fill-rule="evenodd"><path d="${SYM.marker[0]}"/></g></g>`,
+ road:      (w,hh)=>{const dash=Math.max(10,hh*.30), gap=dash*.8;
+ return `<path d="M0 ${hh*.06} L${w} ${hh*.06} M0 ${hh*.94} L${w} ${hh*.94}" class="k-stroke"/>
+ <path d="M0 ${hh*.5} L${w} ${hh*.5}" class="k-stroke" stroke-dasharray="${dash.toFixed(1)} ${gap.toFixed(1)}"/>`},
+ marker:    (w,hh)=>`<path d="M${w*.62} ${hh*.10} L${w*.92} ${hh*.90} L${w*.74} ${hh*.90} Z"
+   class="k-stroke" fill="var(--bg,#fff)"/>
+ <path d="M${w*.40} ${hh*.08} L${w*.74} ${hh*.90} L${w*.08} ${hh*.90} Z"
+   class="k-stroke" fill="var(--bg,#fff)"/>
+ <path d="M${w*.04} ${hh*.90} L${w*.96} ${hh*.90}" class="k-stroke"/>`,
  pistol:    (w,hh)=>`${(()=>{const a=WPN.pistol;return `<g transform="scale(${w/a[3]},${hh/a[4]}) translate(${-a[1]},${-a[2]})" class="k-fill" fill-rule="evenodd">${a[0]}</g>`})()}`,
  revolver:  (w,hh)=>`${(()=>{const a=WPN.revolver;return `<g transform="scale(${w/a[3]},${hh/a[4]}) translate(${-a[1]},${-a[2]})" class="k-fill" fill-rule="evenodd">${a[0]}</g>`})()}`,
  rifle:(w,hh)=>`${(()=>{const a=WPN.rifle;return `<g transform="scale(${w/a[3]},${hh/a[4]}) translate(${-a[1]},${-a[2]})" class="k-fill" fill-rule="evenodd">${a[0]}</g>`})()}`,
@@ -2633,7 +2662,15 @@ const SHAPES={
      class="k-stroke"/>`).join("")}`
    +[[.36,.16,.075],[.52,.10,.062],[.66,.12,.055],[.78,.17,.045]].map(([x,y,r])=>
      `<ellipse cx="${w*x}" cy="${hh*y}" rx="${w*r}" ry="${hh*.07}" class="k-line"/>`).join(""),
- tiretrack: (w,hh)=>`<g transform="scale(${w/SYM.tiretrack[4]},${hh/SYM.tiretrack[5]}) translate(${-SYM.tiretrack[2]},${-SYM.tiretrack[3]})"><g transform="${SYM.tiretrack[1]}" class="k-fill" fill-rule="evenodd"><path d="${SYM.tiretrack[0]}"/></g></g>`,
+ tiretrack: (w,hh)=>{const pitch=Math.max(9,hh*.22), n=Math.max(3,Math.round(w/pitch));
+ let s=`<rect x="0" y="0" width="${w}" height="${hh}" class="k-stroke"/>
+   <line x1="0" y1="${hh*.34}" x2="${w}" y2="${hh*.34}" class="k-thin"/>
+   <line x1="0" y1="${hh*.66}" x2="${w}" y2="${hh*.66}" class="k-thin"/>`;
+ for(let i=1;i<n;i++){const x=(w/n)*i;
+   s+=`<line x1="${x.toFixed(1)}" y1="0" x2="${x.toFixed(1)}" y2="${hh*.34}" class="k-thin"/>`;
+   if(i%2)s+=`<line x1="${x.toFixed(1)}" y1="${hh*.34}" x2="${x.toFixed(1)}" y2="${hh*.66}" class="k-thin"/>`;
+   s+=`<line x1="${x.toFixed(1)}" y1="${hh*.66}" x2="${x.toFixed(1)}" y2="${hh}" class="k-thin"/>`}
+ return s},
  dragmark:  (w,hh)=>`<g transform="scale(${w/SYM.dragmark[4]},${hh/SYM.dragmark[5]}) translate(${-SYM.dragmark[2]},${-SYM.dragmark[3]})"><g transform="${SYM.dragmark[1]}" class="k-fill" fill-rule="evenodd"><path d="${SYM.dragmark[0]}"/></g></g>`,
  hair:      (w,hh)=>`<g transform="scale(${w/SYM.hair[4]},${hh/SYM.hair[5]}) translate(${-SYM.hair[2]},${-SYM.hair[3]})"><g transform="${SYM.hair[1]}" class="k-fill" fill-rule="evenodd"><path d="${SYM.hair[0]}"/></g></g>`,
  printcard: (w,hh)=>`<g transform="scale(${w/SYM.printcard[4]},${hh/SYM.printcard[5]}) translate(${-SYM.printcard[2]},${-SYM.printcard[3]})"><g transform="${SYM.printcard[1]}" class="k-fill" fill-rule="evenodd"><path d="${SYM.printcard[0]}"/></g></g>`,
@@ -2657,19 +2694,7 @@ const SHAPES={
   +`<line x1="${w*.08}" y1="${hh*.13}" x2="${w*.92}" y2="${hh*.13}" class="k-stroke"/>`,
  packet:    (w,hh)=>`<g transform="scale(${w/SYM.packet[4]},${hh/SYM.packet[5]}) translate(${-SYM.packet[2]},${-SYM.packet[3]})"><g transform="${SYM.packet[1]}" class="k-fill" fill-rule="evenodd"><path d="${SYM.packet[0]}"/></g></g>`,
  firearm:   (w,hh)=>`<path d="M0 ${hh*.18} L${w*.86} ${hh*.18} L${w*.86} ${hh*.40} L${w*.50} ${hh*.40} L${w*.44} ${hh*.60} L${w*.36} ${hh} L${w*.08} ${hh} L${w*.20} ${hh*.40} L0 ${hh*.40} Z" class="k-fill"/>`,
- body:      (w,hh)=>`<circle cx="${w*.5}" cy="${hh*.10}" r="${hh*.075}" class="k-stroke"/>
- <path d="M${w*.5} ${hh*.19} q ${w*.15} ${hh*.02} ${w*.16} ${hh*.13}
-   l ${w*.01} ${hh*.19} q ${-w*.02} ${hh*.09} ${-w*.07} ${hh*.10}
-   l ${w*.03} ${hh*.25} q ${w*.01} ${hh*.09} ${-w*.05} ${hh*.10}
-   q ${-w*.06} ${hh*.01} ${-w*.07} ${-hh*.09} l ${-w*.03} ${-hh*.19}
-   l ${-w*.03} ${hh*.19} q ${-w*.01} ${hh*.10} ${-w*.07} ${hh*.09}
-   q ${-w*.06} ${-hh*.01} ${-w*.05} ${-hh*.10} l ${w*.03} ${-hh*.25}
-   q ${-w*.05} ${-hh*.01} ${-w*.07} ${-hh*.10} l ${w*.01} ${-hh*.19}
-   q ${w*.01} ${-hh*.11} ${w*.16} ${-hh*.13} Z" class="k-stroke"/>
- <path d="M${w*.35} ${hh*.23} l ${-w*.18} ${hh*.20} q ${-w*.04} ${hh*.06} ${w*.01} ${hh*.08}
-   q ${w*.05} ${hh*.02} ${w*.07} ${-hh*.04} l ${w*.13} ${-hh*.15}" class="k-stroke"/>
- <path d="M${w*.65} ${hh*.23} l ${w*.18} ${hh*.20} q ${w*.04} ${hh*.06} ${-w*.01} ${hh*.08}
-   q ${-w*.05} ${hh*.02} ${-w*.07} ${-hh*.04} l ${-w*.13} ${-hh*.15}" class="k-stroke"/>`,
+ body:      (w,hh)=>`<g transform="scale(${w/SYM.body[4]},${hh/SYM.body[5]}) translate(${-SYM.body[2]},${-SYM.body[3]})"><g transform="${SYM.body[1]}" class="k-fill" fill-rule="evenodd"><path d="${SYM.body[0]}"/></g></g>`,
  arrow:     (w,hh)=>`<line x1="0" y1="${hh/2}" x2="${w*.78}" y2="${hh/2}" class="k-thick"/><polygon points="${w},${hh/2} ${w*.75},${hh*.28} ${w*.75},${hh*.72}" class="k-fill"/>`,
  line:      (w,hh)=>`<line x1="0" y1="${hh/2}" x2="${w}" y2="${hh/2}" class="k-thick"/>`,
  rect:      (w,hh)=>`<rect width="${w}" height="${hh}" class="k-dash"/>`,
@@ -2691,7 +2716,7 @@ const DEFSIZE={blooddrop:[70,60],bloodimpact:[90,80],bloodcastoff:[150,60],blood
  table:[160,106],roundtable:[130,101],chair:[60,61],sofa:[170,79],bed:[150,136],desk:[160,105],cabinet:[140,72],
  counter:[190,115],fridge:[78,69],stove:[92,76],sink:[92,64],toilet:[66,58],bath:[160,76],tv:[110,51],
  car:[180,83],truck:[190,82],motorcycle:[130,60],bicycle:[120,59],tree:[92,85],bush:[80,55],fence:[220,30],
- pole:[30,30],dumpster:[118,101],road:[420,110],marker:[44,45],body:[96,168],
+ pole:[30,30],dumpster:[118,101],road:[420,110],marker:[58,64],body:[96,168],
  north:[52,53],legend:[300,190],dim:[200,0],arrow:[130,40],line:[160,20],rect:[150,110],circle:[110,110],text:[160,34],
  pistol:[96,59],revolver:[96,63],rifle:[150,53],magazine:[30,58],cartridge:[16,50],casing:[18,46],
  bullethole:[44,50],knife:[84,14],machete:[104,71],hammer:[44,67],bat:[84,78],crowbar:[92,59],
@@ -2703,7 +2728,10 @@ const DEFSIZE={blooddrop:[70,60],bloodimpact:[90,80],bloodcastoff:[150,60],blood
 const FREEFORM=new Set(["Structure","Furniture","Outdoor"]);
 const LOCKED=(()=>{const s=new Set();
   PALETTE.forEach(([cat,list])=>{if(!FREEFORM.has(cat))list.forEach(([t])=>s.add(t))});
-  ["text","arrow","line","rect","circle","legend","dim"].forEach(t=>s.delete(t));
+  // these run along a length, so they stretch freely and their detail repeats
+  ["text","arrow","line","rect","circle","legend","dim",
+   "wall","window","fence","road","baseline","tiretrack","stairs","counter","dragmark"]
+    .forEach(t=>s.delete(t));
   return s})();
 const INKS=[["","Black","#111111"],["red","Red","#C62828"],["blue","Blue","#1258A8"],
  ["green","Green","#1E7A3C"],["orange","Orange","#C25E00"],["purple","Purple","#6B3FA0"],
@@ -2909,9 +2937,30 @@ function renderFill(){
     ${docTabs("fill",r.id)}
     <div class="cdhead"><h2>${esc(r.formName)}</h2>
       <div class="sub">${esc(r.rev?"Rev "+r.rev+" · ":"")}Started ${esc(r.started.slice(0,16).replace("T"," "))}</div></div>
-    ${(f.fields||[]).length?(f.fields||[]).map(x=>x.type==="check"
-      ? `<div class="fld">${ctl(x)}</div>`
-      : `<label class="fld"><span>${esc(x.label)}</span>${ctl(x)}</label>`).join("")
+    ${(f.fields||[]).length?(()=>{
+      // short fields pack into a compact header; tables and long text get the full width
+      const kind=x=>{
+        const t=x.type||"text";
+        if(t==="table")return "full";          // tables need the whole width
+        if(t==="textarea")return "narrative";  // narratives pair up on a wide screen
+        return "short";
+      };
+      const out=[]; let run=[], runKind=null;
+      const flush=()=>{ if(!run.length)return;
+        const cls=runKind==="narrative"?"fgrid narr":"fgrid";
+        out.push(`<div class="${cls}">`+run.map(x=>x.type==="check"
+          ? `<div class="fld">${ctl(x)}</div>`
+          : `<label class="fld"><span>${esc(x.label)}</span>${ctl(x)}</label>`).join("")+`</div>`);
+        run=[]; runKind=null };
+      (f.fields||[]).forEach(x=>{
+        const k=kind(x);
+        if(k==="full"){ flush();
+          out.push(`<label class="fld wide"><span>${esc(x.label)}</span>${ctl(x)}</label>`); return }
+        if(runKind&&runKind!==k)flush();
+        runKind=k; run.push(x);
+      });
+      flush();
+      return out.join("")})()
       :`<div class="empty"><strong>This form has no fields yet</strong>
         <p>Open it from the Forms tab and add fields before filling it in.</p></div>`}
     ${r.incidentId&&incidentOf(r.incidentId)?`<div class="actbar" style="grid-template-columns:1fr">
@@ -3280,7 +3329,7 @@ async function exportSketch(sk,shared){
       .k-dash{stroke:var(--kc,#111);stroke-width:2;fill:none;stroke-dasharray:8 6}
       .k-text,.k-tag{fill:var(--kc,#111);font-family:sans-serif;
         paint-order:stroke fill;stroke:#fff;stroke-width:3.2px;stroke-linejoin:round}
-      .k-num{fill:#fff;font-family:sans-serif;font-weight:700}
+      .k-num{fill:#111;font-family:sans-serif;font-weight:800}
       .k-pnum{fill:#111;font-family:sans-serif;font-size:11px;font-weight:700}
       .k-legt,.k-legn,.k-legr{fill:var(--kc,#111);font-family:sans-serif}
       .k-legu{fill:#888;font-family:sans-serif;font-style:italic}
@@ -3571,12 +3620,17 @@ function objSVG(o,sel){
         class="k-lead"/>`:"")
     :"";
   const num=(o.t==="marker"&&String(o.n||"").trim())
-    ?`<text x="${o.w/2}" y="${o.h*.55}" class="k-num">${esc(o.n)}</text>`:"";
+    ?`<text x="${o.w*.40}" y="${o.h*.70}" class="k-num"
+    style="font-size:${Math.max(12,o.h*.40)}px">${esc(o.n)}</text>`:"";
+  // a locked layer is part of the picture: nothing to grab, nothing drawn round it
+  const locked=skNow?layerLocked(skNow,o):false;
+  const live=sel&&!locked;
   return `<g data-obj="${o.id}" style="--kc:${inkHex(o.ink)}"
+    ${locked?'pointer-events="none"':""}
     transform="translate(${o.x},${o.y}) rotate(${o.r||0} ${o.w/2} ${o.h/2})">
-    <rect width="${o.w}" height="${o.h}" fill="transparent"/>
+    ${locked?"":`<rect width="${o.w}" height="${o.h}" fill="transparent"/>`}
     ${inner}${num}${tag}
-    ${sel?`<rect width="${o.w}" height="${o.h}" class="k-sel"/>
+    ${live?`<rect width="${o.w}" height="${o.h}" class="k-sel"/>
       <line x1="${o.w/2}" y1="0" x2="${o.w/2}" y2="-24" class="k-rotstem"/>
       <circle data-rot="${o.id}" cx="${o.w/2}" cy="-26" r="13" class="k-rot"/>
       <rect data-handle="${o.id}" x="${o.w-13}" y="${o.h-13}" width="26" height="26" class="k-handle"/>`:""}
@@ -4215,7 +4269,8 @@ function addObj(t){
   const target=(curLayer&&ls.some(l=>l.id===curLayer))?curLayer:ls[ls.length-1].id;
   const o={id:newId(),t,lay:target,x:Math.round(pageW(sk)/2-w/2),
     y:Math.round(top+(pageH(sk)-top)/2-hh/2),w,h:hh,r:0,label:"",ar:w/hh};
-  if(t==="marker"||t==="photopoint")o.n="";   // numbered when you choose, not on drop
+  if(t==="marker"){o.n=String(nextMarkerNo(sk)); setTimeout(()=>syncMarker(sk,o),0)}
+  if(t==="photopoint")o.n=String(nextPhotoNo(sk));
   if(t==="text")o.label="Text";
   sk.objs.push(o);selObj=o.id;saveLocal();renderSketch();
 }
@@ -5300,8 +5355,10 @@ document.addEventListener("click",e=>{
     return toast("Drawing into "+(L?L.name:"layer"))}
   const llk=e.target.closest("[data-laylock]");
   if(llk&&skc){const L=layersOf(skc).find(x=>x.id===llk.dataset.laylock);
-    if(L){L.locked=!L.locked; if(L.locked&&selObj){const o=objAt(selObj);
-      if(o&&(o.lay||layersOf(skc)[0].id)===L.id)selObj=null}
+    if(L){L.locked=!L.locked;
+      if(L.locked){ showSet=false;
+        const o=selObj?objAt(selObj):null;
+        if(o&&(o.lay||layersOf(skc)[0].id)===L.id)selObj=null }
       saveLocal(); keepScroll(()=>renderSketch()); toast(L.name+(L.locked?" locked":" unlocked"))}
     return}
   const omr=e.target.closest("[data-omore]");
@@ -5386,7 +5443,10 @@ document.addEventListener("click",e=>{
     keepScroll(()=>renderSketch());
     return toast(SHAPENAME(o.t)+" removed \u2014 Undo to bring it back")}
   const os=e.target.closest("[data-osel]");
-  if(os){selObj=os.dataset.osel;showSet=false;keepScroll(()=>renderSketch());
+  if(os){
+    const skS=S.sketches.find(x=>x.id===curSketch), oS=objAt(os.dataset.osel);
+    if(skS&&oS&&layerLocked(skS,oS))return toast((layerOf(skS,oS)||{}).name+" is locked");
+    selObj=os.dataset.osel;showSet=false;keepScroll(()=>renderSketch());
     const el=document.querySelector(".canvaswrap");if(el&&el.scrollIntoView)el.scrollIntoView({block:"center"});return}
   if(e.target.closest("[data-skdel]")&&skc)
     return askConfirm("Delete sketch","Everything measured for "+(skc.caseNo||"this sketch")+" is removed. Export first if you need it.","Delete sketch",true,()=>{
