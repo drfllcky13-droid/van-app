@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FSU app: install sheet</title>
+<style>
+  :root{color-scheme:light}
+  html,body{margin:0;background:#fff;color:#111;font:16px/1.5 -apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  main{max-width:720px;margin:0 auto;padding:28px 22px 40px}
+  h1{font-size:26px;margin:0 0 4px}
+  .sub{color:#555;margin:0 0 22px}
+  .addr{display:flex;gap:22px;align-items:center;flex-wrap:wrap;border:2px solid #1258A8;border-radius:12px;padding:18px 20px;margin:0 0 26px}
+  .addr a{font-size:20px;font-weight:700;color:#1258A8;word-break:break-all;text-decoration:none}
+  .addr p{margin:6px 0 0;color:#555}
+  #qr{width:150px;height:150px;flex:none}
+  #qr img,#qr canvas{width:150px;height:150px;display:block}
+  h2{font-size:18px;margin:26px 0 8px;padding-top:14px;border-top:1px solid #ddd}
+  ol{margin:0;padding-left:22px}
+  li{margin:0 0 8px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+  .card{border:1px solid #ddd;border-radius:10px;padding:12px 14px}
+  .card b{display:block;margin-bottom:6px}
+  .note{background:#f3f6fa;border-radius:10px;padding:12px 14px;margin-top:10px}
+  .print{position:fixed;right:16px;top:14px;padding:8px 14px;border:1px solid #1258A8;border-radius:8px;background:#fff;color:#1258A8;font-weight:600;cursor:pointer}
+  @media print{.print{display:none}main{padding:0}body{font-size:14px}h1{font-size:22px}.addr a{font-size:17px}}
+</style>
+</head>
+<body>
+<button class="print" onclick="print()">Print</button>
+<main>
+  <h1>FSU app</h1>
+  <p class="sub">Van inventory and scene documentation for the Forensic Services Unit. One address, works offline once installed.</p>
+
+  <div class="addr">
+    <div id="qr"></div>
+    <div>
+      <a id="link" href="./index.html">https://drfllcky13-droid.github.io/van-app/</a>
+      <p>Point the camera at the code, or type the address. Same address on every device.</p>
+    </div>
+  </div>
+
+  <h2>Put it on the home screen</h2>
+  <div class="grid">
+    <div class="card"><b>iPad or iPhone</b>Open the address in Safari. Tap Share, then <i>Add to Home Screen</i>, then Add.</div>
+    <div class="card"><b>Android</b>Open the address in Chrome. Tap the menu, then <i>Install app</i> or <i>Add to Home screen</i>.</div>
+    <div class="card"><b>Desktop</b>Open the address in Chrome or Edge. Click the install icon at the right end of the address bar.</div>
+  </div>
+  <p class="note">Open it from its own icon once while online. After that it works with no connection; the app updates itself the next time it is opened online.</p>
+
+  <h2>Share the van list with the other devices</h2>
+  <ol>
+    <li>In the app, open <b>Data</b>.</li>
+    <li>Owner and repository are already filled in. Paste the unit's access token and enter the date it expires.</li>
+    <li>Tap <b>Connect</b>. The list pulls straight away, and every change after that saves itself a couple of seconds later.</li>
+  </ol>
+  <p class="note">Done once per device. The token is kept in that device's browser only. Ask the unit's GitHub administrator for the token; it is not printed here.</p>
+
+  <h2>What stays on the device</h2>
+  <p>Incidents, forms, sketches and photographs never sync. They leave the device only when you export a PDF, Word file, DXF or a case package.</p>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script>
+(function(){
+  var here=/^https?:/.test(location.protocol)?location.origin+location.pathname.replace(/install\.html$/,""):"https://drfllcky13-droid.github.io/van-app/";
+  var a=document.getElementById("link"); a.textContent=here; a.href=here;
+  try{
+    var q=qrcode(0,"M"); q.addData(here); q.make();
+    document.getElementById("qr").innerHTML=q.createSvgTag({cellSize:4,margin:0,scalable:true});
+    var s=document.querySelector("#qr svg"); if(s){s.setAttribute("width","150");s.setAttribute("height","150")}
+  }catch(e){document.getElementById("qr").textContent=""}
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "name": "fsu-tests",
+  "private": true,
+  "description": "Playwright checks for the FSU app: render sweep at four widths in both colour schemes, plus the sketch flows.",
+  "scripts": {
+    "test": "playwright test",
+    "install-browser": "playwright install chromium"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.47.0"
+  }
+}
