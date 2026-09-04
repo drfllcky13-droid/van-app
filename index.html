@@ -3,17 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Van</title>
+<title>FSU</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Van">
+<meta name="apple-mobile-web-app-title" content="FSU">
 <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
 <link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
 <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
 <style>
 html{color-scheme:light dark}
+html.theme-dark{color-scheme:dark}
+html.theme-light{color-scheme:light}
 :root{
   --bg:#F2F2F7;--card:#FFFFFF;--card2:#F7F7FA;
   --ink:#000000;--ink2:#6C6C70;--ink3:#8E8E93;
@@ -30,7 +32,8 @@ html{color-scheme:light dark}
   --top:calc(100px + env(safe-area-inset-top));
   --bot:calc(56px + env(safe-area-inset-bottom));
 }
-@media (prefers-color-scheme:dark){:root{
+/* dark applies automatically, unless the person has chosen otherwise */
+@media (prefers-color-scheme:dark){html:not(.theme-light){
   --bg:#000000;--card:#1C1C1E;--card2:#2C2C2E;
   --ink:#FFFFFF;--ink2:#AEAEB2;--ink3:#8E8E93;
   --line:#38383A;--line2:#2C2C2E;
@@ -41,6 +44,32 @@ html{color-scheme:light dark}
   --grey:#8E8E93;--greybg:#2C2C2E;
   --dark:#3A3F45;--darkink:#FFFFFF;
 }}
+html.theme-dark{
+  --bg:#000000;--card:#1C1C1E;--card2:#2C2C2E;
+  --ink:#FFFFFF;--ink2:#AEAEB2;--ink3:#8E8E93;
+  --line:#38383A;--line2:#2C2C2E;
+  --blue:#57A6FF;--bluebg:#132A44;
+  --red:#FF6B5E;--redbg:#3A1B18;--redsolid:#C7382C;
+  --amber:#F0A93B;--amberbg:#3A2A10;--ambersolid:#B87209;
+  --green:#4CD07D;--greenbg:#13301F;--greensolid:#1C8746;
+  --grey:#8E8E93;--greybg:#2C2C2E;
+  --dark:#3A3F45;--darkink:#FFFFFF;
+}
+html.theme-light{  --bg:#F2F2F7;--card:#FFFFFF;--card2:#F7F7FA;
+  --ink:#000000;--ink2:#6C6C70;--ink3:#8E8E93;
+  --line:#D8D8DC;--line2:#E8E8ED;
+  --blue:#0A62C4;--bluebg:#E8F0FB;
+  --red:#D62B20;--redbg:#FDECEA;--redsolid:#D93A2E;
+  --amber:#A96400;--amberbg:#FDF2E0;--ambersolid:#E8890B;
+  --green:#1E8A45;--greenbg:#E7F5EC;--greensolid:#22A153;
+  --grey:#8E8E93;--greybg:#EFEFF2;
+  --dark:#22262B;--darkink:#FFFFFF;
+  --sys:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,monospace;
+  --cw:1760px;
+  --top:calc(100px + env(safe-area-inset-top));
+  }
+
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sys);
@@ -180,7 +209,7 @@ body.skfull .skgrid.full.notools{grid-template-columns:minmax(0,1fr);grid-templa
 .hmeta{fill:#444;font-family:var(--sys);font-size:14px}
 .tbbox{stroke:#111;stroke-width:1.6;fill:none}
 .tbrule{stroke:#999;stroke-width:.8}
-.tbunit{font-family:var(--sys);font-size:8px;font-weight:700;letter-spacing:.08em;fill:#111}
+.tbunit{font-family:var(--sys);font-size:7.6px;font-weight:700;letter-spacing:.03em;fill:#111}
 .tblab{font-family:var(--sys);font-size:7.5px;font-weight:700;letter-spacing:.07em;fill:#666}
 .tbval{font-family:var(--sys);font-size:11.5px;fill:#111}
 .tbbig{font-family:var(--sys);font-size:17px;font-weight:700;fill:#111}
@@ -199,6 +228,27 @@ body.skfull .skgrid.full.notools{grid-template-columns:minmax(0,1fr);grid-templa
 .k-legn{fill:var(--kc,#111);font-family:var(--sys);font-weight:700}
 .k-legr{fill:var(--kc,#111);font-family:var(--sys)}
 .k-legu{fill:#8a8a8a;font-family:var(--sys);font-style:italic}
+.laygrp{border:.5px solid var(--line);border-radius:12px;margin-bottom:9px;overflow:hidden}
+.laygrp.cur{border-color:var(--blue)}
+.layhead{display:flex;align-items:center;gap:4px;background:var(--card2,var(--card));
+  padding:3px 4px 3px 0;border-bottom:.5px solid var(--line)}
+.layhead .laypick{font-weight:700}
+.laycount{margin-left:auto;font-size:11.5px;color:var(--ink3);padding:0 8px}
+.layb.lockon{color:var(--amber)}
+.laybig{background:none;border:0;color:var(--ink3);min-width:46px;height:46px;
+  display:flex;align-items:center;justify-content:center;font-size:19px;flex:0 0 auto}
+.laybig.lockon{color:var(--amber)}
+.layhead .laypick,.lay .laypick{min-height:46px}
+.laycount{margin-left:0;font-size:11.5px;color:var(--ink3);padding:0;display:block}
+.layhead .laypick{flex-direction:column;align-items:flex-start;gap:1px;padding:7px 12px}
+.lki{width:15px;height:15px;display:block;margin:0 auto}
+.lay.locked{opacity:.55}
+.osclose{background:none;border:0;color:var(--ink3);font-size:22px;line-height:1;
+  padding:0 2px 0 10px;margin-left:auto}
+.addlay{background:var(--bluebg);border:.5px solid var(--blue);border-radius:10px;
+  color:var(--blue);font-family:var(--sys);font-size:13px;font-weight:600;
+  padding:11px 14px;min-height:44px;text-transform:none;letter-spacing:0;margin-left:auto}
+.sect:has(.addlay){display:flex;align-items:center;gap:10px}
 .layers{background:var(--card);border:.5px solid var(--line2);border-radius:11px;overflow:hidden}
 .lay{display:flex;align-items:center;border-bottom:.5px solid var(--line2)}
 .lay:last-child{border-bottom:0}
@@ -230,6 +280,15 @@ body.skfull .skgrid.full.notools{grid-template-columns:minmax(0,1fr);grid-templa
 .steps{margin:0;padding-left:20px;color:var(--ink2);font-size:14px;line-height:1.55}
 .steps li{margin-bottom:7px}
 .steps b{color:var(--ink)}
+.numnext{background:var(--bluebg);border:.5px solid var(--blue);border-radius:10px;
+  color:var(--blue);font-size:13.5px;font-weight:600;padding:9px 12px;align-self:end;white-space:nowrap}
+.sugbox{display:flex;flex-direction:column;gap:0;margin:-6px 0 12px}
+.sugbox:empty{display:none}
+.sug{background:var(--card);border:.5px solid var(--line);border-top:0;color:var(--ink);
+  font-family:var(--sys);font-size:14.5px;text-align:left;padding:13px 14px;min-height:46px}
+.sug:first-child{border-top:.5px solid var(--line);border-radius:11px 11px 0 0}
+.sug:last-child{border-radius:0 0 11px 11px}
+.sug:only-child{border-radius:11px}
 .palsearch{position:relative;margin:0 0 10px}
 .palsearch input{width:100%;padding:10px 34px 10px 12px;font-size:15px}
 .palsearch button{position:absolute;right:6px;top:50%;transform:translateY(-50%);
@@ -774,8 +833,6 @@ body.wide .hdr{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
 body.wide .titlerow{order:1;flex:0 0 auto;margin:0}
 body.wide .hdr h1{font-size:24px;white-space:nowrap}
 body.wide .sbox{order:2;flex:1 1 260px;max-width:560px;margin:0}
-body.wide .hdrbtns{order:3;margin-left:auto}
-.hdrbtns{display:flex;align-items:center;gap:6px}
 body.wide .side .ident{display:flex;align-items:center;gap:11px;padding:0 18px 18px}
 body.wide .side .idot{width:38px;height:38px;border-radius:10px;background:var(--blue);color:#fff;
   display:flex;align-items:center;justify-content:center;font-weight:700;font-size:17px;flex:0 0 auto}
@@ -939,10 +996,8 @@ body.xwide .cellwrap .sweepcard .ch{display:none}
     <input type="text" id="q" placeholder="Search items, compartments, guides" autocomplete="off">
     <button id="qclear" style="display:none">Clear</button>
   </div>
-  <div class="titlerow"><h1 id="title">Van</h1></div>
-    <div class="hdrbtns">
-    <button id="modebtn" aria-label="Screen mode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="2.5" y="4" width="13" height="10" rx="1.5"/><path d="M6 18h6"/><rect x="17" y="9" width="5" height="11" rx="1.5"/></svg></button>
-    <button id="gear" aria-label="Data and backup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><circle cx="12" cy="12" r="3.1"/><path d="M19.1 14.4a1.5 1.5 0 00.3 1.7l.1.1a1.8 1.8 0 11-2.6 2.6l-.1-.1a1.5 1.5 0 00-1.7-.3 1.5 1.5 0 00-.9 1.4v.2a1.8 1.8 0 11-3.6 0v-.1a1.5 1.5 0 00-1-1.4 1.5 1.5 0 00-1.7.3l-.1.1a1.8 1.8 0 11-2.6-2.6l.1-.1a1.5 1.5 0 00.3-1.7 1.5 1.5 0 00-1.4-.9h-.2a1.8 1.8 0 110-3.6h.1a1.5 1.5 0 001.4-1 1.5 1.5 0 00-.3-1.7l-.1-.1a1.8 1.8 0 112.6-2.6l.1.1a1.5 1.5 0 001.7.3h.1a1.5 1.5 0 00.9-1.4v-.2a1.8 1.8 0 113.6 0v.1a1.5 1.5 0 00.9 1.4 1.5 1.5 0 001.7-.3l.1-.1a1.8 1.8 0 112.6 2.6l-.1.1a1.5 1.5 0 00-.3 1.7v.1a1.5 1.5 0 001.4.9h.2a1.8 1.8 0 110 3.6h-.1a1.5 1.5 0 00-1.4.9z"/></svg></button></div>
+  <div class="titlerow"><h1 id="title">FSU</h1></div>
+
 </header>
 
 <main class="main">
@@ -1098,8 +1153,9 @@ const WALLDEF={"Driver side":{cols:24,rows:12},"Passenger side":{cols:24,rows:12
 const VANSIDES=["Driver side","Passenger side","Rear doors","Cab"];
 const VANWALLS={"Driver side":{"cols":144,"rows":60},"Passenger side":{"cols":144,"rows":60},"Rear doors":{"cols":72,"rows":60},"Cab":{"cols":48,"rows":40}};
 const VANCOMPS=[["2A","Evidence bags",0,84,2,14,22],["2B","Shoe / tire impression",0,84,24,14,22],["2C1","Evidence envelopes",0,98,2,20,5],["2C2","Cash envelopes",0,98,7,20,5],["2C3","Drug envelopes",0,98,12,20,5],["2C4","Misc. forms",0,98,17,20,5],["2C5","SEM kits",0,98,22,20,5],["2C6","",0,98,27,20,5],["2C7","",0,98,32,20,5],["2C8","",0,98,37,20,5],["2C9","",0,98,42,20,5],["2D1","",0,118,2,8,5],["2D2","",0,118,7,8,5],["2D3","",0,118,12,8,5],["2D4","Batteries",0,118,17,8,5],["2D5","",0,118,22,8,5],["2D6","",0,118,27,8,5],["2D7","",0,118,32,8,5],["2D8","",0,118,37,8,5],["2D9","",0,118,42,8,5],["2E1","Electrostatic bags",0,126,2,14,5],["2E2","",0,126,7,14,5],["2E3","",0,126,12,14,5],["2E4","Rain suits",0,126,17,14,5],["2E5","",0,126,22,14,5],["2E6","",0,126,27,14,5],["2E7","Hand preservation bags",0,126,32,14,5],["2E8","",0,126,37,14,5],["2E9","",0,126,42,14,5],["1A1","Upper storage",0,4,0,8,10],["1A2","Upper storage",0,12,0,8,10],["1A3","Upper storage",0,20,0,8,10],["1A4","Upper storage",0,28,0,8,10],["1A5","Upper storage",0,36,0,8,10],["1A6","Upper storage",0,44,0,8,10],["1B1","Bin, upper row",0,4,12,6,7],["1B2","Bin, upper row",0,10,12,6,7],["1B3","Bin, upper row",0,16,12,6,7],["1B4","Bin, upper row",0,22,12,6,7],["1B5","Bin, upper row",0,28,12,6,7],["1B6","Bin, upper row",0,34,12,6,7],["1B7","Bin, upper row, double width",0,40,12,12,7],["1C1","Bin, lower row",0,4,22,6,7],["1C2","Bin, lower row",0,10,22,6,7],["1C3","Bin, lower row",0,16,22,6,7],["1C4","Bin, lower row",0,22,22,6,7],["1C5","Bin, lower row",0,28,22,6,7],["1C6","Bin, lower row",0,34,22,6,7],["1C7","Bin, lower row, double width",0,40,22,12,7],["1D1","Evidence tubes / laser trajectory",0,4,31,8,11],["1D2","Evidence tubes / laser trajectory",0,12,31,8,11],["1D3","Evidence tubes / laser trajectory",0,20,31,8,11],["1D4","Evidence tubes / laser trajectory",0,28,31,8,11],["1D5","Evidence tubes / laser trajectory",0,36,31,8,11],["1D6","Evidence tubes / laser trajectory",0,44,31,8,11],["1E","Metal detector",0,4,44,48,11],["3A","Lighting / extension cords",1,40,6,16,48],["3B","Top shelf",1,56,0,88,10],["3C","Shelf 2",1,56,10,88,12],["3D","Shelf 3",1,56,22,88,12],["3E","Shelf 4",1,56,34,88,11],["3F","Bottom shelf",1,56,45,88,11]];
-const TABS=[["home","Home"],["compartments","Compartments"],["inventory","Inventory"],
-["active","Active"],["forms","Scene"],["guide","Guide"]];
+// a field tool first: the scene comes before the van
+const TABS=[["home","Home"],["active","Active"],["forms","Scene"],
+["guide","Guide"],["inventory","Inventory"],["compartments","Compartments"]];
 const FORMCATS=["Scene documentation","Evidence and custody","Photography","Reports and statements","Admin"];
 const ICONS={home:"M3 11l9-8 9 8v9a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1z",
  compartments:"M3 4h7v7H3zM14 4h7v7h-7zM3 13h7v7H3zM14 13h7v7h-7z",
@@ -1447,8 +1503,8 @@ function buildTabs(){
     inventory:L.length?{n:L.length,hot:false}:null,
     active:nOpen?{n:nOpen,hot:true}:null,
     forms:scene?{n:scene,hot:false}:null,guide:null};
-  $("#side").innerHTML=`<div class="ident"><div class="idot">V</div>
-      <div><div class="in1">Van</div><div class="in2">${esc(S.vanName||"Forensic unit")}</div></div></div>`
+  $("#side").innerHTML=`<div class="ident"><div class="idot">F</div>
+      <div><div class="in1">FSU</div><div class="in2">${esc(S.vanName||"Forensic Services Unit")}</div></div></div>`
     +TABS.map(([v,l])=>{
     const c=count[v];
     return `<button data-v="${v}" aria-current="${v===view}">${ic(v)}<span class="lbl">${esc(l)}</span>
@@ -1461,7 +1517,10 @@ function restoreScroll(v){
   const put=()=>window.scrollTo&&window.scrollTo(0,y);
   put(); if(typeof requestAnimationFrame==="function")requestAnimationFrame(put);
 }
-function go(v){rememberScroll();view=v;query="";$("#q").value="";$("#qclear").style.display="none";
+function go(v){rememberScroll();
+  // moving by tab or back button is not a drill-down, so forget where we came from
+  prevView=null;
+  view=v;query="";$("#q").value="";$("#qclear").style.display="none";
   $$(".view").forEach(s=>s.classList.toggle("on",s.id==="v-"+v));
   render();restoreScroll(v)}
 document.addEventListener("click",e=>{const b=e.target.closest("#tabs button,#side button");if(b)go(b.dataset.v)});
@@ -1503,6 +1562,11 @@ document.addEventListener("input",e=>{
     const el=document.getElementById("palq");
     if(el){el.focus(); try{el.setSelectionRange(at,at)}catch(_){}}
     return}
+  const lsw=e.target.closest("#olay");
+  if(lsw){const o=objAt(selObj), sk2=S.sketches.find(x=>x.id===curSketch);
+    if(o&&sk2){pushUndo(sk2);o.lay=lsw.value;saveLocal();keepScroll(()=>renderSketch());
+      toast("Moved to "+((layersOf(sk2).find(L=>L.id===o.lay)||{}).name||"layer"))}
+    return}
   const on=e.target.closest("#oname"), num=e.target.closest("#onum");
   if(on||num){const o=objAt(selObj); if(o){
       if(on)o.label=on.value;
@@ -1535,7 +1599,7 @@ $("#qclear").onclick=()=>{$("#q").value="";query="";applyQuery()};
 
 /* ---------- home: priority strip ---------- */
 function renderHome(){
-  $("#title").textContent="Van";
+  $("#title").textContent="FSU";
   const L=live();
   if(!L.length&&!S.comps.length){
     $("#v-home").innerHTML=`<div class="empty"><strong>Nothing logged yet</strong>
@@ -1654,7 +1718,39 @@ function renderHome(){
     ].map(a=>place(...a)).join("")+`</div>`;
     return;
   }
-  $("#v-home").innerHTML=`${tokenWarn}${pendWarn}<div class="strip">${strip}</div>${sweepCard}${qf}`;
+  // at a scene you reach for the incident and the sketch, so those come first
+  const open_=openIncidents();
+  const scene = `<div class="sect">At a scene</div>`
+    + (open_.length
+      ? `<div class="rows">`+open_.map(inc=>{
+          const plan=(inc.plan||[]).map(k=>planState(inc,k)).filter(Boolean);
+          const done=plan.filter(p=>p.state==="done").length;
+          return `<button class="row" data-inc="${inc.id}">
+            <span><span class="code">${esc(inc.caseNo||"No case number")}</span>
+            <span class="desc">${esc(inc.offence||"No offence recorded")}${
+              inc.addr?" \u00b7 "+esc(inc.addr):""}</span></span>
+            <span class="rt"><span class="badge ${done===plan.length?"b-good":"b-attn"}">${done} of ${plan.length}</span>
+            <span class="chev">&#8250;</span></span></button>`}).join("")+`</div>`
+      : "")
+    + `<div class="two" style="margin:${open_.length?"12px":"0"} 0 4px">
+        <button class="btn" id="newinc" style="max-width:none;margin:0">Start an incident</button>
+        <button class="btn sec" id="quicksketch" style="max-width:none;margin:0">Quick sketch</button>
+      </div>`;
+  $("#v-home").innerHTML=`${tokenWarn}${pendWarn}${scene}
+    <div class="sect">The van</div>
+    <div class="strip">${strip}</div>${sweepCard}${qf}
+    <div class="sect">Settings</div>
+    <div class="rows">
+      <button class="row" id="gear">
+        <span><span class="code">Data and backup</span>
+        <span class="desc">Storage, backups, sync</span></span>
+        <span class="rt"><span class="chev">&#8250;</span></span></button>
+      <button class="row" id="modebtn">
+        <span><span class="code">Display</span>
+        <span class="desc">${(S.theme||"auto")==="auto"?"Matching the device":(S.theme==="dark"?"Dark":"Light")}
+          &middot; ${(S.mode||"auto")==="auto"?"Layout matches the screen":(S.mode==="phone"?"Handheld layout":"Desktop layout")}</span></span>
+        <span class="rt"><span class="chev">&#8250;</span></span></button>
+    </div>`;
 }
 
 /* ---------- compartments ---------- */
@@ -2288,15 +2384,19 @@ const WPN={
 // a fixed seed, so a stain pattern looks the same every time it is drawn
 const R=s=>{let x=s;return()=>((x=x*16807%2147483647)/2147483647)};
 const SHAPES={
- blooddrop:(w,hh)=>{const r=R(7);let s=`<ellipse cx="${w*.44}" cy="${hh*.52}" rx="${w*.20}" ry="${hh*.24}" class="k-fill"/>`;
- for(let i=0;i<7;i++){const a=r()*6.28,d=(0.30+r()*0.28);
-  s+=`<circle cx="${(w*(.44+Math.cos(a)*d)).toFixed(1)}" cy="${(hh*(.52+Math.sin(a)*d)).toFixed(1)}" r="${(w*(.02+r()*.03)).toFixed(1)}" class="k-fill"/>`}
+ blooddrop:(w,hh)=>{const r=R(7);
+ let s=`<ellipse cx="${w*.46}" cy="${hh*.52}" rx="${w*.18}" ry="${hh*.22}" class="k-fill"/>`;
+ for(let i=0;i<7;i++){const a=r()*6.28,d=(0.24+r()*0.18);
+  const x=Math.min(.94,Math.max(.06,.46+Math.cos(a)*d));
+  const y=Math.min(.92,Math.max(.08,.52+Math.sin(a)*d));
+  s+=`<circle cx="${(w*x).toFixed(1)}" cy="${(hh*y).toFixed(1)}" r="${(w*(.02+r()*.025)).toFixed(1)}" class="k-fill"/>`}
  return s},
- bloodimpact:(w,hh)=>{const r=R(21);let s=`<circle cx="${w*.5}" cy="${hh*.5}" r="${w*.035}" class="k-fill"/>`;
- for(let i=0;i<30;i++){const a=(i/30)*6.28+r()*.18, d=.16+Math.pow(r(),.6)*.34;
+ bloodimpact:(w,hh)=>{const r=R(21);
+ let s=`<circle cx="${w*.5}" cy="${hh*.5}" r="${w*.032}" class="k-fill"/>`;
+ for(let i=0;i<30;i++){const a=(i/30)*6.28+r()*.18, d=.14+Math.pow(r(),.6)*.28;
   const x=w*(.5+Math.cos(a)*d), y=hh*(.5+Math.sin(a)*d);
-  const sz=w*(.010+(1-d)*.030);
-  s+=`<ellipse cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" rx="${sz.toFixed(1)}" ry="${(sz*(1.4+d*2.4)).toFixed(1)}" transform="rotate(${(a*57.3+90).toFixed(0)} ${x.toFixed(1)} ${y.toFixed(1)})" class="k-fill"/>`}
+  const sz=w*(.009+(1-d)*.024);
+  s+=`<ellipse cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" rx="${sz.toFixed(1)}" ry="${(sz*(1.4+d*2.0)).toFixed(1)}" transform="rotate(${(a*57.3+90).toFixed(0)} ${x.toFixed(1)} ${y.toFixed(1)})" class="k-fill"/>`}
  return s},
  bloodcastoff:(w,hh)=>{let s="";
  for(let i=0;i<11;i++){const t=i/10, x=w*(.06+t*.88), y=hh*(.72-Math.sin(t*2.2)*.34);
@@ -2304,9 +2404,9 @@ const SHAPES={
   s+=`<ellipse cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" rx="${sz.toFixed(1)}" ry="${(sz*2.0).toFixed(1)}" transform="rotate(${(-32+t*60).toFixed(0)} ${x.toFixed(1)} ${y.toFixed(1)})" class="k-fill"/>`}
  return s},
  bloodarterial:(w,hh)=>{let s="";
- for(let i=0;i<6;i++){const t=i/5, x=w*(.08+t*.84), y=hh*(.5+Math.sin(t*7.5)*.30);
-  s+=`<ellipse cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" rx="${(w*.045).toFixed(1)}" ry="${(hh*.11).toFixed(1)}" class="k-fill"/>`;
-  for(let k=0;k<3;k++)s+=`<circle cx="${(x+w*(.02+k*.02)).toFixed(1)}" cy="${(y+hh*(.10+k*.05)).toFixed(1)}" r="${(w*.012).toFixed(1)}" class="k-fill"/>`}
+ for(let i=0;i<6;i++){const t=i/5, x=w*(.10+t*.80), y=hh*(.5+Math.sin(t*7.5)*.26);
+  s+=`<ellipse cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" rx="${(w*.040).toFixed(1)}" ry="${(hh*.10).toFixed(1)}" class="k-fill"/>`;
+  for(let k=0;k<3;k++)s+=`<circle cx="${(x+w*(.018+k*.016)).toFixed(1)}" cy="${Math.min(hh*.94,(y+hh*(.09+k*.045))).toFixed(1)}" r="${(w*.011).toFixed(1)}" class="k-fill"/>`}
  return s},
  bloodtransfer:(w,hh)=>`
  <path d="M${w*.16} ${hh*.20} q ${w*.30} ${-hh*.08} ${w*.62} ${hh*.04}
@@ -2376,9 +2476,9 @@ const SHAPES={
  <path d="M${w*.30} ${hh*.34} L${w*.58} ${hh*.28}" stroke="#fff" stroke-width="1.8" fill="none"/>
  <path d="M${w*.34} ${hh*.60} L${w*.62} ${hh*.52}" stroke="#fff" stroke-width="1.6" fill="none"/>`,
  fingerprint:(w,hh)=>{let s="";
- for(let i=0;i<5;i++){const rx=w*(.10+i*.085), ry=hh*(.13+i*.093);
-  s+=`<ellipse cx="${w*.5}" cy="${hh*.52}" rx="${rx.toFixed(1)}" ry="${ry.toFixed(1)}" class="k-stroke"/>`}
- return s+`<rect x="${w*.34}" y="${hh*.78}" width="${w*.32}" height="${hh*.30}" fill="#fff"/>`},
+ for(let i=0;i<5;i++){const rx=w*(.09+i*.078), ry=hh*(.11+i*.082);
+  s+=`<ellipse cx="${w*.5}" cy="${hh*.48}" rx="${rx.toFixed(1)}" ry="${ry.toFixed(1)}" class="k-stroke"/>`}
+ return s+`<rect x="${w*.30}" y="${hh*.80}" width="${w*.40}" height="${hh*.24}" fill="#fff"/>`},
  palmprint:(w,hh)=>{let s=`<path d="M${w*.20} ${hh*.30} q ${w*.30} ${-hh*.16} ${w*.60} 0
   q ${w*.06} ${hh*.34} ${-w*.06} ${hh*.56} q ${-w*.24} ${hh*.12} ${-w*.48} 0
   q ${-w*.12} ${-hh*.22} ${-w*.06} ${-hh*.56} Z" class="k-stroke"/>`;
@@ -2480,14 +2580,37 @@ const SHAPES={
  crowbar:(w,hh)=>`${(()=>{const a=WPN.crowbar;return `<g transform="scale(${w/a[3]},${hh/a[4]}) translate(${-a[1]},${-a[2]})" class="k-fill" fill-rule="evenodd">${a[0]}</g>`})()}`,
  screwdriver:(w,hh)=>`${(()=>{const a=WPN.screwdriver;return `<g transform="scale(${w/a[3]},${hh/a[4]}) translate(${-a[1]},${-a[2]})" class="k-fill" fill-rule="evenodd">${a[0]}</g>`})()}`,
  rope:      (w,hh)=>`${(()=>{const a=WPN.rope;return `<g transform="scale(${w/a[3]},${hh/a[4]}) translate(${-a[1]},${-a[2]})" class="k-fill" fill-rule="evenodd">${a[0]}</g>`})()}`,
- blood:     (w,hh)=>`<g transform="scale(${w/SYM.blood[4]},${hh/SYM.blood[5]}) translate(${-SYM.blood[2]},${-SYM.blood[3]})"><g transform="${SYM.blood[1]}" class="k-fill" fill-rule="evenodd"><path d="${SYM.blood[0]}"/></g></g>`,
- spatter:   (w,hh)=>`<g transform="scale(${w/SYM.spatter[4]},${hh/SYM.spatter[5]}) translate(${-SYM.spatter[2]},${-SYM.spatter[3]})"><g transform="${SYM.spatter[1]}" class="k-fill" fill-rule="evenodd"><path d="${SYM.spatter[0]}"/></g></g>`,
+ blood:     (w,hh)=>`<path d="M${w*.50} ${hh*.06} q ${w*.26} ${hh*.04} ${w*.30} ${hh*.24}
+   q ${w*.16} ${hh*.10} ${w*.14} ${hh*.28} q ${-w*.02} ${hh*.22} ${-w*.24} ${hh*.20}
+   q ${-w*.20} ${hh*.10} ${-w*.40} ${hh*.02} q ${-w*.22} ${-hh*.04} ${-w*.24} ${-hh*.22}
+   q ${-w*.10} ${-hh*.18} ${w*.06} ${-hh*.28} q ${w*.10} ${-hh*.20} ${w*.38} ${-hh*.24} Z" class="k-fill"/>
+ <ellipse cx="${w*.90}" cy="${hh*.86}" rx="${w*.06}" ry="${hh*.08}" class="k-fill"/>
+ <ellipse cx="${w*.09}" cy="${hh*.32}" rx="${w*.045}" ry="${hh*.06}" class="k-fill"/>`,
+ spatter:   (w,hh)=>{const r=R(13);
+ let s=`<ellipse cx="${w*.5}" cy="${hh*.5}" rx="${w*.17}" ry="${hh*.20}" class="k-fill"/>`;
+ for(let i=0;i<34;i++){const a=(i/34)*6.28+r()*.30, d=.20+Math.pow(r(),.55)*.25;
+  const x=w*(.5+Math.cos(a)*d), y=hh*(.5+Math.sin(a)*d);
+  const sz=w*(.011+(1-d)*.040);
+  s+=`<ellipse cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" rx="${sz.toFixed(1)}" ry="${(sz*(1.2+d*1.6)).toFixed(1)}" transform="rotate(${(a*57.3+90).toFixed(0)} ${x.toFixed(1)} ${y.toFixed(1)})" class="k-fill"/>`}
+ return s},
  shoe:(w,hh)=>`<g transform="scale(${w/SYM.shoe[4]},${hh/SYM.shoe[5]}) translate(${-SYM.shoe[2]},${-SYM.shoe[3]})"><g transform="${SYM.shoe[1]}" class="k-fill" fill-rule="evenodd"><path d="${SYM.shoe[0]}"/></g></g>`
   +[.10,.20,.30,.40].map(y=>[.30,.50,.70].map(x=>
     `<rect x="${w*x-w*.07}" y="${hh*y}" width="${w*.14}" height="${hh*.055}" rx="1.5" class="k-solid"/>`).join("")).join("")
   +`<path d="M${w*.26} ${hh*.575} L${w*.80} ${hh*.575}" class="k-stroke"/>`
   +[.68,.80].map(y=>`<rect x="${w*.32}" y="${hh*y}" width="${w*.38}" height="${hh*.06}" rx="1.5" class="k-solid"/>`).join(""),
- footprint: (w,hh)=>`<g transform="scale(${w/SYM.footprint[4]},${hh/SYM.footprint[5]}) translate(${-SYM.footprint[2]},${-SYM.footprint[3]})"><g transform="${SYM.footprint[1]}" class="k-fill" fill-rule="evenodd"><path d="${SYM.footprint[0]}"/></g></g>`
+ footprint: (w,hh)=>`<path d="M${w*.20} ${hh*.44}
+   C ${w*.11} ${hh*.33} ${w*.22} ${hh*.26} ${w*.40} ${hh*.27}
+   L ${w*.76} ${hh*.30}
+   C ${w*.89} ${hh*.34} ${w*.88} ${hh*.46} ${w*.80} ${hh*.52}
+   C ${w*.73} ${hh*.59} ${w*.71} ${hh*.63} ${w*.70} ${hh*.69}
+   C ${w*.79} ${hh*.79} ${w*.74} ${hh*.95} ${w*.50} ${hh*.95}
+   C ${w*.26} ${hh*.95} ${w*.21} ${hh*.79} ${w*.30} ${hh*.69}
+   C ${w*.29} ${hh*.61} ${w*.26} ${hh*.55} ${w*.20} ${hh*.44} Z" class="k-stroke"/>
+ ${[[.22,.17,.070,.052,-24],[.38,.11,.062,.048,-10],[.54,.10,.058,.046,4],
+    [.68,.13,.052,.042,16],[.80,.18,.045,.036,28]]
+   .map(([cx,cy,ry,rx,rot])=>`<ellipse cx="${w*cx}" cy="${hh*cy}"
+     rx="${w*rx*1.6}" ry="${hh*ry}" transform="rotate(${rot} ${w*cx} ${hh*cy})"
+     class="k-stroke"/>`).join("")}`
    +[[.36,.16,.075],[.52,.10,.062],[.66,.12,.055],[.78,.17,.045]].map(([x,y,r])=>
      `<ellipse cx="${w*x}" cy="${hh*y}" rx="${w*r}" ry="${hh*.07}" class="k-line"/>`).join(""),
  tiretrack: (w,hh)=>`<g transform="scale(${w/SYM.tiretrack[4]},${hh/SYM.tiretrack[5]}) translate(${-SYM.tiretrack[2]},${-SYM.tiretrack[3]})"><g transform="${SYM.tiretrack[1]}" class="k-fill" fill-rule="evenodd"><path d="${SYM.tiretrack[0]}"/></g></g>`,
@@ -2514,7 +2637,19 @@ const SHAPES={
   +`<line x1="${w*.08}" y1="${hh*.13}" x2="${w*.92}" y2="${hh*.13}" class="k-stroke"/>`,
  packet:    (w,hh)=>`<g transform="scale(${w/SYM.packet[4]},${hh/SYM.packet[5]}) translate(${-SYM.packet[2]},${-SYM.packet[3]})"><g transform="${SYM.packet[1]}" class="k-fill" fill-rule="evenodd"><path d="${SYM.packet[0]}"/></g></g>`,
  firearm:   (w,hh)=>`<path d="M0 ${hh*.18} L${w*.86} ${hh*.18} L${w*.86} ${hh*.40} L${w*.50} ${hh*.40} L${w*.44} ${hh*.60} L${w*.36} ${hh} L${w*.08} ${hh} L${w*.20} ${hh*.40} L0 ${hh*.40} Z" class="k-fill"/>`,
- body:      (w,hh)=>`<g transform="scale(${w/SYM.body[4]},${hh/SYM.body[5]}) translate(${-SYM.body[2]},${-SYM.body[3]})"><g transform="${SYM.body[1]}" class="k-fill" fill-rule="evenodd"><path d="${SYM.body[0]}"/></g></g>`,
+ body:      (w,hh)=>`<circle cx="${w*.5}" cy="${hh*.10}" r="${hh*.075}" class="k-stroke"/>
+ <path d="M${w*.5} ${hh*.19} q ${w*.15} ${hh*.02} ${w*.16} ${hh*.13}
+   l ${w*.01} ${hh*.19} q ${-w*.02} ${hh*.09} ${-w*.07} ${hh*.10}
+   l ${w*.03} ${hh*.25} q ${w*.01} ${hh*.09} ${-w*.05} ${hh*.10}
+   q ${-w*.06} ${hh*.01} ${-w*.07} ${-hh*.09} l ${-w*.03} ${-hh*.19}
+   l ${-w*.03} ${hh*.19} q ${-w*.01} ${hh*.10} ${-w*.07} ${hh*.09}
+   q ${-w*.06} ${-hh*.01} ${-w*.05} ${-hh*.10} l ${w*.03} ${-hh*.25}
+   q ${-w*.05} ${-hh*.01} ${-w*.07} ${-hh*.10} l ${w*.01} ${-hh*.19}
+   q ${w*.01} ${-hh*.11} ${w*.16} ${-hh*.13} Z" class="k-stroke"/>
+ <path d="M${w*.35} ${hh*.23} l ${-w*.18} ${hh*.20} q ${-w*.04} ${hh*.06} ${w*.01} ${hh*.08}
+   q ${w*.05} ${hh*.02} ${w*.07} ${-hh*.04} l ${w*.13} ${-hh*.15}" class="k-stroke"/>
+ <path d="M${w*.65} ${hh*.23} l ${w*.18} ${hh*.20} q ${w*.04} ${hh*.06} ${-w*.01} ${hh*.08}
+   q ${-w*.05} ${hh*.02} ${-w*.07} ${-hh*.04} l ${-w*.13} ${-hh*.15}" class="k-stroke"/>`,
  arrow:     (w,hh)=>`<line x1="0" y1="${hh/2}" x2="${w*.78}" y2="${hh/2}" class="k-thick"/><polygon points="${w},${hh/2} ${w*.75},${hh*.28} ${w*.75},${hh*.72}" class="k-fill"/>`,
  line:      (w,hh)=>`<line x1="0" y1="${hh/2}" x2="${w}" y2="${hh/2}" class="k-thick"/>`,
  rect:      (w,hh)=>`<rect width="${w}" height="${hh}" class="k-dash"/>`,
@@ -2528,20 +2663,20 @@ const PALETTE=[
  ["Outdoor",[["tree","Tree"],["bush","Bush"],["fence","Fence"],["pole","Pole"],["dumpster","Dumpster"],["road","Road"]]],
  ["Markers",[["marker","Marker"],["dim","Dimension"],["photopoint","Photo point"],["refpoint","Reference point"],["baseline","Baseline"],["triangulate","Triangulation"],["body","Body"],["north","North"],["legend","Legend"],["arrow","Arrow"],["line","Line"],["rect","Box"],["circle","Circle"],["text","Text"]]],
  ["Weapons",[["pistol","Pistol"],["revolver","Revolver"],["rifle","Rifle"],["magazine","Magazine"],["cartridge","Live round"],["casing","Casing"],["bullethole","Bullet hole"],["knife","Knife"],["machete","Machete"],["hammer","Hammer"],["bat","Bat"],["crowbar","Crowbar"],["screwdriver","Screwdriver"],["rope","Rope"],["shotgun","Shotgun"],["bullet","Bullet"],["fragment","Fragment"]]],
- ["Blood",[["blooddrop","Drop"],["bloodimpact","Impact"],["bloodcastoff","Cast-off"],["bloodarterial","Arterial"],["bloodtransfer","Transfer"],["bloodswipe","Swipe"],["bloodwipe","Wipe"],["bloodflow","Flow"],["bloodvoid","Void"]]],
- ["Evidence",[["blood","Blood pool"],["spatter","Spatter"],["shoe","Shoe print"],["footprint","Bare footprint"],["tiretrack","Tire track"],["dragmark","Drag mark"],["hair","Hair or fibre"],["printcard","Print lift"],["swab","Swab"],["glass","Broken glass"],["cigarette","Cigarette"],["bottle","Bottle"],["can","Can"],["key","Key"],["fingerprint","Fingerprint"],["palmprint","Palm print"],["prymark","Pry mark"],["crack","Crack"]]],
+ ["Blood",[["blooddrop","Drop"],["bloodimpact","Impact"],["bloodcastoff","Cast-off"],["bloodarterial","Arterial"],["bloodtransfer","Transfer"],["bloodswipe","Swipe"],["bloodwipe","Wipe"],["bloodflow","Flow"],["blood","Pool"],["spatter","Spatter"]]],
+ ["Evidence",[["shoe","Shoe print"],["footprint","Bare footprint"],["tiretrack","Tire track"],["dragmark","Drag mark"],["hair","Hair or fibre"],["printcard","Print lift"],["swab","Swab"],["glass","Broken glass"],["cigarette","Cigarette"],["bottle","Bottle"],["can","Can"],["key","Key"],["fingerprint","Fingerprint"],["palmprint","Palm print"],["prymark","Pry mark"],["crack","Crack"]]],
  ["Belongings",[["phone","Phone"],["laptop","Laptop"],["keys","Keys"],["wallet","Wallet"],["backpack","Bag"],["cash","Cash"],["pills","Pills"],["pillbottle","Pill bottle"],["syringe","Syringe"],["baggie","Baggie"],["packet","Packet"],["iddocs","ID documents"],["camera","Camera"]]]
 ];
 const DEFSIZE={blooddrop:[70,60],bloodimpact:[90,80],bloodcastoff:[150,60],bloodarterial:[150,64],bloodtransfer:[80,70],bloodswipe:[130,50],bloodwipe:[130,60],bloodflow:[60,96],bloodvoid:[100,80],photopoint:[64,64],refpoint:[44,44],baseline:[190,40],triangulate:[110,80],shotgun:[150,52],bullet:[26,50],fragment:[40,40],fingerprint:[46,58],palmprint:[54,64],dresser:[120,54],suv:[110,180],vanx:[110,190],prymark:[90,54],crack:[90,60],camera:[72,68],iddocs:[76,48],key:[64,29],sailboat:[130,115],powerboat:[180,63],scooter:[110,60],bus:[230,66],semitruck:[240,60],room:[380,260],wall:[240,26],door:[70,70],window:[120,26],stairs:[96,128],building:[220,160],
  table:[160,106],roundtable:[130,101],chair:[60,61],sofa:[170,79],bed:[150,136],desk:[160,105],cabinet:[140,72],
  counter:[190,115],fridge:[78,69],stove:[92,76],sink:[92,64],toilet:[66,58],bath:[160,76],tv:[110,51],
  car:[180,83],truck:[190,82],motorcycle:[130,60],bicycle:[120,59],tree:[92,85],bush:[80,55],fence:[220,30],
- pole:[30,30],dumpster:[118,101],road:[420,110],marker:[44,45],body:[110,186],
+ pole:[30,30],dumpster:[118,101],road:[420,110],marker:[44,45],body:[96,168],
  north:[52,53],legend:[300,190],dim:[200,0],arrow:[130,40],line:[160,20],rect:[150,110],circle:[110,110],text:[160,34],
  pistol:[96,59],revolver:[96,63],rifle:[150,53],magazine:[30,58],cartridge:[16,50],casing:[18,46],
  bullethole:[44,50],knife:[84,14],machete:[104,71],hammer:[44,67],bat:[84,78],crowbar:[92,59],
  screwdriver:[76,15],rope:[84,46],
- blood:[92,49],spatter:[96,69],shoe:[50,18],footprint:[50,20],tiretrack:[190,60],dragmark:[150,31],
+ blood:[92,66],spatter:[96,88],shoe:[50,18],footprint:[46,84],tiretrack:[190,60],dragmark:[150,31],
  hair:[80,11],printcard:[58,39],swab:[80,8],glass:[92,68],cigarette:[64,8],bottle:[46,15],can:[40,40],
  phone:[38,65],laptop:[96,58],keys:[76,54],wallet:[70,58],backpack:[64,52],cash:[70,29],
  pills:[64,52],pillbottle:[42,68],syringe:[92,86],baggie:[54,61],packet:[48,38]};
@@ -2692,7 +2827,7 @@ function planState(inc,key){
   const mine=docsFor(inc.id).filter(x=>
     d.form? x.type===d.form : x.kind==="sketch");
   if(!mine.length)return {d,state:"none",docs:[]};
-  if(mine.every(x=>x.exported))return {d,state:"done",docs:mine};
+  if(mine.every(x=>x.exported||(x.rec&&x.rec.completed)))return {d,state:"done",docs:mine};
   return {d,state:"open",docs:mine};
 }
 function openDocs(){
@@ -2749,7 +2884,8 @@ function renderFill(){
     return `<input type="${t}"${im} data-fv="${x.id}" value="${esc(v||"")}">`;
   };
   $("#v-fill").innerHTML=`
-    <button class="back" data-go="forms">&#8249; Forms</button>
+    <button class="back" data-go="${r.incidentId&&incidentOf(r.incidentId)?"incident":"forms"}">&#8249; ${
+      r.incidentId&&incidentOf(r.incidentId)?esc(incidentOf(r.incidentId).caseNo||"Incident"):"Forms"}</button>
     ${docTabs("fill",r.id)}
     <div class="cdhead"><h2>${esc(r.formName)}</h2>
       <div class="sub">${esc(r.rev?"Rev "+r.rev+" · ":"")}Started ${esc(r.started.slice(0,16).replace("T"," "))}</div></div>
@@ -2758,8 +2894,11 @@ function renderFill(){
       : `<label class="fld"><span>${esc(x.label)}</span>${ctl(x)}</label>`).join("")
       :`<div class="empty"><strong>This form has no fields yet</strong>
         <p>Open it from the Forms tab and add fields before filling it in.</p></div>`}
+    ${r.incidentId&&incidentOf(r.incidentId)?`<div class="actbar" style="grid-template-columns:1fr">
+      <button class="primary" data-fdone="${r.id}">${r.completed
+        ? "Completed \u2014 reopen" : "Mark complete and go back"}</button></div>`:""}
     <div class="actbar" style="grid-template-columns:1fr 1fr">
-      <button class="primary" data-export="${r.id}">Export PDF</button>
+      <button class="${r.incidentId?"":"primary"}" data-export="${r.id}">Export PDF</button>
       <button data-discard="${r.id}">Discard</button>
     </div>
     <p class="hint">This stays in the app until you export it. It is not synced and not in any
@@ -3061,9 +3200,9 @@ async function exportSketch(sk,shared){
   const BX=M, BY=y-6, BW=W-2*M, BH=88;
   doc.setDrawColor(20);doc.setLineWidth(1.4);
   doc.rect(BX,BY,BW,BH);
-  const badgeW=86;
+  const badgeW=112;
   try{ doc.addImage(BADGE,"PNG",BX+10,BY+7,34,29,undefined,"FAST") }catch(e){}
-  doc.setFont("helvetica","bold");doc.setFontSize(6.4);doc.setTextColor(20);
+  doc.setFont("helvetica","bold");doc.setFontSize(6.2);doc.setTextColor(20);
   ["WILLIAMSPORT","BUREAU OF POLICE","FORENSIC SERVICES"].forEach((t,i)=>
     doc.text(t,BX+10,BY+50+i*9));
   doc.setLineWidth(1.4);doc.line(BX+badgeW,BY,BX+badgeW,BY+BH);
@@ -3098,13 +3237,14 @@ async function exportSketch(sk,shared){
   const PAD=45;
   const xs=[...objs.map(o=>o.x),...objs.map(o=>o.x+o.w)];
   const ys=[...objs.map(o=>o.y),...objs.map(o=>o.y+o.h)];
-  if(sk.bg&&sk.bg.data){xs.push(sk.bg.x,sk.bg.x+sk.bg.w); ys.push(sk.bg.y,sk.bg.y+sk.bg.h)}
+  if(sk.bg&&(sk.bg.data||sk.bg.imgId)){xs.push(sk.bg.x,sk.bg.x+sk.bg.w); ys.push(sk.bg.y,sk.bg.y+sk.bg.h)}
   if(scaleOf(sk)){xs.push(pageW(sk)-20); ys.push(pageH(sk)-14)}
   if(sk.bg&&sk.bg.src){xs.push(6); ys.push(pageH(sk)-4)}
   let bx=Math.min(...xs)-PAD, by=Math.min(...ys)-PAD;
   let bw=Math.max(...xs)+PAD-bx, bh=Math.max(...ys)+PAD-by;
   bx=Math.max(0,bx); by=Math.max(0,by);
   bw=Math.min(bw,pageW(sk)-bx); bh=Math.min(bh,pageH(sk)-by);
+  if(sk.bg&&sk.bg.imgId&&!BGMEM[sk.bg.imgId]){ await bgData(sk) }
   const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${Math.round(bw*2)}" height="${Math.round(bh*2)}"
       viewBox="${bx} ${by} ${bw} ${bh}"><rect x="${bx}" y="${by}" width="${bw}" height="${bh}" fill="#fff"/>
       ${bgSVG(sk)}
@@ -3127,7 +3267,7 @@ async function exportSketch(sk,shared){
       .k-credit{fill:#555;font-family:sans-serif;font-size:9.5px}
       .tbbox{stroke:#111;stroke-width:1.6;fill:none}
       .tbrule{stroke:#999;stroke-width:.8}
-      .tbunit{font-family:sans-serif;font-size:8px;font-weight:700;letter-spacing:.08em;fill:#111}
+      .tbunit{font-family:sans-serif;font-size:7.6px;font-weight:700;letter-spacing:.03em;fill:#111}
       .tblab{font-family:sans-serif;font-size:7.5px;font-weight:700;letter-spacing:.07em;fill:#666}
       .tbval{font-family:sans-serif;font-size:11.5px;fill:#111}
       .tbbig{font-family:sans-serif;font-size:17px;font-weight:700;fill:#111}
@@ -3234,7 +3374,7 @@ const GLYPH={
  clock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5.3l3.4 2"/></svg>',
  gap:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="4 3"><rect x="3.5" y="3.5" width="17" height="17" rx="3"/></svg>',
  ok:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M8 12.4l2.7 2.7L16 9.5"/></svg>'};
-let curSketch=null, sceneTab="forms", selObj=null, palCat=0, palQ="", skFull=false, skTools=true;
+let curSketch=null, sceneTab="forms", selObj=null, curLayer=null, showSet=false, palCat=0, palQ="", skFull=false, skTools=true;
 // photographs live in IndexedDB, not localStorage — they would blow its 5 MB ceiling
 const PDB={name:"vanphotos",store:"p",_db:null};
 function photoDB(){
@@ -3279,8 +3419,48 @@ function shrinkPhoto(file,max=1400,q=0.72){
     fr.readAsDataURL(file);
   });
 }
+// a backdrop can be megabytes, so it lives in IndexedDB like the photographs
+const BGMEM={};              // id -> data URL, filled on demand
+const BGWANT={};             // ids already being fetched
+function bgLoad(id){
+  if(!id||BGMEM[id]!==undefined||BGWANT[id])return;
+  BGWANT[id]=1;
+  photoGet(id).then(d=>{ BGMEM[id]=(d&&d.data)||null; delete BGWANT[id];
+    if(view==="sketch")renderSketch() })
+    .catch(()=>{ BGMEM[id]=null; delete BGWANT[id] });
+}
+async function bgData(sk){
+  const b=sk&&sk.bg; if(!b)return null;
+  if(b.data)return b.data;                       // older sketches kept it inline
+  if(!b.imgId)return null;
+  if(BGMEM[b.imgId])return BGMEM[b.imgId];
+  const d=await photoGet(b.imgId).catch(()=>null);
+  if(d&&d.data){BGMEM[b.imgId]=d.data; return d.data}
+  return null;
+}
+async function bgStore(sk,dataURL,meta){
+  const id=(sk.bg&&sk.bg.imgId)||newId();
+  await photoPut(id,{data:dataURL,w:meta.w,hh:meta.hh});
+  BGMEM[id]=dataURL;
+  return id;
+}
+// objects belong to a named layer; a sketch starts with one and you split it up yourself
+function layersOf(sk){
+  if(!sk.layers||!sk.layers.length)sk.layers=[{id:"L1",name:"Layer 1",locked:false}];
+  return sk.layers;
+}
+const layerOf=(sk,o)=>layersOf(sk).find(l=>l.id===(o.lay||layersOf(sk)[0].id))||layersOf(sk)[0];
+const layerLocked=(sk,o)=>!!(layerOf(sk,o)||{}).locked;
+function addLayer(sk){
+  const ls=layersOf(sk);
+  let n=ls.length+1;
+  while(ls.some(l=>l.name==="Layer "+n))n++;
+  const l={id:"L"+Date.now().toString(36),name:"Layer "+n,locked:false};
+  ls.push(l); saveLocal(); return l;
+}
 function newSketch(){
-  const sk={id:newId(),caseNo:"",addr:"",when:new Date().toISOString().slice(0,16),by:"",objs:[]};
+  const sk={id:newId(),caseNo:"",addr:"",when:new Date().toISOString().slice(0,16),by:"",objs:[],
+    layers:[{id:"L1",name:"Layer 1",locked:false}]};
   S.sketches.push(sk);saveLocal();return sk;
 }
 function nextPhotoNo(sk){
@@ -3370,7 +3550,8 @@ function objSVG(o,sel){
     +(Math.abs(ldy)>8?`<line x1="${o.w/2}" y1="${o.h+3}" x2="${o.w/2}" y2="${o.h+6+ldy-(ldy<0?-9:9)}"
         class="k-lead"/>`:"")
     :"";
-  const num=o.t==="marker"?`<text x="${o.w/2}" y="${o.h*.55}" class="k-num">${esc(o.n||"")}</text>`:"";
+  const num=(o.t==="marker"&&String(o.n||"").trim())
+    ?`<text x="${o.w/2}" y="${o.h*.55}" class="k-num">${esc(o.n)}</text>`:"";
   return `<g data-obj="${o.id}" style="--kc:${inkHex(o.ink)}"
     transform="translate(${o.x},${o.y}) rotate(${o.r||0} ${o.w/2} ${o.h/2})">
     <rect width="${o.w}" height="${o.h}" fill="transparent"/>
@@ -3402,7 +3583,7 @@ function headerSVG(sk){
   if(!hasHeader(sk))return "";
   const W=pageW(sk), M=14, H=HEADER_H-M;
   const cols=headerRows(sk);
-  const badgeW=104;                      // crest and unit name
+  const badgeW=132;                      // crest and unit name
   const colW=(W-2*M-badgeW)/3;
   let s=`<g class="skhead">
     <rect x="0" y="0" width="${W}" height="${HEADER_H+4}" fill="#fff"/>
@@ -3427,7 +3608,9 @@ function headerSVG(sk){
 }
 function bgSVG(sk){
   const b=sk.bg;
-  if(!b||!b.data)return "";
+  if(!b)return "";
+  const src=b.data||(b.imgId?BGMEM[b.imgId]:null);
+  if(!src){ if(b.imgId)bgLoad(b.imgId); return "" }
   const br=(b.br==null?1:+b.br), sa=(b.sa==null?1:+b.sa);
   const needs=Math.abs(br-1)>0.01||Math.abs(sa-1)>0.01;
   const fid="bgf_"+(sk.id||"x").replace(/[^a-z0-9]/gi,"");
@@ -3437,7 +3620,7 @@ function bgSVG(sk){
         <feFuncG type="linear" slope="${br.toFixed(2)}"/>
         <feFuncB type="linear" slope="${br.toFixed(2)}"/></feComponentTransfer>
     </filter>`:"";
-  return `${filt}<image href="${b.data}" x="${b.x||0}" y="${b.y||0}"
+  return `${filt}<image href="${src}" x="${b.x||0}" y="${b.y||0}"
     width="${b.w||pageW(sk)}" height="${b.h||pageH(sk)}"
     opacity="${b.op==null?0.55:b.op}" preserveAspectRatio="none"
     ${needs?`filter="url(#${fid})"`:""}/>`;
@@ -3510,6 +3693,11 @@ async function findAddress(q){
     lat:f.geometry.y, lon:f.geometry.x }));
 }
 // a square of ground, centred on the point, fetched at a known size so scale is exact
+// the cache is finest at about 0.019 m per pixel; asking for more than that adds bytes, not detail
+function aerialPx(feet){
+  const m=feet*0.3048;
+  return Math.max(1024, Math.min(4096, Math.round(m/0.019/64)*64));
+}
 async function fetchAerial(lat,lon,feet,px){
   const R=6378137, m=feet*0.3048;
   const cx=lon*Math.PI/180*R;
@@ -3610,16 +3798,18 @@ function orthoSheet(sk,src){
         const availH=pageH(sk)-(hasHeader(sk)?HEADER_H:0);
         let w=pageW(sk), hh=w*img.height/img.width;
         if(hh>availH){hh=availH;w=hh*img.width/img.height}
-        sk.bg={data:rd.result,x:(pageW(sk)-w)/2,y:(hasHeader(sk)?HEADER_H:0)+(availH-hh)/2,
-               w,h:hh,op:1,place:"",
-               src: faro ? ("FARO orthophoto at "+v+" px/m")
-                         : ("Pix4D orthomosaic at "+v+" cm/px GSD, average")};
-        if(faro)sk.bgPPM=String(v); else sk.bgGSD=String(v);
-        sk.orthoSrc=src;
-        const feet=img.width*perPx(v)*3.28084;
-        sk.scale={px:w,real:Math.round(feet*100)/100,unit:"ft"};
-        saveLocal();closeSheet();renderSketch();
-        toast("Scale set \u2014 "+(Math.round(feet*10)/10)+" ft across");
+        bgStore(sk,rd.result,{w:img.width,hh:img.height}).then(imgId=>{
+          sk.bg={imgId,x:(pageW(sk)-w)/2,y:(hasHeader(sk)?HEADER_H:0)+(availH-hh)/2,
+                 w,h:hh,op:1,place:"",px:img.width,
+                 src: faro ? ("FARO orthophoto at "+v+" px/m")
+                           : ("Pix4D orthomosaic at "+v+" cm/px GSD, average")};
+          if(faro)sk.bgPPM=String(v); else sk.bgGSD=String(v);
+          sk.orthoSrc=src;
+          const feet=img.width*perPx(v)*3.28084;
+          sk.scale={px:w,real:Math.round(feet*100)/100,unit:"ft"};
+          saveLocal();closeSheet();renderSketch();
+          toast("Scale set \u2014 "+(Math.round(feet*10)/10)+" ft across");
+        });
       };
       img.onerror=()=>toast("Could not read that image \u2014 a .tif will not open, export a JPG");
       img.src=rd.result;
@@ -3629,13 +3819,15 @@ function orthoSheet(sk,src){
 }
 function bgSheet(sk){
   const b=sk.bg||{};
+  const has=!!(b.data||b.imgId);
   openSheet(`<h3>Backdrop</h3>
     <p style="margin:0 0 12px;color:var(--ink2);font-size:14.5px;line-height:1.5">Search the address
       to drop in county aerial imagery, already to scale. Or load your own image and set the scale
       by hand. Either way it is stored in the sketch and prints with it.</p>
     <label class="fld"><span>Search an address</span>
       <input type="text" id="bgq" placeholder="329 Pine St" autocapitalize="words"
-        value="${esc(sk.addr||"")}"></label>
+        autocomplete="off" value="${esc(sk.addr||"")}"></label>
+    <div id="bgsug" class="sugbox"></div>
     <div class="two">
       <label class="fld"><span>Area across</span><select id="bgft">
         <option value="120">120 ft</option><option value="200">200 ft</option>
@@ -3654,18 +3846,29 @@ function bgSheet(sk){
     <label class="fld"><span>Any other image</span><input type="file" id="bgf" accept="image/*"></label>
     <p class="hint" style="margin:0 0 12px">A plain photo or floor plan comes in without a scale.
       Set one with the Set scale button, or use Ortho import above and it scales itself.</p>
-    ${b.data?`<label class="fld"><span>Fade</span>
-      <input type="range" id="bgop" min="15" max="100" value="${Math.round((b.op==null?0.55:b.op)*100)}"></label>`:""}
-    ${b.data?`<div class="two">
+    ${has?`<label class="fld"><span>Fade</span>
+      <input type="range" id="bgop" min="15" max="100" value="${Math.round((b.op==null?0.55:b.op)*100)}"></label>
+    <div class="two">
       <label class="fld"><span>Brightness</span>
         <input type="range" id="bgbr" min="60" max="220" value="${Math.round((b.br==null?1:b.br)*100)}"></label>
       <label class="fld"><span>Colour</span>
         <input type="range" id="bgsa" min="0" max="150" value="${Math.round((b.sa==null?1:b.sa)*100)}"></label>
     </div>
     <button class="btn sec" id="bgneut" style="max-width:none;margin:0 0 8px">Correct the blue cast</button>
-    <button class="btn sec" id="bgfit" style="max-width:none;margin:0 0 8px">Fit to page</button>`:""}
+    <div class="sect" style="margin:8px 2px 8px">Size and position</div>
+    <label class="fld"><span>Size</span>
+      <input type="range" id="bgsize" min="30" max="260" value="100"></label>
+    <div class="four" style="margin:0 0 10px">
+      <button class="btn sec" data-bgnudge="-1,0" style="max-width:none;margin:0">&#8592;</button>
+      <button class="btn sec" data-bgnudge="1,0" style="max-width:none;margin:0">&#8594;</button>
+      <button class="btn sec" data-bgnudge="0,-1" style="max-width:none;margin:0">&#8593;</button>
+      <button class="btn sec" data-bgnudge="0,1" style="max-width:none;margin:0">&#8595;</button></div>
+    <button class="btn sec" id="bgfit" style="max-width:none;margin:0 0 8px">Fit to page</button>
+    <button class="btn sec" id="bgcentre" style="max-width:none;margin:0 0 8px">Centre it</button>
+    <p class="hint" style="margin:0 0 12px">Resizing keeps the scale correct \u2014 the ground the
+      image covers does not change.</p>`:""}
     <button class="btn" id="bgsave" style="max-width:none;margin:0">Done</button>
-    ${b.data?`<button class="btn sec" id="bgdel" style="max-width:none;color:var(--red);border-color:var(--red)">Remove backdrop</button>`:""}
+    ${has?`<button class="btn sec" id="bgdel" style="max-width:none;color:var(--red);border-color:var(--red)">Remove backdrop</button>`:""}
     <button class="btn sec" id="bgx" style="max-width:none">Cancel</button>`);
   $("#bgx").onclick=closeSheet;
   const orth=$("#bgortho"); if(orth)orth.onclick=()=>orthoSheet(sk);
@@ -3673,20 +3876,46 @@ function bgSheet(sk){
     const feet=+$("#bgft").value||200;
     $("#bghits").innerHTML=`<p class="hint" style="margin:0 0 10px">Fetching imagery\u2026</p>`;
     try{
-      const got=await fetchAerial(hit.lat,hit.lon,feet,1024);
+      const px=aerialPx(feet);
+      const got=await fetchAerial(hit.lat,hit.lon,feet,px);
       const hh=hasHeader(sk)?HEADER_H:0;
       const side=Math.min(pageW(sk),pageH(sk)-hh);
-      sk.bg={data:got.data,x:(pageW(sk)-side)/2,y:hh+(pageH(sk)-hh-side)/2,
-        w:side,h:side,op:1,br:1.08,sa:0.8,src:"PEMA 2021\u20132023 via PASDA",
-        place:hit.label||"",lat:hit.lat,lon:hit.lon,ground:feet};
+      const imgId=await bgStore(sk,got.data,{w:px,hh:px});
+      sk.bg={imgId,x:(pageW(sk)-side)/2,y:hh+(pageH(sk)-hh-side)/2,
+        w:side,h:side,op:1,br:1,sa:0.95,src:"PEMA 2021\u20132023 via PASDA",
+        place:hit.label||"",lat:hit.lat,lon:hit.lon,ground:feet,px};
       // the image spans a known distance, so the scale follows from it
       sk.scale={px:side,real:feet,unit:"ft"};
       if(!sk.addr)sk.addr=hit.label;
       saveLocal();closeSheet();renderSketch();
-      toast("Aerial placed, "+feet+" ft across \u2014 to scale");
+      toast("Aerial placed, "+feet+" ft across at "+px+" px \u2014 to scale");
     }catch(err){
       $("#bghits").innerHTML=`<p class="hint" style="margin:0 0 10px;color:var(--red)">${esc(err.message)}</p>`;
     }
+  };
+  // suggest as you type, but only after a pause, so the county service is not hammered
+  let sugT=null, sugSeq=0;
+  const qEl=$("#bgq");
+  const showSug=(list)=>{
+    const box=$("#bgsug"); if(!box)return;
+    box.innerHTML=list.length
+      ? list.slice(0,6).map((x,i)=>`<button class="sug" data-sug="${i}">${esc(x.label)}</button>`).join("")
+      : "";
+    box.__list=list;
+    $$("#bgsug [data-sug]").forEach(bq=>bq.onclick=()=>{
+      const hit=(box.__list||[])[+bq.dataset.sug]; if(!hit)return;
+      qEl.value=hit.label; box.innerHTML=""; place(hit);
+    });
+  };
+  if(qEl)qEl.oninput=()=>{
+    clearTimeout(sugT);
+    const q=qEl.value.trim();
+    if(q.length<4){showSug([]);return}
+    const seq=++sugSeq;
+    sugT=setTimeout(async()=>{
+      try{ const hits=await findAddress(q); if(seq===sugSeq)showSug(hits) }
+      catch(e){ if(seq===sugSeq)showSug([]) }
+    },350);
   };
   const find=$("#bgfind");
   if(find)find.onclick=async()=>{
@@ -3708,7 +3937,9 @@ function bgSheet(sk){
   };
   $("#bgsave").onclick=()=>{closeSheet();renderSketch()};
   const del=$("#bgdel");
-  if(del)del.onclick=()=>{delete sk.bg;saveLocal();closeSheet();renderSketch();toast("Backdrop removed")};
+  if(del)del.onclick=()=>{
+    if(sk.bg&&sk.bg.imgId)photoDel(sk.bg.imgId).catch(()=>{});
+    delete sk.bg;saveLocal();closeSheet();renderSketch();toast("Backdrop removed")};
   const fit=$("#bgfit");
   if(fit)fit.onclick=()=>{sk.bg.x=0;sk.bg.y=hasHeader(sk)?HEADER_H:0;
     sk.bg.w=pageW(sk);sk.bg.h=pageH(sk)-(hasHeader(sk)?HEADER_H:0);
@@ -3720,6 +3951,30 @@ function bgSheet(sk){
   const neut=$("#bgneut");
   if(neut)neut.onclick=()=>{sk.bg.br=1.35;sk.bg.sa=0.35;sk.bg.op=1;
     saveLocal();renderSketch();bgSheet(sk);toast("Corrected")};
+  // resizing the image must move the scale with it, or measurements go wrong
+  const rescale=(nw)=>{
+    const old=sk.bg.w||1;
+    const cx=sk.bg.x+sk.bg.w/2, cy=sk.bg.y+sk.bg.h/2;
+    const f=nw/old;
+    sk.bg.w=nw; sk.bg.h=sk.bg.h*f;
+    sk.bg.x=cx-sk.bg.w/2; sk.bg.y=cy-sk.bg.h/2;
+    if(sk.scale&&sk.scale.px)sk.scale={...sk.scale, px:sk.scale.px*f};
+    saveLocal(); renderSketch();
+  };
+  let baseW=(sk.bg&&sk.bg.w)||0;
+  const sz=$("#bgsize");
+  if(sz){ sz.oninput=()=>rescale(Math.max(40,baseW*(+sz.value)/100)); }
+  $$("#sheet [data-bgnudge]").forEach(bq=>bq.onclick=()=>{
+    const [dx,dy]=bq.dataset.bgnudge.split(",").map(Number);
+    const step=Math.max(6,(sk.bg.w||100)*0.04);
+    sk.bg.x+=dx*step; sk.bg.y+=dy*step; saveLocal(); renderSketch();
+  });
+  const ctr=$("#bgcentre");
+  if(ctr)ctr.onclick=()=>{
+    const top=hasHeader(sk)?HEADER_H:0;
+    sk.bg.x=(pageW(sk)-sk.bg.w)/2;
+    sk.bg.y=top+((pageH(sk)-top)-sk.bg.h)/2;
+    saveLocal(); renderSketch(); toast("Centred")};
   const op=$("#bgop");
   if(op)op.oninput=()=>{sk.bg.op=(+op.value)/100;saveLocal();renderSketch()};
   const f=$("#bgf");
@@ -3733,27 +3988,38 @@ function bgSheet(sk){
         const availH=pageH(sk)-(hasHeader(sk)?HEADER_H:0);
         let w=pageW(sk), hh=w*img.height/img.width;
         if(hh>availH){hh=availH;w=hh*img.width/img.height}
-        sk.bg={data:rd.result,x:(pageW(sk)-w)/2,y:(hasHeader(sk)?HEADER_H:0)+(availH-hh)/2,
-               w,h:hh,op:0.55,src:"",place:""};
-        // a FARO orthophoto carries its own scale: pixels per metre
-        const ppm=parseFloat(($("#bgppm")||{}).value||"");
-        let msg="Backdrop added \u2014 now set the scale";
-        if(ppm>0){
-          sk.bgPPM=String(ppm);
-          const metres=img.width/ppm;                 // real width of the whole image
-          const feet=metres*3.28084;
-          sk.scale={px:w,real:Math.round(feet*100)/100,unit:"ft"};
-          msg="Backdrop added \u2014 scale set from "+ppm+" px/m ("
-            +(Math.round(feet*10)/10)+" ft across)";
-        }else if(scaleOf(sk))msg="Backdrop added";
-        saveLocal();closeSheet();renderSketch();
-        toast(msg);
+        bgStore(sk,rd.result,{w:img.width,hh:img.height}).then(imgId=>{
+          sk.bg={imgId,x:(pageW(sk)-w)/2,y:(hasHeader(sk)?HEADER_H:0)+(availH-hh)/2,
+                 w,h:hh,op:0.55,src:"",place:"",px:img.width};
+          const ppm=parseFloat(($("#bgppm")||{}).value||"");
+          let msg="Backdrop added \u2014 now set the scale";
+          if(ppm>0){
+            sk.bgPPM=String(ppm);
+            const feet=(img.width/ppm)*3.28084;
+            sk.scale={px:w,real:Math.round(feet*100)/100,unit:"ft"};
+            msg="Backdrop added \u2014 scale set from "+ppm+" px/m ("
+              +(Math.round(feet*10)/10)+" ft across)";
+          }else if(scaleOf(sk))msg="Backdrop added";
+          saveLocal();closeSheet();renderSketch();
+          toast(msg);
+        });
       };
       img.onerror=()=>toast("Could not read that image");
       img.src=rd.result;
     };
     rd.readAsDataURL(file);
   };
+}
+function keepScroll(fn){
+  const y=window.scrollY||0;
+  const rail=document.querySelector(".skrail"), r=rail?rail.scrollTop:0;
+  fn();
+  // the panel re-renders after us, so put it back more than once
+  const put=()=>{ window.scrollTo(0,y);
+    const rl=document.querySelector(".skrail"); if(rl)rl.scrollTop=r };
+  put();
+  if(typeof requestAnimationFrame==="function")requestAnimationFrame(()=>{put();requestAnimationFrame(put)});
+  setTimeout(put,60); setTimeout(put,160);
 }
 function renderSketch(){
   const sk=S.sketches.find(x=>x.id===curSketch);
@@ -3763,7 +4029,8 @@ function renderSketch(){
   const sel=objAt(selObj);
   const legend=(sk.objs||[]).filter(o=>o.label&&o.t!=="text");
   $("#v-sketch").innerHTML=`
-    <button class="back" data-go="forms">&#8249; Scene</button>
+    <button class="back" data-go="${sk.incidentId&&incidentOf(sk.incidentId)?"incident":"forms"}">&#8249; ${
+      sk.incidentId&&incidentOf(sk.incidentId)?esc(incidentOf(sk.incidentId).caseNo||"Incident"):"Scene"}</button>
     ${docTabs("sketch",sk.id)}
     <div class="cdhead"><h2>${esc(sk.caseNo||"Untitled sketch")}</h2>
       <div class="sub">${esc(sk.addr||"No address")} · ${esc((sk.when||"").replace("T"," "))}${sk.by?" · "+esc(sk.by):""}</div></div>
@@ -3782,15 +4049,21 @@ function renderSketch(){
          <button data-skscale="1"${scaleOf(sk)?' class="on"':''}>${scaleOf(sk)
             ?"Scale "+measure(sk,100)+" / 100":"Set scale"}</button>
          <button data-sksnap="${snapOn?0:1}"${snapOn?' class="on"':''}>${snapOn?"Snap on":"Snap off"}</button>
-         <button data-skbg="1"${(sk.bg&&sk.bg.data)?' class="on"':''}>${(sk.bg&&sk.bg.data)?"Backdrop":"Add backdrop"}</button>
+         <button data-skbg="1"${(sk.bg&&(sk.bg.data||sk.bg.imgId))?' class="on"':''}>${(sk.bg&&(sk.bg.data||sk.bg.imgId))?"Backdrop":"Add backdrop"}</button>
          <button data-skpdf="1">Export PDF</button>`}</div>
     <div class="canvaswrap">${canvasSVG(sk)}</div>
-    ${sel?`<div class="objset">
+    ${(sel&&showSet)?`<div class="objset">
         <div class="oshead"><b>${esc(SHAPENAME(sel.t))}</b>
-          <span class="osr">Rotation <span id="rotval">${sel.r||0}\u00b0</span></span></div>
+          <span class="osr">Rotation <span id="rotval">${sel.r||0}\u00b0</span></span>
+          <button class="osclose" id="osx" aria-label="Close">&#215;</button></div>
+        ${layersOf(sk).length>1?`<label class="fld"><span>Layer</span>
+          <select id="olay">${layersOf(sk).map(L=>
+            `<option value="${L.id}"${(sel.lay||layersOf(sk)[0].id)===L.id?" selected":""}>${esc(L.name)}</option>`).join("")}
+          </select></label>`:""}
         <div class="osgrid">
           ${(sel.t==="marker"||sel.t==="photopoint")?`<label class="fld osnum"><span>Number</span>
-            <input type="text" id="onum" inputmode="numeric" value="${esc(sel.n||"")}"></label>`:""}
+            <input type="text" id="onum" inputmode="numeric" value="${esc(sel.n||"")}"></label>
+            <button class="numnext" data-onext="${sel.id}">${sel.n?"Renumber":"Next number"}</button>`:""}
           <label class="fld osname"><span>${sel.t==="marker"?"Name it — prints on the sketch and in the legend"
             :sel.t==="legend"?"Name it (not shown on the sketch)":"Name it — prints on the sketch"}</span>
             <input type="text" id="oname" value="${esc(sel.label||"")}"
@@ -3832,19 +4105,38 @@ function renderSketch(){
       : palCat>=0?`<div class="palette">${PALETTE[palCat][1].map(([t,nm])=>
       `<button data-add="${t}"><span class="pv">${palPreview(t)}</span><span class="pn">${esc(nm)}</span></button>`).join("")}</div>`
       :`<p class="hint" style="margin:0 0 12px">Pick a category above to place something.</p>`}
-    ${(sk.objs||[]).length?`<div class="sect">Layers</div>
-      <div class="layers">${(sk.objs||[]).slice().reverse().map((o,ix,arr)=>
-        `<div class="lay${o.id===selObj?" on":""}">
-          <button class="laypick" data-osel="${o.id}">
-            <span class="lp" style="--kc:${inkHex(o.ink)}">${palPreview(o.t)}</span>
-            <span class="ln2">${esc(o.label||SHAPENAME(o.t))}${o.t==="marker"&&o.n?" "+esc(o.n):""}</span>
-          </button>
-          <button class="layb" data-lup="${o.id}" ${ix===0?"disabled":""} aria-label="Bring forward">&#9650;</button>
-          <button class="layb" data-ldn="${o.id}" ${ix===arr.length-1?"disabled":""} aria-label="Send back">&#9660;</button>
-          <button class="layb del" data-odel="${o.id}" aria-label="Delete">&#215;</button>
-        </div>`).join("")}</div>
-      <p class="hint">Top of this list is the front of the drawing.</p>`
-      :`<p class="hint">Add an object and it appears here.</p>`}
+    <div class="sect">Layers <button class="addlay" id="newlay">+ New layer</button></div>
+    ${(()=>{const ls=layersOf(sk);
+      return `<div class="layers">`+ls.map(L=>{
+        const mine=(sk.objs||[]).map((o,i)=>({o,i}))
+          .filter(x=>(x.o.lay||ls[0].id)===L.id).reverse();
+        return `<div class="laygrp${curLayer===L.id?" cur":""}">
+          <div class="layhead">
+            <button class="laypick" data-laysel="${L.id}">
+              <span class="ln2">${esc(L.name)}</span>
+              <span class="laycount">${mine.length} object${mine.length===1?"":"s"}${
+                curLayer===L.id?" \u00b7 drawing here":""}</span></button>
+            <button class="laybig${L.locked?" lockon":""}" data-laylock="${L.id}"
+              aria-label="${L.locked?"Unlock layer":"Lock layer"}">
+              <svg viewBox="0 0 24 24" class="lki" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="5" y="11" width="14" height="10" rx="2"/>
+                ${L.locked?`<path d="M8 11V7a4 4 0 0 1 8 0v4"/>`
+                          :`<path d="M8 11V7a4 4 0 0 1 7.5-2"/>`}
+              </svg></button>
+            <button class="laybig" data-laymore="${L.id}" aria-label="Layer options">&#8943;</button>
+          </div>
+          ${mine.length?mine.map(({o,i})=>
+            `<div class="lay${o.id===selObj?" on":""}${L.locked?" locked":""}">
+              <button class="laypick" data-osel="${o.id}">
+                <span class="lp" style="--kc:${inkHex(o.ink)}">${palPreview(o.t)}</span>
+                <span class="ln2">${esc(o.label||SHAPENAME(o.t))}${(o.t==="marker"||o.t==="photopoint")&&o.n?" "+esc(o.n):""}</span>
+              </button>
+              <button class="laybig" data-omore="${o.id}" aria-label="Object options">&#8943;</button>
+            </div>`).join("")
+            :`<p class="hint" style="margin:6px 0 10px 12px">Empty. Tap the name, then add objects.</p>`}
+        </div>`}).join("")+`</div>
+        <p class="hint">Tap a layer name to draw into it. Top of each list is the front.</p>`})()}
     ${legend.length?`<div class="sect">Legend</div><div class="rows">`+legend.map(o=>
       `<button class="row" data-osel="${o.id}">
         <span><span class="code">${o.t==="marker"&&o.n?esc(o.n)+" · ":""}${esc(o.label)}</span>
@@ -3861,7 +4153,9 @@ function renderSketch(){
 function palPreview(t){
   if(t==="text")return `<svg viewBox="0 0 46 32" class="pvs" preserveAspectRatio="xMidYMid meet"><text x="23" y="23" class="k-text" style="font-size:17px" text-anchor="middle">Aa</text></svg>`;
   const[w,hh]=DEFSIZE[t]||[40,30];
-  return `<svg viewBox="-2 -2 ${w+4} ${hh+4}" class="pvs" preserveAspectRatio="xMidYMid meet">${(SHAPES[t]||SHAPES.rect)(w,hh)}</svg>`;
+  const pad=Math.max(3,Math.max(w,hh)*0.06);
+  return `<svg viewBox="${-pad} ${-pad} ${w+pad*2} ${hh+pad*2}" class="pvs"
+    preserveAspectRatio="xMidYMid meet">${(SHAPES[t]||SHAPES.rect)(w,hh)}</svg>`;
 }
 // undo history, one stack per sketch, objects only
 const UNDO={}, REDO={};
@@ -3897,10 +4191,11 @@ function addObj(t){
   pushUndo(sk);
   const[w,hh]=DEFSIZE[t]||[120,80];
   const top=hasHeader(sk)?HEADER_H:0;
-  const o={id:newId(),t,x:Math.round(pageW(sk)/2-w/2),
+  const ls=layersOf(sk);
+  const target=(curLayer&&ls.some(l=>l.id===curLayer))?curLayer:ls[ls.length-1].id;
+  const o={id:newId(),t,lay:target,x:Math.round(pageW(sk)/2-w/2),
     y:Math.round(top+(pageH(sk)-top)/2-hh/2),w,h:hh,r:0,label:"",ar:w/hh};
-  if(t==="marker"){o.n=String(nextMarkerNo(sk)); setTimeout(()=>syncMarker(sk,o),0)}
-  if(t==="photopoint")o.n=String(nextPhotoNo(sk));
+  if(t==="marker"||t==="photopoint")o.n="";   // numbered when you choose, not on drop
   if(t==="text")o.label="Text";
   sk.objs.push(o);selObj=o.id;saveLocal();renderSketch();
 }
@@ -3920,16 +4215,18 @@ document.addEventListener("pointerdown",e=>{
   const p=canvasPt(e); if(!p)return;
   const rEl=e.target.closest("[data-rot]");
   if(rEl){const o=objAt(rEl.dataset.rot); if(!o)return;
-    pushUndo(S.sketches.find(x=>x.id===curSketch));drag={mode:"rot",o,cx:o.x+o.w/2,cy:o.y+o.h/2};
+    (()=>{const s=S.sketches.find(x=>x.id===curSketch);if(s&&layerLocked(s,o)){toast("Layer is locked");return}pushUndo(s)})();if((()=>{const s=S.sketches.find(x=>x.id===curSketch);return s&&layerLocked(s,o)})())return;drag={mode:"rot",o,cx:o.x+o.w/2,cy:o.y+o.h/2};
     try{svg.setPointerCapture&&svg.setPointerCapture(e.pointerId)}catch(_){}
     e.preventDefault();return}
   if(hEl){const o=objAt(hEl.dataset.handle); if(!o)return;
-    pushUndo(S.sketches.find(x=>x.id===curSketch));drag={mode:"size",o,px:p.x,py:p.y,w:o.w,h:o.h};
+    (()=>{const s=S.sketches.find(x=>x.id===curSketch);if(s&&layerLocked(s,o)){toast("Layer is locked");return}pushUndo(s)})();if((()=>{const s=S.sketches.find(x=>x.id===curSketch);return s&&layerLocked(s,o)})())return;drag={mode:"size",o,px:p.x,py:p.y,w:o.w,h:o.h};
     try{svg.setPointerCapture&&svg.setPointerCapture(e.pointerId)}catch(_){}
     e.preventDefault();return}
   if(gEl){const o=objAt(gEl.dataset.obj); if(!o)return;
     if(selObj!==o.id){selObj=o.id;renderSketch()}
-    pushUndo(S.sketches.find(x=>x.id===curSketch));
+    const skD=S.sketches.find(x=>x.id===curSketch);
+    if(skD&&layerLocked(skD,o))return toast((layerOf(skD,o)||{}).name+" is locked");
+    pushUndo(skD);
     drag={mode:"move",o,px:p.x,py:p.y,x:o.x,y:o.y};
     try{svg.setPointerCapture&&svg.setPointerCapture(e.pointerId)}catch(_){}
     e.preventDefault();return}
@@ -4484,7 +4781,7 @@ function renderIncident(){
   const plan=(inc.plan||[]).map(k=>planState(inc,k)).filter(Boolean);
   const extras=docsFor(inc.id).filter(x=>!plan.some(p=>p.docs.some(d=>d.id===x.id)));
   const row=p=>{
-    const lab={none:"Not started",open:"In progress",done:"Exported"}[p.state];
+    const lab={none:"Not started",open:"In progress",done:"Complete"}[p.state];
     const cls={none:"b-unchecked",open:"b-attn",done:"b-good"}[p.state];
     return `<button class="row" data-plan="${p.d.key}">
       <span><span class="code">${esc(p.d.label)}</span>
@@ -4864,6 +5161,10 @@ document.addEventListener("click",e=>{
     syncErr="";retries=0;renderSyncBar();toast("Retrying");ghPush(false);return}
   const sc=e.target.closest("[data-scene]");
   if(sc){sceneTab=sc.dataset.scene;return renderForms()}
+  if(e.target.closest("#quicksketch")){
+    const sk=newSketch(); curSketch=sk.id; selObj=null; curLayer=null;
+    prevView=null; view="sketch"; window.scrollTo&&window.scrollTo(0,0);
+    render(); return toast("Sketch started \u2014 add scene details when you have them")}
   if(e.target.closest("#newinc")){
     const inc=newIncident(); curInc=inc.id; view="incident"; render(); incidentSheet(inc); return}
   const ib=e.target.closest("[data-inc]");
@@ -4889,6 +5190,7 @@ document.addEventListener("click",e=>{
     const st=planState(inc,pb.dataset.plan); if(!st)return;
     if(st.docs.length){
       const d=st.docs[0];
+      prevView="incident";
       if(d.kind==="fill"){curFill=d.id;view="fill"} else {curSketch=d.id;selObj=null;view="sketch"}
       return render();
     }
@@ -4898,11 +5200,26 @@ document.addEventListener("click",e=>{
       const r=newFill(f); r.incidentId=inc.id;
       const put=(re,val)=>{const fd=(f.fields||[]).find(x=>re.test(x.label)); if(fd&&val)r.values[fd.id]=val};
       put(/case/i, inc.caseNo); put(/offence|incident type/i, inc.offence); put(/address|scene/i, inc.addr);
-      save(); curFill=r.id; view="fill"; return render();
+      save(); prevView="incident"; curFill=r.id; view="fill"; return render();
     }
     const sk=newSketch();
     Object.assign(sk,{incidentId:inc.id,caseNo:inc.caseNo,offence:inc.offence,addr:inc.addr});
-    save(); curSketch=sk.id; selObj=null; view="sketch"; return render();
+    save(); prevView="incident"; curSketch=sk.id; selObj=null; view="sketch"; return render();
+  }
+  const gob=e.target.closest('[data-go="incident"]');
+  if(gob){
+    const r=(S.fills||[]).find(x=>x.id===curFill), sk2=S.sketches.find(x=>x.id===curSketch);
+    const inc=(view==="fill"&&r&&r.incidentId)||(view==="sketch"&&sk2&&sk2.incidentId);
+    if(inc)curInc=inc;
+    view="incident"; window.scrollTo&&window.scrollTo(0,0); return render();
+  }
+  const fdn=e.target.closest("[data-fdone]");
+  if(fdn){
+    const r=(S.fills||[]).find(x=>x.id===fdn.dataset.fdone); if(!r)return;
+    if(r.completed){ delete r.completed; save(); renderFill(); return toast("Reopened") }
+    r.completed=new Date().toISOString(); save();
+    curInc=r.incidentId; view="incident"; window.scrollTo&&window.scrollTo(0,0);
+    render(); return toast("Marked complete");
   }
   const dtb=e.target.closest("[data-doc]");
   if(dtb){const [k,id]=dtb.dataset.doc.split(":");
@@ -4929,6 +5246,14 @@ document.addEventListener("click",e=>{
   const pl=e.target.closest("[data-pal]");
   if(pl){const n=+pl.dataset.pal; palCat = (palCat===n ? -1 : n); return renderSketch()}
   const ad=e.target.closest("[data-add]"); if(ad)return addObj(ad.dataset.add);
+  const onx=e.target.closest("[data-onext]");
+  if(onx){
+    const sk=S.sketches.find(x=>x.id===curSketch), o=objAt(onx.dataset.onext);
+    if(sk&&o){ pushUndo(sk);
+      o.n=String(o.t==="photopoint"?nextPhotoNo(sk):nextMarkerNo(sk));
+      saveLocal(); if(o.t==="marker")syncMarker(sk,o);
+      renderSketch(); toast("Numbered "+o.n) }
+    return}
   const oph=e.target.closest("[data-ophoto]");
   if(oph){const o=objAt(oph.dataset.ophoto); if(o)photoSheet(o); return}
   const ophx=e.target.closest("[data-ophotox]");
@@ -4946,23 +5271,126 @@ document.addEventListener("click",e=>{
   if(od){const o=objAt(od.dataset.odup);if(o&&skc){pushUndo(skc);const c=Object.assign({},o,{id:newId(),x:o.x+24,y:o.y+24});
     if(c.t==="marker")c.n=String(nextMarkerNo(skc));
     skc.objs.push(c);selObj=c.id;saveLocal();renderSketch()}return}
+  if(e.target.closest("#newlay")){
+    if(!skc)return; pushUndo(skc); const L=addLayer(skc); curLayer=L.id;
+    keepScroll(()=>renderSketch()); return toast(L.name+" added \u2014 new objects go here")}
+  const lsel=e.target.closest("[data-laysel]");
+  if(lsel){curLayer=lsel.dataset.laysel; keepScroll(()=>renderSketch());
+    const L=layersOf(skc).find(x=>x.id===curLayer);
+    return toast("Drawing into "+(L?L.name:"layer"))}
+  const llk=e.target.closest("[data-laylock]");
+  if(llk&&skc){const L=layersOf(skc).find(x=>x.id===llk.dataset.laylock);
+    if(L){L.locked=!L.locked; if(L.locked&&selObj){const o=objAt(selObj);
+      if(o&&(o.lay||layersOf(skc)[0].id)===L.id)selObj=null}
+      saveLocal(); keepScroll(()=>renderSketch()); toast(L.name+(L.locked?" locked":" unlocked"))}
+    return}
+  const lnm=e.target.closest("[data-layname]");
+  if(lnm&&skc){const L=layersOf(skc).find(x=>x.id===lnm.dataset.layname); if(!L)return;
+    openSheet(`<h3>Layer name</h3>
+      <label class="fld"><span>Name</span><input type="text" id="lnv" value="${esc(L.name)}"></label>
+      <button class="btn" id="lnsave" style="max-width:none;margin:0">Save</button>
+      <button class="btn sec" id="lnx" style="max-width:none">Cancel</button>`);
+    $("#lnx").onclick=closeSheet;
+    $("#lnsave").onclick=()=>{L.name=$("#lnv").value.trim()||L.name;saveLocal();closeSheet();renderSketch()};
+    return}
+  const ldl=e.target.closest("[data-laydel]");
+  if(ldl&&skc){const ls=layersOf(skc), L=ls.find(x=>x.id===ldl.dataset.laydel);
+    if(!L||ls.length<2)return;
+    const inIt=(skc.objs||[]).filter(o=>(o.lay||ls[0].id)===L.id).length;
+    const other=ls.find(x=>x.id!==L.id);
+    return askConfirm("Delete layer",
+      inIt? inIt+" object"+(inIt===1?"":"s")+" will move to "+other.name+"."
+          : "This layer is empty.",
+      "Delete layer",true,()=>{
+        pushUndo(skc);
+        (skc.objs||[]).forEach(o=>{if((o.lay||ls[0].id)===L.id)o.lay=other.id});
+        skc.layers=ls.filter(x=>x.id!==L.id);
+        if(curLayer===L.id)curLayer=other.id;
+        saveLocal(); renderSketch(); toast("Layer deleted")})}
+  if(e.target.closest("#osx")){showSet=false;keepScroll(()=>renderSketch());return}
+  const omr=e.target.closest("[data-omore]");
+  if(omr){
+    const sk2=S.sketches.find(x=>x.id===curSketch); const o=objAt(omr.dataset.omore);
+    if(!sk2||!o)return;
+    const ls=layersOf(sk2), lk=layerLocked(sk2,o);
+    const i=sk2.objs.findIndex(x=>x.id===o.id);
+    openSheet(`<h3>${esc(o.label||SHAPENAME(o.t))}</h3>
+      ${lk?`<p class="hint" style="margin:0 0 12px">${esc((layerOf(sk2,o)||{}).name)} is locked.
+        Unlock it to change this object.</p>`:""}
+      <div class="stackb">
+        <button class="btn" id="omset" style="max-width:none;margin:0"${lk?" disabled":""}>Settings</button>
+        <button class="btn sec" id="omfwd" style="max-width:none"${lk||i>=sk2.objs.length-1?" disabled":""}>Bring forward</button>
+        <button class="btn sec" id="ombck" style="max-width:none"${lk||i<=0?" disabled":""}>Send back</button>
+        ${ls.length>1?`<label class="fld" style="margin-top:6px"><span>Move to layer</span>
+          <select id="ommove"${lk?" disabled":""}>${ls.map(L=>
+            `<option value="${L.id}"${(o.lay||ls[0].id)===L.id?" selected":""}>${esc(L.name)}</option>`).join("")}
+          </select></label>`:""}
+        <button class="btn sec" id="omdel" style="max-width:none;color:var(--red);border-color:var(--red)"${lk?" disabled":""}>Delete</button>
+        <button class="btn sec" id="omx" style="max-width:none">Cancel</button></div>`);
+    $("#omx").onclick=closeSheet;
+    $("#omset").onclick=()=>{selObj=o.id;showSet=true;closeSheet();keepScroll(()=>renderSketch())};
+    $("#omfwd").onclick=()=>{pushUndo(sk2);const k=sk2.objs.findIndex(x=>x.id===o.id);
+      if(k>-1&&k<sk2.objs.length-1){const[m]=sk2.objs.splice(k,1);sk2.objs.splice(k+1,0,m)}
+      saveLocal();closeSheet();keepScroll(()=>renderSketch())};
+    $("#ombck").onclick=()=>{pushUndo(sk2);const k=sk2.objs.findIndex(x=>x.id===o.id);
+      if(k>0){const[m]=sk2.objs.splice(k,1);sk2.objs.splice(k-1,0,m)}
+      saveLocal();closeSheet();keepScroll(()=>renderSketch())};
+    const mv=$("#ommove");
+    if(mv)mv.onchange=()=>{pushUndo(sk2);o.lay=mv.value;saveLocal();closeSheet();
+      keepScroll(()=>renderSketch());toast("Moved to "+((ls.find(L=>L.id===o.lay)||{}).name||"layer"))};
+    $("#omdel").onclick=()=>{pushUndo(sk2);sk2.objs=sk2.objs.filter(x=>x.id!==o.id);
+      selObj=null;saveLocal();closeSheet();keepScroll(()=>renderSketch());
+      toast(SHAPENAME(o.t)+" removed \u2014 Undo to bring it back")};
+    return}
+  const lmr=e.target.closest("[data-laymore]");
+  if(lmr){
+    const sk2=S.sketches.find(x=>x.id===curSketch); if(!sk2)return;
+    const ls=layersOf(sk2), L=ls.find(x=>x.id===lmr.dataset.laymore); if(!L)return;
+    const count=(sk2.objs||[]).filter(o=>(o.lay||ls[0].id)===L.id).length;
+    openSheet(`<h3>${esc(L.name)}</h3>
+      <label class="fld"><span>Name</span><input type="text" id="lnv" value="${esc(L.name)}"></label>
+      <div class="stackb">
+        <button class="btn" id="lnsave" style="max-width:none;margin:0">Save name</button>
+        <button class="btn sec" id="lndraw" style="max-width:none">Draw into this layer</button>
+        ${ls.length>1?`<button class="btn sec" id="lndel"
+          style="max-width:none;color:var(--red);border-color:var(--red)">Delete layer${
+            count?" ("+count+" object"+(count===1?"":"s")+" move out)":""}</button>`:""}
+        <button class="btn sec" id="lnx" style="max-width:none">Cancel</button></div>`);
+    $("#lnx").onclick=closeSheet;
+    $("#lnsave").onclick=()=>{L.name=$("#lnv").value.trim()||L.name;saveLocal();closeSheet();
+      keepScroll(()=>renderSketch());toast("Saved")};
+    $("#lndraw").onclick=()=>{curLayer=L.id;closeSheet();keepScroll(()=>renderSketch());
+      toast("Drawing into "+L.name)};
+    const dl=$("#lndel");
+    if(dl)dl.onclick=()=>{
+      const other=ls.find(x=>x.id!==L.id);
+      pushUndo(sk2);
+      (sk2.objs||[]).forEach(o=>{if((o.lay||ls[0].id)===L.id)o.lay=other.id});
+      sk2.layers=ls.filter(x=>x.id!==L.id);
+      if(curLayer===L.id)curLayer=other.id;
+      saveLocal();closeSheet();keepScroll(()=>renderSketch());toast("Layer deleted")};
+    return}
+  const ost=e.target.closest("[data-oset]");
+  if(ost){selObj=ost.dataset.oset; showSet=true; keepScroll(()=>renderSketch()); return}
   const lu=e.target.closest("[data-lup]");
   if(lu&&skc){pushUndo(skc);const i=skc.objs.findIndex(x=>x.id===lu.dataset.lup);
     if(i>-1&&i<skc.objs.length-1){const[o]=skc.objs.splice(i,1);skc.objs.splice(i+1,0,o);
-      selObj=o.id;saveLocal();renderSketch()}return}
+      selObj=o.id;saveLocal();keepScroll(()=>renderSketch())}return}
   const ld=e.target.closest("[data-ldn]");
   if(ld&&skc){pushUndo(skc);const i=skc.objs.findIndex(x=>x.id===ld.dataset.ldn);
     if(i>0){const[o]=skc.objs.splice(i,1);skc.objs.splice(i-1,0,o);
-      selObj=o.id;saveLocal();renderSketch()}return}
+      selObj=o.id;saveLocal();keepScroll(()=>renderSketch())}return}
   const of_=e.target.closest("[data-ofwd]");
   if(of_&&skc){pushUndo(skc);const i=skc.objs.findIndex(x=>x.id===of_.dataset.ofwd);
-    if(i>-1){skc.objs.push(skc.objs.splice(i,1)[0]);saveLocal();renderSketch()}return}
+    if(i>-1){skc.objs.push(skc.objs.splice(i,1)[0]);saveLocal();keepScroll(()=>renderSketch())}return}
   const oz=e.target.closest("[data-odel]");
   if(oz&&skc){const o=objAt(oz.dataset.odel);if(!o)return;
-    return askConfirm("Delete object","Remove "+SHAPENAME(o.t)+(o.label?" \u201c"+o.label+"\u201d":"")+" from the sketch.","Delete",true,()=>{
-      pushUndo(skc);skc.objs=skc.objs.filter(x=>x.id!==o.id);selObj=null;saveLocal();renderSketch()})}
+    // no confirmation: undo covers a mistake, and a sheet was getting in the way on iPad
+    pushUndo(skc);skc.objs=skc.objs.filter(x=>x.id!==o.id);selObj=null;saveLocal();
+    keepScroll(()=>renderSketch());
+    return toast(SHAPENAME(o.t)+" removed \u2014 Undo to bring it back")}
   const os=e.target.closest("[data-osel]");
-  if(os){selObj=os.dataset.osel;renderSketch();
+  if(os){selObj=os.dataset.osel;showSet=false;keepScroll(()=>renderSketch());
     const el=document.querySelector(".canvaswrap");if(el&&el.scrollIntoView)el.scrollIntoView({block:"center"});return}
   if(e.target.closest("[data-skdel]")&&skc)
     return askConfirm("Delete sketch","Everything measured for "+(skc.caseNo||"this sketch")+" is removed. Export first if you need it.","Delete sketch",true,()=>{
@@ -5010,19 +5438,30 @@ document.addEventListener("click",e=>{
   if(ig){invGroup=ig.dataset.invg;invAll=false;return renderInventory()}
   if(e.target.closest("#invall")){invAll=true;return renderInventory()}
   if(e.target.closest("#modebtn")){
-    const cur=S.mode||"auto";
-    openSheet(`<h3>Screen mode</h3>
-      <p style="margin:0 0 14px;color:var(--ink2);font-size:14.5px;line-height:1.5">
-        Desktop mode puts the navigation down the side and opens things in a pane beside the list.</p>
-      ${[["auto","Match the screen","Phone layout on a phone, desktop layout on a big screen"],
-         ["phone","Handheld","Bottom tabs and one screen at a time, whatever the window size"],
-         ["desktop","Desktop","Side navigation and split panes, even in a small window"]]
+    const cur=S.mode||"auto", th=S.theme||"auto";
+    openSheet(`<h3>Display</h3>
+      <div class="sect" style="margin:0 2px 8px">Appearance</div>
+      ${[["auto","Match the device","Follows your iPad or phone setting"],
+         ["light","Always light","Best in daylight and for reading a scene"],
+         ["dark","Always dark","Easier at night and in a dim van"]]
+        .map(([k,t,dd])=>`<button class="modeopt${th===k?" on":""}" data-theme="${k}">
+          <span class="mt">${t}</span><span class="md">${dd}</span>
+          ${th===k?`<span class="mk">&#10003;</span>`:""}</button>`).join("")}
+      <div class="sect" style="margin:18px 2px 8px">Layout</div>
+      <p style="margin:0 0 12px;color:var(--ink2);font-size:14px;line-height:1.5">
+        Desktop layout puts navigation down the side and opens things beside the list.</p>
+      ${[["auto","Match the screen","Phone layout on a phone, desktop on a big screen"],
+         ["phone","Handheld","Bottom tabs and one screen at a time"],
+         ["desktop","Desktop","Side navigation and split panes"]]
         .map(([k,t,dd])=>`<button class="modeopt${cur===k?" on":""}" data-mode="${k}">
           <span class="mt">${t}</span><span class="md">${dd}</span>
           ${cur===k?`<span class="mk">&#10003;</span>`:""}</button>`).join("")}
-      <button class="btn sec" id="modex" style="max-width:none;margin-top:12px">Close</button>`);
+      <button class="btn sec" id="modex" style="max-width:none;margin-top:14px">Close</button>`);
     $("#modex").onclick=closeSheet;
     return}
+  const th=e.target.closest("[data-theme]");
+  if(th){S.theme=th.dataset.theme;save();applyTheme();closeSheet();
+    return toast(S.theme==="auto"?"Matching the device":S.theme==="dark"?"Dark":"Light")}
   const mo=e.target.closest("[data-mode]");
   if(mo){S.mode=mo.dataset.mode;save();applyMode();closeSheet();fitHeader();render();
     return toast(S.mode==="auto"?"Matching the screen":S.mode==="phone"?"Handheld layout":"Desktop layout")}
@@ -5227,6 +5666,7 @@ document.addEventListener("keydown",e=>{
   if(e.key==="ArrowDown")return nudge(0,step);
   if(e.key==="Delete"||e.key==="Backspace"){
     const sk=S.sketches.find(x=>x.id===curSketch); if(!sk)return;
+    if(layerLocked(sk,o)){toast("Layer is locked");e.preventDefault();return}
     sk.objs=sk.objs.filter(x=>x.id!==o.id);selObj=null;saveLocal();renderSketch();
     e.preventDefault();return}
   if(e.key==="d"||e.key==="D"){
@@ -5243,8 +5683,14 @@ document.addEventListener("visibilitychange",()=>{
 });
 window.addEventListener("orientationchange",()=>setTimeout(fitHeader,200));
 
-const DETAILS=["itemdetail","compdetail","fill","bay"];
+const DETAILS=["itemdetail","compdetail","bay"];
 const mq=q=>!!(window.matchMedia&&window.matchMedia(q).matches);
+function applyTheme(){
+  const t=S.theme||"auto";
+  const r=document.documentElement;
+  r.classList.toggle("theme-dark",t==="dark");
+  r.classList.toggle("theme-light",t==="light");
+}
 function applyMode(){
   const m=S.mode||"auto";
   const w1 = m==="desktop" || (m!=="phone" && mq("(min-width:820px)"));
@@ -5289,7 +5735,7 @@ function render(){
   }
   renderView(view);
 }
-applyMode();render();fitHeader();
+applyTheme();applyMode();render();fitHeader();
 if(typeof requestAnimationFrame==='function')requestAnimationFrame(fitHeader);
 claimStorage();
 if(ghOn())ghPull(true).then(()=>renderSyncPill());
