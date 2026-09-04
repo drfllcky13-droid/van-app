@@ -23,10 +23,10 @@ the problem, not the behaviour.
 Runs from a local file or GitHub Pages. Lives at https://drfllcky13-droid.github.io/van-app/
 (repository `drfllcky13-droid/van-app`, Pages source: branch `main`, root; a push to `main` is live
 within about a minute). `install.html` beside it is the printable install sheet. Works offline. No server. Served over http it registers
-`sw.js` (network first, cache fallback) and can be added to the home screen; the Data view says how.
+`sw.js` (network first, cache fallback) and can be added to the home screen; Settings › This device says how.
 
 **Test data:** `van-backup-2026-09-04.json` — 72 items, 62 compartments, 41 items placed across
-unit 1. Load it through the app's own restore (Settings → Data and backup), not by assigning to
+unit 1. Load it through the app's own restore (Settings › Restore or import), not by assigning to
 `S`, which is a `const`.
 
 ---
@@ -60,7 +60,7 @@ back buttons call `navBack(fallback)`. Tab clicks go through `go(v)`, which clea
 
 **Sync.** Optional GitHub push of a JSON payload. **Sketches, filled forms and photographs are
 deliberately excluded** from both sync and backup — that is case material and it stays on the
-device. Keep that. The only way case material leaves the device is a **case package** (Data view,
+device. Keep that. The only way case material leaves the device is a **case package** (Settings › Case packages,
 or Scene › Save a case package): one JSON file with incidents, forms, sketches and photographs,
 shared to Files. The same view restores one. A sketch nags after six hours of changes with no
 package.
@@ -96,7 +96,7 @@ package.
 - **Scenes, Guide, Storage and Items** open with the same header line and four status tiles
   (`scenesHead`, `guideHead`, `storageHead`, `itemsHead`, built on `tabHead` and `tabTiles`).
   Tiles reuse existing handlers; the Guide tiles and chips set `guideFilter`, which filters the
-  grouped list. Data keeps its folded layout. Never hardcode colour — those classes read `--kc`, which carries the object's ink
+  grouped list. Settings keeps its menu-and-sections layout. Never hardcode colour — those classes read `--kc`, which carries the object's ink
   and the light/dark theme. Fractions of `w`/`hh` only, never fixed numbers, or resizing warps.
 - **Linear symbols** (fence, road, baseline, tiretrack, stairs) compute repeat count from a
   fixed pitch so stretching adds detail rather than scaling it. Keep that behaviour.
@@ -142,7 +142,7 @@ package.
    on this.
 11. **`objSVG` is a guard** around `objSVGRaw`. A throwing symbol draws a red placeholder instead
    of blanking the sketch, and `repairSketch` runs at the top of `renderSketch`.
-12. **Uncaught errors are logged** to `S.errors` (last twenty, shown on the Data view) with a
+12. **Uncaught errors are logged** to `S.errors` (last twenty, shown under Settings › Recent errors) with a
    toast. Do not let that become a reason to leave errors in.
 13. **Canvas modes** are plain globals: `PLACE`, `polyDraw`, `measPick`, `layerMove`, `inkDraw`,
    `multi`. Each has a bar above the canvas and Escape clears it. The pointer hooks check them in
@@ -152,10 +152,13 @@ package.
    holds regulated stock that has not been counted today.
 15. **Deep links.** `#c=CODE`, `#i=ID`, `#s=ID`, `#inc=ID` open a compartment, item, sketch or
    incident on load and on `hashchange`, then clear the hash. QR labels encode them with the
-   address under Data › Labels. The in-app scanner needs `BarcodeDetector`; without it the sheet
+   address under Settings › Labels. The in-app scanner needs `BarcodeDetector`; without it the sheet
    says to use the camera app.
-16. **The data view folds itself** after render (`foldData`). Sections are keyed by heading text,
-   so renaming a heading resets its open state.
+16. **The settings page is a menu.** `renderData` draws `settingsMenu()` when `SET_SEC` is null and
+   `settingsSection(SET_SEC)` otherwise; `openSettings(sec)` lands on a section from anywhere
+   (Home uses `data-gosec`). Control ids (`#ghconnect`, `#dlj`, `#wipe`, `#whoin`…) are unchanged
+   and their delegated handlers still apply; a handler that calls `renderData()` keeps the section
+   open. `foldData` in ext-van.js is no longer called.
 8. **Two stylesheets, still.** Measurement lines and area fills have classes in both the app
    `<style>` and the PDF export string. Add to both or the print loses them.
 
@@ -236,7 +239,7 @@ Round two, built the same day for speed on the iPad and for durability:
 Round three, for a glitch-free feel:
 
 - **Only what changed redraws**, so no flicker and no lost scroll. **Every uncaught error** shows a
-  toast and is listed under Data. **Installable** with a service worker for guaranteed offline.
+  toast and is listed under Settings. **Installable** with a service worker for guaranteed offline.
 - **Freehand ink** with the Pencil, palm rejection once a Pencil is seen. **Camera** straight from
   a photo point. **Live distances** while a measured object moves; the record follows the drop.
 - **Select several** by tapping or dragging a box, then move, recolour, duplicate or delete.
@@ -254,7 +257,7 @@ Round four, the van side:
 - **Reorder** has Ordered and Received states, and the sent list leaves out what is on order.
 - **Reagents** carry lot, received and opened. **Regulated stock** is counted before a sweep mark.
 - **QR labels** for compartments and items open the app at the right place; an in-app scanner
-  where the browser has one. **Initials and an activity log** on the Data view.
+  where the browser has one. **Initials and an activity log** under Settings.
 
 Still not built, in priority order:
 

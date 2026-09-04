@@ -1,5 +1,12 @@
 # FSU change log
 
+## 2026.09.04.13
+Settings is a button at the top of Home and the last entry in the side navigation. The old Data
+view is now a settings menu: grouped rows that each show their state (initials set, sync connected
+and when it last synced, last backup, storage kept or clearable, errors recorded) and open on their
+own page with a way back. The Display, Form templates, Report wording and Help entries moved here
+from the bottom of Home. The bottom tab bar fills its width.
+
 ## 2026.09.04.12
 Hosted at https://drfllcky13-droid.github.io/van-app/ straight from the `main` branch. An install
 sheet, `install.html`, carries the address as a QR code, the home-screen steps for iPad, Android and

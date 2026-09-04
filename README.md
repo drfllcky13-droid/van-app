@@ -20,7 +20,7 @@ device to the van data. Print it and pin it in the van.
 2. Add it to the home screen: Safari → Share → Add to Home Screen; Chrome → menu → Install app or
    Add to Home screen; desktop Chrome or Edge → the install icon at the right of the address bar.
 3. Open it from its icon once while online. From then on it works without a connection.
-4. To share the van list with the other devices, open **Data** in the app. Owner and repository are
+4. To share the van list with the other devices, open **Settings** (top of Home), then **Automatic saving**. Owner and repository are
    already filled in (`drfllcky13-droid` / `van-data`). Paste the unit's access token, set the
    token's expiry date, tap **Connect**. The list pulls straight away and every change after that
    saves itself a couple of seconds later. This is done once per device.
@@ -34,7 +34,7 @@ GitHub → Settings → Developer settings → Personal access tokens → Fine-g
 Repository access: **only `van-data`**. Permissions: **Contents: Read and write**, nothing else.
 Expiration: the longest offered. Copy the token once, hand it to the devices, and enter the expiry
 date in the app so it warns before the token lapses. When it lapses, generate a new one and paste it
-on each device under Data.
+on each device under Settings › Automatic saving.
 
 The token is stored in the browser on each device only. It is left out of backup files.
 

@@ -7,7 +7,7 @@
 function whoIs(cb){
   if(S.who)return cb(S.who);
   openSheet(`<h3>Your initials</h3>
-    <p class="hint" style="margin:0 0 12px">Recorded against sweeps, counts, verifications and exports, so a question later has an answer. Change them under Data.</p>
+    <p class="hint" style="margin:0 0 12px">Recorded against sweeps, counts, verifications and exports, so a question later has an answer. Change them under Settings.</p>
     <label class="fld"><span>Initials</span><input type="text" id="whoask" autocapitalize="characters" maxlength="6" placeholder="DA"></label>
     <button class="btn" id="whook" style="max-width:none;margin:0">Continue</button>
     <button class="btn sec" id="whox" style="max-width:none">Cancel</button>`);
@@ -259,7 +259,7 @@ function renderLabels(){
     <div class="filters">${["all"].concat(bays).map(b=>`<button data-labelbay="${b}" class="${sel===b?"sel":""}">${b==="all"?"All":esc(BAYNAME[b]||"Bay "+b)}</button>`).join("")}</div>
     <p class="hint" style="margin:0 0 12px">${appUrl()
       ?"Scan one with the camera app and this app opens at that "+(kind==="comps"?"compartment":"item")+". Print on plain paper or label stock; three across."
-      :"No web address is set under Data › Labels, so these codes only work with the in-app scanner."}</p></div>
+      :"No web address is set under Settings › Labels, so these codes only work with the in-app scanner."}</p></div>
     <div class="labelgrid" id="labelgrid">${list.map(x=>labelHTML(kind,x)).join("")||`<p class="hint">Nothing to label yet.</p>`}</div>`;
   qrLib().then(()=>{ $$("#labelgrid .qr[data-qr]").forEach(el=>{
       try{ const q=qrcode(0,"M"); q.addData(el.dataset.qr); q.make(); el.innerHTML=q.createSvgTag(3,0) }catch(e){ el.textContent="QR" } }) })

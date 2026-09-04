@@ -20,7 +20,7 @@ function logErr(msg){
   try{ S.errors=(S.errors||[]).slice(-19);
     S.errors.push({t:new Date().toISOString(),m:String(msg).slice(0,300),v:typeof view==="string"?view:""});
     saveLocal() }catch(_){}
-  try{ toast("Something went wrong and that last action may not have taken. It is noted under Data.") }catch(_){}
+  try{ toast("Something went wrong and that last action may not have taken. It is noted under Settings.") }catch(_){}
 }
 window.addEventListener("error",e=>logErr((e.message||"Error")+" at "+String(e.filename||"").split("/").pop()+":"+(e.lineno||0)));
 window.addEventListener("unhandledrejection",e=>logErr("Promise: "+((e.reason&&e.reason.message)||e.reason)));

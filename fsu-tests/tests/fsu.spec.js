@@ -170,7 +170,7 @@ test.describe("van flows",()=>{
     await page.click("#v-active .seg [data-scenestab=closed]");
     await expect(page.locator("#v-active .empty strong")).toHaveText("No finished scenes yet");
     const tabs=await page.evaluate(()=>[...document.querySelectorAll("#side button span.lbl")].map(b=>b.textContent.trim()));
-    expect(tabs).toEqual(["Home","Scenes","Guide","Storage","Items"]);
+    expect(tabs).toEqual(["Home","Scenes","Guide","Storage","Items","Settings"]);
   });
 
   test("guided sweep marks and advances",async({page})=>{
@@ -229,13 +229,17 @@ test.describe("van flows",()=>{
     await page.waitForFunction(c=>view==="compdetail"&&curComp===c,code);
   });
 
-  test("data view folds and keeps its state",async({page})=>{
-    await page.evaluate(()=>go("data"));
-    const before=await page.evaluate(()=>[...document.querySelectorAll("#v-data .dfold")].map(d=>d.hidden));
-    expect(before.some(h=>h)).toBe(true); expect(before.some(h=>!h)).toBe(true);
-    await page.click('[data-dfold="Reset"]');
-    const open=await page.evaluate(()=>document.querySelector('[data-dfold="Reset"]').nextElementSibling.hidden);
-    expect(open).toBe(false);
+  test("settings is a menu of sections with a way back",async({page})=>{
+    await page.click("#v-home #gear");
+    await page.waitForFunction(()=>view==="data");
+    const rows=await page.locator("#v-data [data-setsec]").count(); expect(rows).toBeGreaterThan(8);
+    await page.click('#v-data [data-setsec="reset"]');
+    await expect(page.locator("#v-data #wipe")).toBeVisible();
+    await page.click("#v-data [data-setback]");
+    await expect(page.locator('#v-data [data-setsec="who"]')).toBeVisible();
+    await page.evaluate(()=>{S.who="";save();go("home")});
+    await page.click('#v-home [data-gosec="who"]');
+    await expect(page.locator("#v-data #whoin")).toBeVisible();
   });
 
   test("count mode walks the compartments",async({page})=>{

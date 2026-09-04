@@ -197,6 +197,7 @@ const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const n=v=>+v||0;
 const catName=c=>(CATS.find(x=>x[0]===c)||["","Uncategorised"])[1];
+ICONS.gear="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z";
 const ic=(k,cls)=>`<svg class="${cls||"g"}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="${ICONS[k]}"/></svg>`;
 let toastT; const toast=m=>{const t=$("#toast");t.textContent=m;t.classList.add("on");
   clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove("on"),1900)};
@@ -505,7 +506,8 @@ function buildTabs(){
     +TABS.map(([v,l])=>{
     const c=count[v];
     return `<button data-v="${v}" aria-current="${v===view}">${ic(v)}<span class="lbl">${esc(l)}</span>
-      ${c?`<span class="pill${c.hot?" hot":""}">${c.n}</span>`:""}</button>`}).join("");
+      ${c?`<span class="pill${c.hot?" hot":""}">${c.n}</span>`:""}</button>`}).join("")
+    +`<button class="sset" data-v="data" aria-current="${view==="data"}">${ic("gear")}<span class="lbl">Settings</span></button>`;
 }
 const scrollMem={};
 function rememberScroll(){ if(view)scrollMem[view]=window.scrollY||0 }
@@ -625,8 +627,9 @@ function renderHome(){
   const sweepTxt=!cs.length?"No compartments yet":unchk===0&&lastMark?"Sweep finished "+lastMark
     :lastMark?"Sweep in progress, "+unchk+" left":"No sweep yet";
   const head=`<div class="hhead"><b>${esc(S.vanName||"Forensic Services Unit")}</b><span>${esc(dateTxt)}</span>
-    <span>${S.who?"Signed in as "+esc(S.who):`<button class="lnkbtn" data-go="data">Set your initials</button>`}</span>
-    <span>${esc(sweepTxt)}</span><span>${lastVeh()?"Vehicle checked "+esc(lastVeh().t.slice(0,10)):"No vehicle check yet"}</span></div>`;
+    <span>${S.who?"Signed in as "+esc(S.who):`<button class="lnkbtn" data-gosec="who">Set your initials</button>`}</span>
+    <span>${esc(sweepTxt)}</span><span>${lastVeh()?"Vehicle checked "+esc(lastVeh().t.slice(0,10)):"No vehicle check yet"}</span>
+    <button class="hgear" id="gear">${ic("gear","gi")}<span>Settings</span></button></div>`;
 
   // how is the van
   const tile=(cls,k,v,s,attr)=>`<button class="stile ${cls}" ${attr}><span class="sk">${k}</span><span class="sv">${v}</span><span class="ss">${s}</span></button>`;
@@ -653,7 +656,7 @@ function renderHome(){
 
   // what needs doing
   const rows=[];
-  if(ghOn()&&td!=null&&td<=30)rows.push(["warn",td<0?"Automatic saving has stopped, the token has expired":"Sync token expires in "+td+" day"+(td===1?"":"s"),'data-go="data"',""]);
+  if(ghOn()&&td!=null&&td<=30)rows.push(["warn",td<0?"Automatic saving has stopped, the token has expired":"Sync token expires in "+td+" day"+(td===1?"":"s"),'data-gosec="sync"',""]);
   if(pend.length)rows.push(["warn",pend.length+" scene document"+(pend.length===1?"":"s")+" not exported yet",'data-go="active"',""]);
   if(changed)rows.push(["",changed+" sketch"+(changed===1?"":"es")+" changed since the last case package",'data-caseall="1"',"Save"]);
   if(bad.length)rows.push(["","Review "+bad.length+" low or out",'data-list="low"',""]);
@@ -687,16 +690,10 @@ function renderHome(){
       `<button data-item="${i.id}"><span class="nm">${esc(i.name)}</span><span class="lc">${esc(i.loc||"\u2014")}</span></button>`).join("")}</div>
       <p class="hint" style="margin:8px 0 0">Star an item and it appears here.</p></div></div>`:"";
 
-  const settings=`<div class="panel"><div class="ph2">Settings</div><div class="pb narrowlist">
-    <button class="nrow" id="gear"><span class="nn">Data and backup</span><span class="nm2"><span class="lc">Storage, backups, sync, case packages</span></span></button>
-    <button class="nrow" data-help="1"><span class="nn">Help and about</span><span class="nm2"><span class="lc">How to use it, what changed, version ${esc(APP_VERSION)}</span></span></button>
-    <button class="nrow" data-go="templates"><span class="nn">Form templates</span><span class="nm2"><span class="lc">The blank forms you carry</span></span></button>
-    <button class="nrow" id="modebtn"><span class="nn">Display</span><span class="nm2"><span class="lc">${(S.theme||"auto")==="auto"?"Matching the device":(S.theme==="dark"?"Dark":"Light")} \u00b7 ${(S.mode||"auto")==="auto"?"Layout matches the screen":(S.mode==="phone"?"Handheld layout":"Desktop layout")}</span></span></button>
-  </div></div>`;
-
   $("#v-home").innerHTML=head+tiles+`<div class="dash2">
     <div class="col">${scenes}${todo}${handoverPanel()}${attention}</div>
-    <div class="col">${unitPanel()}${quick}${settings}</div></div>`;
+    <div class="col">${unitPanel()}${quick}</div></div>`;
+  $$("#v-home [data-gosec]").forEach(b=>b.onclick=()=>openSettings(b.dataset.gosec));
 }
 /* ---------- compartments ---------- */
 function autoPlace(side){
@@ -4138,48 +4135,68 @@ function incidentSheet(inc){
     inc.caseNo=$("#inc").value.trim(); inc.offence=$("#ino").value.trim();
     inc.addr=$("#ina").value.trim(); save(); closeSheet(); renderIncident(); toast("Saved")};
 }
-function renderData(){
-  $("#title").textContent="Data";
+/* the settings page: a menu of sections, each opening on its own */
+let SET_SEC=null;
+function openSettings(sec){SET_SEC=sec||null;go("data");window.scrollTo&&window.scrollTo(0,0)}
+const SET_TITLES={who:"Initials and name",sync:"Automatic saving",backup:"Back up",restore:"Restore or import",
+  case:"Case material",labels:"Labels and web address",device:"This device",activity:"Activity",errors:"Recent errors",reset:"Reset"};
+function settingsMenu(){
+  const L=live();
+  const stale=!S.lastBackup||(Date.now()-Date.parse(S.lastBackup))/86400000>7;
+  const td=tokenDays();
+  const row=(attr,name,sum,cls)=>`<button class="srow${cls?" "+cls:""}" ${attr}><span class="sn">${name}</span><span class="ss">${sum}</span><span class="chev">&#8250;</span></button>`;
+  const sec=(k,name,sum,cls)=>row(`data-setsec="${k}"`,name,sum,cls);
+  const group=(t,rows)=>rows.length?`<div class="panel sgroup"><div class="ph2">${t}</div><div class="pb narrowlist">${rows.join("")}</div></div>`:"";
+  const whoTxt=S.who?esc(S.who)+(S.whoName?" \u00b7 "+esc(S.whoName):""):"Not set";
+  let syncTxt="Not connected", syncCls="";
+  if(ghOn()){
+    if(conflict){syncTxt="Conflict, needs a decision";syncCls="bad"}
+    else if(td!=null&&td<0){syncTxt="Token expired, saving stopped";syncCls="bad"}
+    else if(td!=null&&td<=30){syncTxt="Token expires in "+td+" day"+(td===1?"":"s");syncCls="warn"}
+    else syncTxt=S.gh.last?"Connected \u00b7 synced "+esc(S.gh.last.slice(11,16)):"Connected";
+  }
+  const bkTxt=S.lastBackup?"Last "+esc(S.lastBackup):"Never";
+  const themeTxt=(S.theme||"auto")==="auto"?"Matching the device":(S.theme==="dark"?"Dark":"Light");
+  const modeTxt=(S.mode||"auto")==="auto"?"layout matches the screen":(S.mode==="phone"?"handheld layout":"desktop layout");
+  const stor=!storageState.asked?"Checking\u2026":storageState.persisted?"Storage kept by the browser":"Storage can be cleared";
+  const inst=isStandalone()?"installed":"not on the home screen";
+  const nErr=(S.errors||[]).length, nAct=(S.activity||[]).length;
+  const lastAct=nAct?S.activity[nAct-1]:null;
+  return `<div class="hhead"><b>${esc(S.vanName||"Forensic Services Unit")}</b><span>Version ${esc(APP_VERSION)}</span>
+      <span>${S.who?"Signed in as "+esc(S.who):"No initials set"}</span></div>
+    <div class="setgroups">
+    ${group("You",[sec("who","Initials and name",whoTxt,S.who?"":"warn")])}
+    ${group("Van data",[
+      sec("sync","Automatic saving",syncTxt,syncCls),
+      sec("backup","Back up",bkTxt,L.length&&stale?"warn":""),
+      sec("restore","Restore or import","From a backup file or CSV")])}
+    ${group("Scenes",[
+      sec("case","Case packages",S.lastCase?"Last "+esc(S.lastCase.slice(0,10)):"None saved yet"),
+      row('data-go="templates"',"Form templates",S.forms.length+" blank form"+(S.forms.length===1?"":"s")),
+      row('data-snipmanage="1"',"Report wording","Standard sentences for reports")])}
+    ${group("This device",[
+      row('id="modebtn"',"Display",themeTxt+", "+modeTxt),
+      sec("labels","Labels and web address",appUrl()?esc(appUrl().replace(/^https?:\/\//,"")):"No web address"),
+      sec("device","Storage and install",stor+", "+inst,storageState.asked&&!storageState.persisted?"warn":""),
+      sec("activity","Activity",lastAct?"Last "+esc(String(lastAct.t||"").slice(0,10)):"Nothing yet"),
+      sec("errors","Recent errors",nErr?nErr+" recorded":"None",nErr?"warn":"")])}
+    ${group("About",[row('data-help="1"',"Help and change log","How to use it, what changed")])}
+    ${group("Reset",[
+      S.demo?sec("reset","Clear sample data","Sample compartments and items"):"",
+      sec("reset","Erase everything","Every item and compartment","danger")].filter(Boolean))}
+    </div>`;
+}
+function settingsSection(k){
   const L=live(), gp=S.items.filter(i=>i.status==="Not carried");
   const stale=!S.lastBackup||(Date.now()-Date.parse(S.lastBackup))/86400000>7;
-  $("#v-data").innerHTML=`
-    <div class="kv" style="margin-bottom:6px">
-      <div><dt>Items</dt><dd>${L.length}</dd></div>
-      <div><dt>Compartments</dt><dd>${S.comps.length}</dd></div>
-      <div><dt>Gaps logged</dt><dd>${gp.length}</dd></div>
-      <div><dt>Forms</dt><dd>${S.forms.length}</dd></div>
-      <div><dt>Last export</dt><dd>${esc(S.lastBackup||"never")}</dd></div>
-    </div>
-    <div class="idsect">Saved on this device</div>
-    <div class="kv" style="margin-bottom:9px">
-      <div><dt>Storage</dt><dd>${!storageState.asked?"checking\u2026"
-        :storageState.persisted?`<span class="okpill">Kept by the browser</span>`
-        :`<span class="warnpill">Can be cleared</span>`}</dd></div>
-      ${storageState.quota?`<div><dt>Space used</dt><dd>${(storageState.used/1048576).toFixed(1)} MB of ${(storageState.quota/1048576).toFixed(0)} MB</dd></div>`:""}
-    </div>
-    <p class="hint" style="margin:0 0 12px">${storageState.persisted
-      ? "Everything you enter is written to this device as you go. The browser has agreed not to clear it to reclaim space, so it survives restarts and long gaps between shifts."
-      : "Everything you enter is written to this device as you go. The browser has not yet marked it as protected storage, which normally happens after the app has been used a few times. Keep a backup until it does."}
-      Losing or wiping the phone still loses the data, so keep a backup somewhere else.</p>
-    ${L.length&&stale?`<div class="unver">No backup taken in over a week. Download one and put it somewhere off this phone.</div>`:""}
-    <div class="idsect">Back up</div>
-    <div class="stackb">
-      <button class="btn" id="dlj" style="max-width:none;margin:0">Back up now</button>
-      <button class="btn sec" id="dlc" style="max-width:none">Download CSV</button>
-      <button class="btn sec" id="cpc" style="max-width:none">Copy CSV</button></div>
-    <p class="hint">Back up now opens the share sheet. Choose Drive and save it into
-      <b>FSU &rsaquo; Van app backups</b>. The file holds everything — items, instructions,
-      compartments, wall layout and your form templates. The CSV is items only, for a spreadsheet.</p>
-
-    <div class="idsect">Case material</div>
-    <p class="hint" style="margin:0 0 10px">Sketches, filled forms and photographs are never in the backup above
-      or in the automatic saving — they stay on this device. A case package is the only copy that leaves it.
-      Save one when a scene is done and put it in the case file.${S.lastCase?" Last package: "+esc(S.lastCase.slice(0,16).replace("T"," "))+".":""}</p>
-    <div class="stackb">
-      <button class="btn" id="casepkg" style="max-width:none;margin:0">Save a case package of everything</button>
-      <label class="btn sec" style="max-width:none;display:block;text-align:center">Restore a case package<input type="file" id="casein" accept=".json,application/json" style="display:none"></label></div>
-    <div class="idsect">Automatic saving</div>
-    ${ghOn()?`
+  let body="";
+  if(k==="who")body=`
+    <label class="fld"><span>Initials, recorded against sweeps, counts, verifications and exports</span>
+      <input type="text" id="whoin" value="${esc(S.who||"")}" placeholder="DA" autocapitalize="characters" maxlength="6"></label>
+    <label class="fld"><span>Name and rank, as it should appear on reports</span>
+      <input type="text" id="whoname" value="${esc(S.whoName||"")}" placeholder="Det. D. Alvarez #417"></label>
+    <p class="hint">Saved as you type. Each device carries its own initials, so set them on every device you use.</p>`;
+  else if(k==="sync")body=ghOn()?`
       <div class="kv" style="margin-bottom:9px">
         <div><dt>Repository</dt><dd>${esc(S.gh.owner)}/${esc(S.gh.repo)}</dd></div>
         <div><dt>File</dt><dd>${esc(S.gh.path||"data.json")}</dd></div>
@@ -4195,7 +4212,7 @@ function renderData(){
         <button class="btn sec" id="ghoff" style="max-width:none">Disconnect this device</button></div>
       <p class="hint">Changes save automatically a couple of seconds after you make them, and every version is kept.</p>`
     :`<p class="hint" style="margin-top:0">Connect once and every change saves itself to a private
-      repo a couple of seconds after you make it — no sign-in after the first time, and any other
+      repo a couple of seconds after you make it \u2014 no sign-in after the first time, and any other
       device you connect reads the same list. The token you paste is what keeps it automatic, so it
       is worth setting the longest expiry GitHub offers.</p>
       <div class="two"><label class="fld"><span>Owner</span><input type="text" id="gho" value="${esc(S.ghOwner||"drfllcky13-droid")}" autocapitalize="off"></label>
@@ -4204,49 +4221,83 @@ function renderData(){
       <label class="fld"><span>Access token</span><input type="password" id="ght" placeholder="github_pat_..." autocapitalize="off"></label>
       <label class="fld"><span>Token expires on</span><input type="date" id="ghx" value="${esc(S.ghExp||"")}"></label>
       <button class="btn" id="ghconnect" style="max-width:none;margin:0">Connect</button>
-      <p class="hint">The token is stored in this browser only. It never leaves the device except to talk to GitHub, and it is left out of backup files.</p>`}
-    <div class="idsect">Restore or import</div>
-    <textarea id="imp" rows="4" placeholder="Paste a backup file or CSV here"></textarea>
+      <p class="hint">The token is stored in this browser only. It never leaves the device except to talk to GitHub, and it is left out of backup files.</p>`;
+  else if(k==="backup")body=`
+    <div class="kv" style="margin-bottom:12px">
+      <div><dt>Items</dt><dd>${L.length}</dd></div>
+      <div><dt>Compartments</dt><dd>${S.comps.length}</dd></div>
+      <div><dt>Gaps logged</dt><dd>${gp.length}</dd></div>
+      <div><dt>Forms</dt><dd>${S.forms.length}</dd></div>
+      <div><dt>Last backup</dt><dd>${esc(S.lastBackup||"never")}</dd></div>
+    </div>
+    ${L.length&&stale?`<div class="unver" style="margin-bottom:12px">No backup taken in over a week. Download one and put it somewhere off this device.</div>`:""}
+    <div class="stackb">
+      <button class="btn" id="dlj" style="max-width:none;margin:0">Back up now</button>
+      <button class="btn sec" id="dlc" style="max-width:none">Download CSV</button>
+      <button class="btn sec" id="cpc" style="max-width:none">Copy CSV</button></div>
+    <p class="hint">Back up now opens the share sheet. Choose Drive and save it into
+      <b>FSU &rsaquo; Van app backups</b>. The file holds everything \u2014 items, instructions,
+      compartments, wall layout and your form templates. The CSV is items only, for a spreadsheet.
+      Losing or wiping the device still loses the data, so keep a backup somewhere else.</p>`;
+  else if(k==="restore")body=`
+    <p class="hint" style="margin:0 0 10px">Paste a backup file to bring a van back, or a CSV of items. Add rows keeps what is here; Replace everything starts over from the file.</p>
+    <textarea id="imp" rows="5" placeholder="Paste a backup file or CSV here"></textarea>
     <div class="stackb" style="margin-top:10px">
       <button class="btn sec" id="impadd" style="max-width:none;margin:0">Add rows</button>
-      <button class="btn sec" id="imprep" style="max-width:none">Replace everything</button></div>
-    <div class="idsect">Who is using this</div>
-    <label class="fld"><span>Initials, recorded against sweeps, counts, verifications and exports</span>
-      <input type="text" id="whoin" value="${esc(S.who||"")}" placeholder="DA" autocapitalize="characters" maxlength="6"></label>
-    <label class="fld"><span>Name and rank, as it should appear on reports</span>
-      <input type="text" id="whoname" value="${esc(S.whoName||"")}" placeholder="Det. D. Alvarez #417"></label>
-    <div class="idsect">Report wording</div>
-    <p class="hint" style="margin:0 0 10px">Standard sentences for the narrative report, inserted with one tap on any long field.</p>
-    <button class="btn sec" data-snipmanage="1" style="max-width:none;margin:0 0 12px">Edit the wording</button>
-    <div class="idsect">Activity</div>
-    ${activityHTML()}
-    <div class="idsect">Labels</div>
+      <button class="btn sec" id="imprep" style="max-width:none">Replace everything</button></div>`;
+  else if(k==="case")body=`
+    <p class="hint" style="margin:0 0 12px">Sketches, filled forms and photographs are never in a backup
+      or in the automatic saving \u2014 they stay on this device. A case package is the only copy that leaves it.
+      Save one when a scene is done and put it in the case file.${S.lastCase?" Last package: "+esc(S.lastCase.slice(0,16).replace("T"," "))+".":""}</p>
+    <div class="stackb">
+      <button class="btn" id="casepkg" style="max-width:none;margin:0">Save a case package of everything</button>
+      <label class="btn sec" style="max-width:none;display:block;text-align:center">Restore a case package<input type="file" id="casein" accept=".json,application/json" style="display:none"></label></div>`;
+  else if(k==="labels")body=`
     <label class="fld"><span>Web address of this app, printed into the QR codes</span>
-      <input type="text" id="appurl" value="${esc(String(S.appUrl||""))}" placeholder="${esc(appUrl()||"https://…/index.html")}" autocapitalize="off"></label>
-    <p class="hint" style="margin:0 0 10px">Scanning a label with the camera app opens this app at that compartment or item. Leave it blank to use the page's own address, or when the app runs from a file, in which case only the in-app scanner reads the labels.</p>
-    <button class="btn sec" data-go="labels" style="max-width:none;margin:0 0 12px">Printable labels</button>
-    <div class="idsect">About</div>
-    <div class="kv" style="margin-bottom:9px"><div><dt>Version</dt><dd>${esc(APP_VERSION)}</dd></div><div><dt>Latest change</dt><dd>${esc(CHANGELOG[0][0])}</dd></div></div>
-    <button class="btn sec" data-help="1" style="max-width:none;margin:0 0 12px">Help and change log</button>
+      <input type="text" id="appurl" value="${esc(String(S.appUrl||""))}" placeholder="${esc(appUrl()||"https://\u2026/index.html")}" autocapitalize="off"></label>
+    <p class="hint" style="margin:0 0 12px">Scanning a label with the camera app opens this app at that compartment or item. Leave it blank to use the page's own address, or when the app runs from a file, in which case only the in-app scanner reads the labels.</p>
+    <button class="btn sec" data-go="labels" style="max-width:none;margin:0">Printable labels</button>`;
+  else if(k==="device")body=`
+    <div class="kv" style="margin-bottom:9px">
+      <div><dt>Storage</dt><dd>${!storageState.asked?"checking\u2026"
+        :storageState.persisted?`<span class="okpill">Kept by the browser</span>`
+        :`<span class="warnpill">Can be cleared</span>`}</dd></div>
+      ${storageState.quota?`<div><dt>Space used</dt><dd>${(storageState.used/1048576).toFixed(1)} MB of ${(storageState.quota/1048576).toFixed(0)} MB</dd></div>`:""}
+      <div><dt>Home screen</dt><dd>${isStandalone()?`<span class="okpill">Installed</span>`:"Not installed"}</dd></div>
+      <div><dt>Version</dt><dd>${esc(APP_VERSION)}</dd></div>
+    </div>
+    <p class="hint" style="margin:0 0 12px">${storageState.persisted
+      ? "Everything you enter is written to this device as you go. The browser has agreed not to clear it to reclaim space, so it survives restarts and long gaps between shifts."
+      : "Everything you enter is written to this device as you go. The browser has not yet marked it as protected storage, which normally happens after the app has been used a few times. Keep a backup until it does."}</p>
     <div class="idsect">On the home screen</div>
-    <p class="hint" style="margin:0 0 12px">${isStandalone()
+    <p class="hint" style="margin:0">${isStandalone()
       ? "Installed. It opens full screen from its own icon and works without a connection."
       : /iPad|iPhone/.test(navigator.userAgent)
         ? "In Safari, tap Share, then Add to Home Screen. It then opens full screen from its own icon and works without a connection."
-        : "Use the browser's Install option, or add it to the home screen, so it opens full screen and works without a connection."}</p>
-    <div class="idsect">Recent errors</div>
-    ${(S.errors||[]).length?`<div style="margin-bottom:8px">${S.errors.slice().reverse().map(x=>`<div class="errrow"><span class="et">${esc(String(x.t||"").slice(0,16).replace("T"," "))}${x.v?" · "+esc(x.v):""}</span><span class="em">${esc(x.m)}</span></div>`).join("")}</div>
-      <button class="btn sec" id="errclear" style="max-width:none;margin:0 0 12px">Clear the list</button>`
-      :`<p class="hint">None recorded. Anything that goes wrong in the app is listed here for whoever maintains it.</p>`}
-    <div class="idsect">Reset</div>
+        : "Use the browser's Install option, or add it to the home screen, so it opens full screen and works without a connection."}</p>`;
+  else if(k==="activity")body=activityHTML();
+  else if(k==="errors")body=(S.errors||[]).length?`<div style="margin-bottom:8px">${S.errors.slice().reverse().map(x=>`<div class="errrow"><span class="et">${esc(String(x.t||"").slice(0,16).replace("T"," "))}${x.v?" \u00b7 "+esc(x.v):""}</span><span class="em">${esc(x.m)}</span></div>`).join("")}</div>
+      <button class="btn sec" id="errclear" style="max-width:none;margin:0">Clear the list</button>`
+      :`<p class="hint" style="margin:0">None recorded. Anything that goes wrong in the app is listed here for whoever maintains it.</p>`;
+  else if(k==="reset")body=`
+    <p class="hint" style="margin:0 0 12px">Both ask before they do anything. Take a backup first if you might want any of it back.</p>
     <div class="stackb">
       ${S.demo?`<button class="btn sec" id="cleardemo2" style="max-width:none;margin:0">Clear sample data</button>`:""}
       <button class="btn sec" id="wipe" style="max-width:none;color:var(--red);border-color:var(--red)">Erase everything</button></div>`;
+  return `<button class="back" data-setback="1">&#8249; Settings</button>
+    <div class="setsec"><div class="idsect" style="margin-top:0">${esc(SET_TITLES[k]||"Settings")}</div>${body}</div>`;
+}
+function renderData(){
+  $("#title").textContent="Settings";
+  if(conflict)SET_SEC="sync";
+  if(SET_SEC&&!SET_TITLES[SET_SEC])SET_SEC=null;
+  $("#v-data").innerHTML=SET_SEC?settingsSection(SET_SEC):settingsMenu();
   renderSyncPill();
+  $$("#v-data [data-setsec]").forEach(b=>b.onclick=()=>{SET_SEC=b.dataset.setsec;window.scrollTo&&window.scrollTo(0,0);renderData()});
+  const bk=$("#v-data [data-setback]"); if(bk)bk.onclick=()=>{SET_SEC=null;renderData()};
   const cp=$("#casepkg"); if(cp)cp.onclick=()=>exportCasePackage("all","fsu-all");
   const ci=$("#casein"); if(ci)ci.onchange=()=>{const f=ci.files&&ci.files[0]; if(!f)return; f.text().then(importCasePackage)};
   const ec=$("#errclear"); if(ec)ec.onclick=()=>{S.errors=[];saveLocal();renderData();toast("Cleared")};
-  foldData();
 }
 
 /* ---------- filtered lists from the strip ---------- */
@@ -4882,10 +4933,7 @@ document.addEventListener("click",e=>{
   const mo=e.target.closest("[data-mode]");
   if(mo){S.mode=mo.dataset.mode;save();applyMode();closeSheet();fitHeader();render();
     return toast(S.mode==="auto"?"Matching the screen":S.mode==="phone"?"Handheld layout":"Desktop layout")}
-  if(e.target.closest("#gear")){view="data";
-    $$(".view").forEach(v=>v.classList.toggle("on",v.id==="v-data"));
-    $("#q").value="";query="";$("#qclear").style.display="none";
-    window.scrollTo&&window.scrollTo(0,0);return render()}
+  if(e.target.closest("#gear")){openSettings(null);return}
   if(e.target.closest("#dlj")){ backupOut(); return }
   if(e.target.closest("#dlc")){
     return toast(download(toCSV(),"van-inventory-"+today()+".csv","text/csv")

@@ -1160,6 +1160,24 @@ label.btn{cursor:pointer}
 .hhead{display:flex;flex-wrap:wrap;gap:4px 16px;align-items:baseline;margin:0 2px 12px;color:var(--ink2);font-size:13.5px}
 .hhead b{color:var(--ink);font-size:17px;font-weight:700;letter-spacing:-.01em}
 .hhead .lnkbtn{padding:0;font-size:13.5px}
+.hhead .hgear{margin-left:auto;align-self:center;display:inline-flex;align-items:center;gap:6px;background:var(--card);
+  border:.5px solid var(--line);border-radius:10px;padding:7px 12px;color:var(--blue);font:inherit;font-size:13.5px;font-weight:600}
+.hhead .hgear .gi{width:17px;height:17px;display:block}
+@media (hover:hover) and (pointer:fine){.hhead .hgear:hover{border-color:var(--blue)}}
+.setgroups{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;max-width:720px}
+@media (min-width:1000px){.setgroups{grid-template-columns:1fr 1fr;max-width:none}}
+.srow{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:none;border:0;
+  border-bottom:.5px solid var(--line2);padding:13px 16px;color:var(--ink);font:inherit;min-height:52px;cursor:pointer}
+.srow:last-child{border-bottom:0}
+.srow:active{background:var(--card2)}
+.srow .sn{font-size:15px;font-weight:600;flex:0 0 auto;letter-spacing:-.01em}
+.srow .ss{margin-left:auto;font-size:13px;color:var(--ink2);text-align:right;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.srow.warn .ss{color:var(--amber);font-weight:600}
+.srow.bad .ss{color:var(--red);font-weight:600}
+.srow.danger .sn{color:var(--red)}
+.setsec{max-width:640px}
+.setsec textarea{width:100%;box-sizing:border-box}
+body.wide .side .sset{margin-top:auto}
 .stiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:14px}
 @media (max-width:640px){.stiles{grid-template-columns:1fr 1fr}}
 .stile{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;border-radius:14px;padding:12px 14px;

@@ -1,8 +1,9 @@
 /* ---------- reports and upkeep, round ten ----------
    report wording, auto-fill, photograph log, Word export, vector PDF, version stamp,
    vehicle check, part numbers, shift handover, service and calibration, help and change log. */
-const APP_VERSION="2026.09.04.12";
+const APP_VERSION="2026.09.04.13";
 const CHANGELOG=[
+  ["2026-09-04","Settings is a button at the top of Home and at the foot of the side navigation. The settings page is a menu of sections, each showing its state at a glance and opening on its own: initials, automatic saving, back up, restore, case packages, templates, wording, display, labels, storage, activity, errors, reset."],
   ["2026-09-04","Hosted on GitHub Pages with a printable install sheet. Bundle order is report, entry log, evidence log, sketch, photo log; each photograph sits on its photo log row; measurement tables no longer split across pages."],
   ["2026-09-04","Reports: wording snippets, auto-fill from the incident, a photograph log fed by photo points, Word export, a vector option for the sketch PDF. Upkeep: vehicle check, part numbers on the reorder list, shift handover, service and calibration on durable kit. Help page, change log and a version stamp on every export."],
   ["2026-09-04","Home, Scenes, Guide, Storage and Items redesigned around status tiles. Bay wall with true proportions, zoom and tap previews. Illustrated van. Ten symbols redrawn in plan view."],
@@ -29,7 +30,7 @@ function snippets(){
 function snippetSheet(fieldId){
   const list=snippets();
   openSheet(`<h3>Insert wording</h3>
-    <p class="hint" style="margin:0 0 12px">Tap a line to insert it at the cursor. Square brackets mark what to fill in. The library is under Data › Report wording.</p>
+    <p class="hint" style="margin:0 0 12px">Tap a line to insert it at the cursor. Square brackets mark what to fill in. The library is under Settings › Report wording.</p>
     <div class="rows">${list.map(s=>`<button class="row" data-snipins="${s.id}"><span><span class="code">${esc(s.name)}</span><span class="desc">${esc(s.text.slice(0,96))}${s.text.length>96?"…":""}</span></span><span class="rt"><span class="chev">&#8250;</span></span></button>`).join("")}</div>
     <button class="btn sec" id="snx" style="max-width:none;margin:12px 0 0">Cancel</button>`);
   $("#snx").onclick=closeSheet;
@@ -256,13 +257,13 @@ function helpSheet(){
     <p class="hint" style="margin:0 0 6px">Version ${esc(APP_VERSION)}. Two pages, top to bottom.</p>
     ${sec("At a scene","Start an incident on Home. It keeps the entry log, evidence log, photo log, sketch and report together. Quick sketch is for when there is no case number yet; it offers to become an incident once there is.")}
     ${sec("The sketch","Setup › Set the scale, or draw walls by dimension and the scale sets itself. Place two reference points. Draw › Marker mode numbers evidence as you tap; markers write themselves into the evidence log, photo points into the photo log. Place by measurement moves an item to where two tape distances meet. Pinch to zoom. Freehand with the Pencil for the rough sketch.")}
-    ${sec("Forms and the report","Fields fill from the incident. On any narrative field, Insert wording drops in the unit's standard sentences; edit them under Data › Report wording. Export gives a PDF, and Export Word gives a document a supervisor can edit.")}
+    ${sec("Forms and the report","Fields fill from the incident. On any narrative field, Insert wording drops in the unit's standard sentences; edit them under Settings › Report wording. Export gives a PDF, and Export Word gives a document a supervisor can edit.")}
     ${sec("Finishing","Export gives one PDF; the incident bundle gives everything in one packet. A case package carries the sketches, forms and photographs to the case file. Case material never leaves the device any other way.")}
     ${sec("The sweep","Storage › a bay, or Home › Sweep. Work through the compartments in order: log what is there, tap Swept, next. Regulated stock is counted before a compartment can be marked. Scan a label to jump to a compartment.")}
     ${sec("Items and reorder","Items shows every item with a count you can tap. Count the stock walks every compartment. Anything short goes on the reorder list; mark it Ordered when it has gone in and Received when it arrives, and send the list with part numbers to whoever orders.")}
     ${sec("The van itself","Vehicle check on Storage or Home: pass or fail each line, weekly. Failures go to Next actions. Write a handover when the van changes hands; the note appears on Home for the next officer.")}
     ${sec("The guide","Every item can carry its instructions and a source. Verify walks the unverified ones with a date and your initials. Durable kit carries a service date and a certificate link.")}
-    ${sec("Data","Back up the van data, connect automatic saving, set your initials, print labels, and read the activity log and any errors. Add the app to the home screen so it opens full screen and works without a connection.")}
+    ${sec("Settings","Back up the van data, connect automatic saving, set your initials, print labels, and read the activity log and any errors. Add the app to the home screen so it opens full screen and works without a connection.")}
     <div class="idsect">Change log</div>
     ${CHANGELOG.map(([d,t])=>`<p class="helpp"><b>${esc(d)}</b> ${esc(t)}</p>`).join("")}
     <button class="btn sec" id="hlx" style="max-width:none;margin:12px 0 0">Close</button>`);
