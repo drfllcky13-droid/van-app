@@ -928,7 +928,9 @@ body.xwide .dash .wall{margin-bottom:0}
 }
 
 /* ---------- dashboard, laid out to spec ---------- */
-body.xwide .dashfixed{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));
+body.xwide .panel.launch{display:flex;align-items:center}
+.lh{font-size:26px;font-weight:800;letter-spacing:-.02em;margin:0 0 6px}
+.dashfixed{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));
   grid-auto-rows:40px;gap:14px;align-items:stretch}
 body.xwide .cellwrap{min-width:0;display:flex;flex-direction:column}
 body.xwide .cellwrap>*{flex:1;margin:0;min-height:0}
@@ -1708,13 +1710,31 @@ function renderHome(){
               <span class="nm">${esc(i.name)}</span><span class="lc">${esc(i.loc||"—")}</span></button>`).join("")+`</div>`
             :`<p class="hint" style="margin:0">Star an item and it appears here.</p>`}</div></div>`,
     };
+    // the desktop home is a launching point too: incidents first, van status beside it
+    const open_=openIncidents();
+    B.launch=`<div class="panel launch"><div class="pb">
+        <h2 class="lh">Start a new incident</h2>
+        <p class="hint" style="margin:0 0 16px">Everything for one scene stays together \u2014 entry
+          log, evidence log, sketch and report \u2014 and bundles into one report at the end.</p>
+        <div class="two" style="margin:0 0 4px">
+          <button class="btn" data-newinc="1" style="max-width:none;margin:0">Start an incident</button>
+          <button class="btn sec" data-quicksketch="1" style="max-width:none;margin:0">Quick sketch</button>
+        </div></div></div>`;
+    B.openinc=`<div class="panel"><div class="ph2">Open incidents${open_.length?" \u2014 "+open_.length:""}</div>
+      <div class="pb narrowlist">${open_.length?open_.map(inc=>{
+        const plan=(inc.plan||[]).map(k=>planState(inc,k)).filter(Boolean);
+        const done=plan.filter(p=>p.state==="done").length;
+        return `<button class="nrow" data-inc="${inc.id}">
+          <span class="nn">${esc(inc.caseNo||"No case number")}</span>
+          <span class="nm2"><span class="lc">${esc(inc.offence||"\u2014")}</span>
+          <span class="badge b-${done===plan.length?"good":"attn"}">${done} of ${plan.length}</span></span></button>`}).join("")
+        :`<p class="hint" style="margin:0">Nothing open. Start one above.</p>`}</div></div>`;
     const place=(k,col,row,w,hh)=>`<div class="cellwrap" style="grid-column:${col}/span ${w};grid-row:${row}/span ${hh}">${B[k]||""}</div>`;
     $("#v-home").innerHTML=`<div class="dashfixed">`+[
-      ["units",1,1,6,16],["actions",7,1,3,4],["gaps",10,1,3,4],
-      ["expiring",7,5,3,4],["attention",10,5,3,4],
-      ["low",7,9,6,4],
-      ["sweep",7,13,6,4],
-      ["quick",1,17,12,6]
+      ["launch",1,1,7,5],["openinc",8,1,5,9],
+      ["actions",1,6,7,4],
+      ["low",1,10,4,4],["expiring",5,10,4,4],["sweep",9,10,4,4],
+      ["attention",1,14,12,5]
     ].map(a=>place(...a)).join("")+`</div>`;
     return;
   }
@@ -1733,8 +1753,8 @@ function renderHome(){
             <span class="chev">&#8250;</span></span></button>`}).join("")+`</div>`
       : "")
     + `<div class="two" style="margin:${open_.length?"12px":"0"} 0 4px">
-        <button class="btn" id="newinc" style="max-width:none;margin:0">Start an incident</button>
-        <button class="btn sec" id="quicksketch" style="max-width:none;margin:0">Quick sketch</button>
+        <button class="btn" data-newinc="1" style="max-width:none;margin:0">Start an incident</button>
+        <button class="btn sec" data-quicksketch="1" style="max-width:none;margin:0">Quick sketch</button>
       </div>`;
   $("#v-home").innerHTML=`${tokenWarn}${pendWarn}${scene}
     <div class="sect">The van</div>
@@ -4720,7 +4740,7 @@ function renderActive(){
     $("#v-active").innerHTML=`<div class="empty"><strong>Nothing open</strong>
       <p>Start an incident and the app keeps its forms and sketches together,
          then bundles them into one report.</p>
-      <button class="btn" id="newinc">Start an incident</button></div>`;
+      <button class="btn" data-newinc="1">Start an incident</button></div>`;
     return;
   }
   const tile=inc=>{
@@ -4740,7 +4760,7 @@ function renderActive(){
       </div></button>`;
   };
   $("#v-active").innerHTML=
-    `<div class="editbar"><button id="newinc" class="on">Start an incident</button></div>`
+    `<div class="editbar"><button data-newinc="1" class="on">Start an incident</button></div>`
     +(incs.length?`<div class="sect">Incidents</div>`+incs.map(tile).join(""):"")
     +(loose.length?`<div class="sect">Not filed to an incident</div>`
         +`<p class="hint" style="margin:0 0 12px">Open these and attach them, or export and clear them.</p>`
@@ -5161,11 +5181,11 @@ document.addEventListener("click",e=>{
     syncErr="";retries=0;renderSyncBar();toast("Retrying");ghPush(false);return}
   const sc=e.target.closest("[data-scene]");
   if(sc){sceneTab=sc.dataset.scene;return renderForms()}
-  if(e.target.closest("#quicksketch")){
+  if(e.target.closest("[data-quicksketch]")){
     const sk=newSketch(); curSketch=sk.id; selObj=null; curLayer=null;
     prevView=null; view="sketch"; window.scrollTo&&window.scrollTo(0,0);
     render(); return toast("Sketch started \u2014 add scene details when you have them")}
-  if(e.target.closest("#newinc")){
+  if(e.target.closest("[data-newinc]")){
     const inc=newIncident(); curInc=inc.id; view="incident"; render(); incidentSheet(inc); return}
   const ib=e.target.closest("[data-inc]");
   if(ib){curInc=ib.dataset.inc; view="incident"; render(); return}
@@ -5284,30 +5304,6 @@ document.addEventListener("click",e=>{
       if(o&&(o.lay||layersOf(skc)[0].id)===L.id)selObj=null}
       saveLocal(); keepScroll(()=>renderSketch()); toast(L.name+(L.locked?" locked":" unlocked"))}
     return}
-  const lnm=e.target.closest("[data-layname]");
-  if(lnm&&skc){const L=layersOf(skc).find(x=>x.id===lnm.dataset.layname); if(!L)return;
-    openSheet(`<h3>Layer name</h3>
-      <label class="fld"><span>Name</span><input type="text" id="lnv" value="${esc(L.name)}"></label>
-      <button class="btn" id="lnsave" style="max-width:none;margin:0">Save</button>
-      <button class="btn sec" id="lnx" style="max-width:none">Cancel</button>`);
-    $("#lnx").onclick=closeSheet;
-    $("#lnsave").onclick=()=>{L.name=$("#lnv").value.trim()||L.name;saveLocal();closeSheet();renderSketch()};
-    return}
-  const ldl=e.target.closest("[data-laydel]");
-  if(ldl&&skc){const ls=layersOf(skc), L=ls.find(x=>x.id===ldl.dataset.laydel);
-    if(!L||ls.length<2)return;
-    const inIt=(skc.objs||[]).filter(o=>(o.lay||ls[0].id)===L.id).length;
-    const other=ls.find(x=>x.id!==L.id);
-    return askConfirm("Delete layer",
-      inIt? inIt+" object"+(inIt===1?"":"s")+" will move to "+other.name+"."
-          : "This layer is empty.",
-      "Delete layer",true,()=>{
-        pushUndo(skc);
-        (skc.objs||[]).forEach(o=>{if((o.lay||ls[0].id)===L.id)o.lay=other.id});
-        skc.layers=ls.filter(x=>x.id!==L.id);
-        if(curLayer===L.id)curLayer=other.id;
-        saveLocal(); renderSketch(); toast("Layer deleted")})}
-  if(e.target.closest("#osx")){showSet=false;keepScroll(()=>renderSketch());return}
   const omr=e.target.closest("[data-omore]");
   if(omr){
     const sk2=S.sketches.find(x=>x.id===curSketch); const o=objAt(omr.dataset.omore);
