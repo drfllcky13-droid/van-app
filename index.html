@@ -1033,6 +1033,7 @@ body.xwide .cellwrap .sweepcard .ch{display:none}
 <section class="view" id="v-active"></section>
 <section class="view" id="v-incident"></section>
 <section class="view" id="v-reorder"></section>
+<section class="view" id="v-templates"></section>
 <section class="view" id="v-bay"></section>
 <section class="view" id="v-compdetail"></section>
 <section class="view" id="v-itemdetail"></section>
@@ -1130,12 +1131,13 @@ function seedForms(){
   STOCKFORMS.forEach(t=>{
     const have=S.forms.find(f=>f.name===t.name);
     if(have){
+      have.stock=true;                       // shipped with the app, so it cannot be deleted
       // refresh the built-in definition unless it has been edited by hand
       if(!have.edited){have.fields=parseFields(t.fields);have.desc=t.desc;have.rev=t.rev}
       return;
     }
     S.forms.push({id:newId(),name:t.name,cat:t.cat,rev:t.rev,desc:t.desc,
-      verified:"",fields:parseFields(t.fields)});
+      stock:true,verified:"",fields:parseFields(t.fields)});
   });
 }
 const WARN=`<svg viewBox="0 0 24 24" class="bico" fill="currentColor"><path d="M12 2.6 1.3 21h21.4L12 2.6Zm0 5.9c.6 0 1 .4 1 1v5a1 1 0 1 1-2 0v-5c0-.6.4-1 1-1Zm0 10.7a1.2 1.2 0 1 1 0-2.4 1.2 1.2 0 0 1 0 2.4Z"/></svg>`;
@@ -1173,7 +1175,7 @@ const VANSIDES=["Driver side","Passenger side","Rear doors","Cab"];
 const VANWALLS={"Driver side":{"cols":144,"rows":60},"Passenger side":{"cols":144,"rows":60},"Rear doors":{"cols":72,"rows":60},"Cab":{"cols":48,"rows":40}};
 const VANCOMPS=[["2A","Evidence bags",0,84,2,14,22],["2B","Shoe / tire impression",0,84,24,14,22],["2C1","Evidence envelopes",0,98,2,20,5],["2C2","Cash envelopes",0,98,7,20,5],["2C3","Drug envelopes",0,98,12,20,5],["2C4","Misc. forms",0,98,17,20,5],["2C5","SEM kits",0,98,22,20,5],["2C6","",0,98,27,20,5],["2C7","",0,98,32,20,5],["2C8","",0,98,37,20,5],["2C9","",0,98,42,20,5],["2D1","",0,118,2,8,5],["2D2","",0,118,7,8,5],["2D3","",0,118,12,8,5],["2D4","Batteries",0,118,17,8,5],["2D5","",0,118,22,8,5],["2D6","",0,118,27,8,5],["2D7","",0,118,32,8,5],["2D8","",0,118,37,8,5],["2D9","",0,118,42,8,5],["2E1","Electrostatic bags",0,126,2,14,5],["2E2","",0,126,7,14,5],["2E3","",0,126,12,14,5],["2E4","Rain suits",0,126,17,14,5],["2E5","",0,126,22,14,5],["2E6","",0,126,27,14,5],["2E7","Hand preservation bags",0,126,32,14,5],["2E8","",0,126,37,14,5],["2E9","",0,126,42,14,5],["1A1","Upper storage",0,4,0,8,10],["1A2","Upper storage",0,12,0,8,10],["1A3","Upper storage",0,20,0,8,10],["1A4","Upper storage",0,28,0,8,10],["1A5","Upper storage",0,36,0,8,10],["1A6","Upper storage",0,44,0,8,10],["1B1","Bin, upper row",0,4,12,6,7],["1B2","Bin, upper row",0,10,12,6,7],["1B3","Bin, upper row",0,16,12,6,7],["1B4","Bin, upper row",0,22,12,6,7],["1B5","Bin, upper row",0,28,12,6,7],["1B6","Bin, upper row",0,34,12,6,7],["1B7","Bin, upper row, double width",0,40,12,12,7],["1C1","Bin, lower row",0,4,22,6,7],["1C2","Bin, lower row",0,10,22,6,7],["1C3","Bin, lower row",0,16,22,6,7],["1C4","Bin, lower row",0,22,22,6,7],["1C5","Bin, lower row",0,28,22,6,7],["1C6","Bin, lower row",0,34,22,6,7],["1C7","Bin, lower row, double width",0,40,22,12,7],["1D1","Evidence tubes / laser trajectory",0,4,31,8,11],["1D2","Evidence tubes / laser trajectory",0,12,31,8,11],["1D3","Evidence tubes / laser trajectory",0,20,31,8,11],["1D4","Evidence tubes / laser trajectory",0,28,31,8,11],["1D5","Evidence tubes / laser trajectory",0,36,31,8,11],["1D6","Evidence tubes / laser trajectory",0,44,31,8,11],["1E","Metal detector",0,4,44,48,11],["3A","Lighting / extension cords",1,40,6,16,48],["3B","Top shelf",1,56,0,88,10],["3C","Shelf 2",1,56,10,88,12],["3D","Shelf 3",1,56,22,88,12],["3E","Shelf 4",1,56,34,88,11],["3F","Bottom shelf",1,56,45,88,11]];
 // a field tool first: the scene comes before the van
-const TABS=[["home","Home"],["active","Active"],["forms","Scene"],
+const TABS=[["home","Home"],["active","Active"],["forms","Scenes"],
 ["guide","Guide"],["inventory","Inventory"],["compartments","Compartments"]];
 const FORMCATS=["Scene documentation","Evidence and custody","Photography","Reports and statements","Admin"];
 const ICONS={home:"M3 11l9-8 9 8v9a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1z",
@@ -1782,6 +1784,10 @@ function renderHome(){
         <span><span class="code">Data and backup</span>
         <span class="desc">Storage, backups, sync</span></span>
         <span class="rt"><span class="chev">&#8250;</span></span></button>
+      <button class="row" data-go="templates">
+        <span><span class="code">Form templates</span>
+        <span class="desc">The blank forms you carry, and when each was last checked</span></span>
+        <span class="rt"><span class="chev">&#8250;</span></span></button>
       <button class="row" id="modebtn">
         <span><span class="code">Display</span>
         <span class="desc">${(S.theme||"auto")==="auto"?"Matching the device":(S.theme==="dark"?"Dark":"Light")}
@@ -2315,6 +2321,11 @@ function parseFields(t){
   });
 }
 if(S.formsSeeded!==STOCKV){S.formsSeeded=STOCKV;seedForms();store.set(S)}
+// installs from before built-ins were marked still need flagging
+if(!S.stockMarked){S.stockMarked=1;
+  const names=new Set(STOCKFORMS.map(t=>t.name));
+  (S.forms||[]).forEach(f=>{if(names.has(f.name))f.stock=true});
+  store.set(S)}
 if(!S.guideSeeded){S.guideSeeded=1;seedGuideItems();store.set(S)}
 if(!S.srcTidy){S.srcTidy=1;
   (S.items||[]).forEach(i=>{if(/WPD\.pptx/.test(i.source||""))i.source=GUIDESRC});
@@ -2610,11 +2621,9 @@ const SHAPES={
  road:      (w,hh)=>{const dash=Math.max(10,hh*.30), gap=dash*.8;
  return `<path d="M0 ${hh*.06} L${w} ${hh*.06} M0 ${hh*.94} L${w} ${hh*.94}" class="k-stroke"/>
  <path d="M0 ${hh*.5} L${w} ${hh*.5}" class="k-stroke" stroke-dasharray="${dash.toFixed(1)} ${gap.toFixed(1)}"/>`},
- marker:    (w,hh)=>`<path d="M${w*.62} ${hh*.10} L${w*.92} ${hh*.90} L${w*.74} ${hh*.90} Z"
-   class="k-stroke" fill="var(--bg,#fff)"/>
- <path d="M${w*.40} ${hh*.08} L${w*.74} ${hh*.90} L${w*.08} ${hh*.90} Z"
-   class="k-stroke" fill="var(--bg,#fff)"/>
- <path d="M${w*.04} ${hh*.90} L${w*.96} ${hh*.90}" class="k-stroke"/>`,
+ marker:    (w,hh)=>`<path d="M${w*.06} ${hh*.04} L${w*.94} ${hh*.04} L${w*.94} ${hh*.70}
+   L${w*.56} ${hh*.70} L${w*.50} ${hh*.96} L${w*.44} ${hh*.70} L${w*.06} ${hh*.70} Z"
+   class="k-stroke" fill="var(--bg,#fff)"/>`,
  pistol:    (w,hh)=>`${(()=>{const a=WPN.pistol;return `<g transform="scale(${w/a[3]},${hh/a[4]}) translate(${-a[1]},${-a[2]})" class="k-fill" fill-rule="evenodd">${a[0]}</g>`})()}`,
  revolver:  (w,hh)=>`${(()=>{const a=WPN.revolver;return `<g transform="scale(${w/a[3]},${hh/a[4]}) translate(${-a[1]},${-a[2]})" class="k-fill" fill-rule="evenodd">${a[0]}</g>`})()}`,
  rifle:(w,hh)=>`${(()=>{const a=WPN.rifle;return `<g transform="scale(${w/a[3]},${hh/a[4]}) translate(${-a[1]},${-a[2]})" class="k-fill" fill-rule="evenodd">${a[0]}</g>`})()}`,
@@ -2716,7 +2725,7 @@ const DEFSIZE={blooddrop:[70,60],bloodimpact:[90,80],bloodcastoff:[150,60],blood
  table:[160,106],roundtable:[130,101],chair:[60,61],sofa:[170,79],bed:[150,136],desk:[160,105],cabinet:[140,72],
  counter:[190,115],fridge:[78,69],stove:[92,76],sink:[92,64],toilet:[66,58],bath:[160,76],tv:[110,51],
  car:[180,83],truck:[190,82],motorcycle:[130,60],bicycle:[120,59],tree:[92,85],bush:[80,55],fence:[220,30],
- pole:[30,30],dumpster:[118,101],road:[420,110],marker:[58,64],body:[96,168],
+ pole:[30,30],dumpster:[118,101],road:[420,110],marker:[48,56],body:[96,168],
  north:[52,53],legend:[300,190],dim:[200,0],arrow:[130,40],line:[160,20],rect:[150,110],circle:[110,110],text:[160,34],
  pistol:[96,59],revolver:[96,63],rifle:[150,53],magazine:[30,58],cartridge:[16,50],casing:[18,46],
  bullethole:[44,50],knife:[84,14],machete:[104,71],hammer:[44,67],bat:[84,78],crowbar:[92,59],
@@ -2743,54 +2752,50 @@ const SHAPENAME=t=>{for(const[,list]of PALETTE){const f=list.find(x=>x[0]===t);i
 function formStale(f){ if(!f.verified)return false;
   const t=Date.parse(f.verified); return !isNaN(t)&&(Date.now()-t)/86400000>365 }
 function renderForms(){
-  $("#title").textContent="Forms";
+  $("#title").textContent="Scenes";
+  const past=closedIncidents();
+  if(!past.length){
+    $("#v-forms").innerHTML=`<div class="empty"><strong>No finished scenes yet</strong>
+      <p>Close an incident when you have finished with it and it moves here, with everything
+         that belongs to it.</p>
+      <button class="btn" data-go="active">Go to Active</button></div>`;
+    return;
+  }
+  const year=x=>String(x.closed||"").slice(0,4)||"Undated";
+  const g={}; past.forEach(i=>{(g[year(i)]=g[year(i)]||[]).push(i)});
+  $("#v-forms").innerHTML=
+    `<p class="hint" style="margin:0 0 14px">${past.length} finished scene${past.length===1?"":"s"}.
+      Open one to read its documents, export the bundle again, or reopen it.</p>`
+    +Object.keys(g).sort().reverse().map(y=>
+      `<div class="sect">${esc(y)}</div><div class="rows">`+g[y].map(inc=>{
+        const docs=docsFor(inc.id);
+        const sk=docs.filter(d=>d.kind==="sketch").length;
+        return `<button class="row" data-inc="${inc.id}">
+          <span><span class="code">${esc(inc.caseNo||"No case number")}</span>
+          <span class="desc">${esc(inc.offence||"No offence recorded")}${
+            inc.addr?" \u00b7 "+esc(inc.addr):""}<br>${docs.length} document${docs.length===1?"":"s"}${
+            sk?" \u00b7 "+sk+" sketch"+(sk===1?"":"es"):""} \u00b7 closed ${esc(String(inc.closed).slice(0,10))}</span></span>
+          <span class="rt"><span class="chev">&#8250;</span></span></button>`}).join("")+`</div>`).join("");
+}
+// blank form templates are configuration, so they live in settings
+function renderTemplates(){
+  $("#title").textContent="Form templates";
   const fs=S.forms.slice().sort((a,b)=>a.name.localeCompare(b.name));
-  const open=S.fills.slice().sort((a,b)=>b.started.localeCompare(a.started));
-  const openBlock=open.length?`<div class="sect">In progress on this phone — ${open.length}</div><div class="rows">`
-    +open.map(r=>`<button class="row" data-fill="${r.id}">
-      <span><span class="code">${esc(r.formName)}</span>
-      <span class="desc">${esc(fillTitle(r))}</span></span>
-      <span class="rt"><span class="badge b-attn">Not exported</span><span class="chev">&#8250;</span></span></button>`).join("")
-    +`</div><p class="hint">These live only in this app. Export each one to
-      <b>FSU &rsaquo; Van app backups</b> or straight into the case file, then clear it.</p>`:"";
-  const seg=`<div class="seg"><button class="${sceneTab==="forms"?"on":""}" data-scene="forms">Forms</button>
-    <button class="${sceneTab==="sketch"?"on":""}" data-scene="sketch">Sketches</button></div>`;
-  if(sceneTab==="sketch")return renderSketchList(seg);
-  const bar=seg+`<div class="editbar"><button id="addform">Add a form</button></div>`;
-  if(!fs.length){$("#v-forms").innerHTML=bar+`<div class="empty"><strong>No forms yet</strong>
-    <p>Keep the blank forms you actually use here — what each is for, its revision, and a link to the current version.</p></div>`+openBlock;return}
   const stale=fs.filter(formStale).length, unver=fs.filter(f=>!f.verified).length;
   const g={}; fs.forEach(f=>{const k=f.cat||"Admin";(g[k]=g[k]||[]).push(f)});
   const badge=f=>formStale(f)?`<span class="badge b-action">Re-check</span>`
     :!f.verified?`<span class="badge b-attn">Unverified</span>`
     :`<span class="badge b-good">${esc(f.verified.slice(0,7))}</span>`;
-  $("#v-forms").innerHTML=bar
-    +((stale||unver)?`<div class="unver">${stale?stale+(stale===1?" form hasn't":" forms haven't")+" been checked in over a year. ":""}${unver?unver+(unver===1?" has":" have")+" no checked date. ":""}Forms get revised — confirm you're carrying the current one.</div>`:"")
-    +FORMCATS.filter(k=>g[k]).concat(Object.keys(g).filter(k=>!FORMCATS.includes(k))).map(k=>
+  $("#v-templates").innerHTML=`<button class="back" data-go="home">&#8249; Home</button>
+    <div class="editbar"><button id="addform">Add a form</button></div>
+    ${(stale||unver)?`<div class="unver">${stale?stale+(stale===1?" form hasn't":" forms haven't")+" been checked in over a year. ":""}${unver?unver+(unver===1?" has":" have")+" no checked date. ":""}Forms get revised — confirm you're carrying the current one.</div>`:""}
+    `+FORMCATS.filter(k=>g[k]).concat(Object.keys(g).filter(k=>!FORMCATS.includes(k))).map(k=>
       `<div class="sect">${esc(k)}</div><div class="rows">`+g[k].map(f=>
         `<button class="row" data-form="${f.id}">
-          <span><span class="code">${esc(f.name)}</span>
-          <span class="desc">${esc(f.rev?"Rev "+f.rev+" · ":"")}${esc(f.desc||"No description")}</span></span>
-          <span class="rt">${(f.fields||[]).length?`<span class="badge b-req">Fillable</span>`:""}${badge(f)}<span class="chev">&#8250;</span></span></button>`).join("")+`</div>`).join("")
-    +openBlock;
+          <span><span class="code">${esc(f.name)}${f.stock?"":" \u00b7 yours"}</span>
+          <span class="desc">${esc(f.desc||"No description")}${f.rev?" \u00b7 Rev "+esc(f.rev):""}</span></span>
+          <span class="rt">${badge(f)}<span class="chev">&#8250;</span></span></button>`).join("")+`</div>`).join("");
 }
-let curForm=null;
-function renderSketchList(seg){
-  $("#title").textContent="Scene";
-  const sks=S.sketches.slice().sort((a,b)=>(b.when||"").localeCompare(a.when||""));
-  $("#v-forms").innerHTML=seg
-    +`<div class="editbar"><button id="newsketch">Start a sketch</button></div>`
-    +(sks.length?`<div class="rows">`+sks.map(sk=>
-        `<button class="row" data-sk="${sk.id}">
-          <span><span class="code">${esc(sk.caseNo||"Untitled sketch")}</span>
-          <span class="desc">${esc(sk.addr||"No address")} · ${(sk.objs||[]).length} object${(sk.objs||[]).length===1?"":"s"} · ${esc((sk.when||"").slice(0,10))}</span></span>
-          <span class="rt">${!sk.exported&&(sk.objs||[]).length?`<span class="badge b-attn">Not exported</span>`
-            :sk.exported?`<span class="badge b-good">Exported</span>`:""}<span class="chev">&#8250;</span></span></button>`).join("")+`</div>`
-      :`<div class="empty"><strong>No sketches yet</strong>
-        <p>A blank page you drag objects onto — rooms, furniture, vehicles, evidence markers. Label them and they build a legend.</p></div>`)
-    +`<p class="hint">Sketches are not synced or backed up. Export each one when it is finished.</p>`;
-}
-let curForm2=null;
 function formSheet(f){
   const isNew=!f; curForm=f;
   openSheet(`<h3>${isNew?"Add a form":esc(f.name)}</h3>
@@ -2825,12 +2830,17 @@ Persons present | table | Name, Agency, In, Out</pre>
     </div>
     <button class="btn" id="fmsave" style="max-width:none;margin:0">${isNew?"Add form":"Save"}</button>
     ${isNew?"":`<button class="btn sec" id="fmedit" style="max-width:none">Edit details</button>
-      <button class="btn sec" id="fmdel" style="max-width:none;color:var(--red);border-color:var(--red)">Delete form</button>`}
+      ${f.stock
+        ? `<p class="hint" style="margin:10px 0 0">This form came with the app and cannot be
+             deleted. Edit it freely \u2014 your changes are kept.</p>`
+        : `<button class="btn sec" id="fmdel" style="max-width:none;color:var(--red);border-color:var(--red)">Delete form</button>`}`}
     <button class="btn sec" id="fmx" style="max-width:none">Close</button>`);
   if(!isNew){$("#fmsave").style.display="none";
     $("#fmedit").onclick=()=>{$("#formedit").style.display="block";
       $("#fmedit").style.display="none";$("#fmsave").style.display="block"};
-    $("#fmdel").onclick=()=>askConfirm("Delete form","Remove "+f.name+" from the list. The form itself is wherever it lives; only this entry goes.","Delete",true,()=>{
+    const fd=$("#fmdel");
+    if(fd)fd.onclick=()=>askConfirm("Delete form","Remove "+f.name+" from the list. Forms already filled in are unaffected.","Delete",true,()=>{
+      if(f.stock)return toast("That form came with the app");
       S.forms=S.forms.filter(x=>x.id!==f.id);save();renderForms();toast("Deleted")})}
   $("#fmx").onclick=closeSheet;
   $("#fmsave").onclick=()=>{
@@ -2860,6 +2870,8 @@ function newIncident(){
 }
 const incidents=()=>S.incidents||[];
 const openIncidents=()=>incidents().filter(i=>!i.closed);
+const closedIncidents=()=>incidents().filter(i=>i.closed)
+  .sort((a,b)=>String(b.closed).localeCompare(String(a.closed)));
 const incidentOf=id=>incidents().find(x=>x.id===id);
 // everything attached to one incident, whether exported or not
 function docsFor(incId){
@@ -2968,7 +2980,7 @@ function renderFill(){
         ? "Completed \u2014 reopen" : "Mark complete and go back"}</button></div>`:""}
     <div class="actbar" style="grid-template-columns:1fr 1fr">
       <button class="${r.incidentId?"":"primary"}" data-export="${r.id}">Export PDF</button>
-      <button data-discard="${r.id}">Discard</button>
+      <button data-discard="${r.id}" class="danger">Delete form</button>
     </div>
     <p class="hint">This stays in the app until you export it. It is not synced and not in any
       backup, so a lost phone loses it. Export the PDF to Drive or the case file, then clear it.</p>`;
@@ -3443,7 +3455,7 @@ const GLYPH={
  clock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5.3l3.4 2"/></svg>',
  gap:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="4 3"><rect x="3.5" y="3.5" width="17" height="17" rx="3"/></svg>',
  ok:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M8 12.4l2.7 2.7L16 9.5"/></svg>'};
-let curSketch=null, sceneTab="forms", selObj=null, curLayer=null, showSet=false, palCat=0, palQ="", skFull=false, skTools=true;
+let curSketch=null, selObj=null, curLayer=null, showSet=false, palCat=0, palQ="", skFull=false, skTools=true;
 // photographs live in IndexedDB, not localStorage — they would blow its 5 MB ceiling
 const PDB={name:"vanphotos",store:"p",_db:null};
 function photoDB(){
@@ -3620,8 +3632,8 @@ function objSVG(o,sel){
         class="k-lead"/>`:"")
     :"";
   const num=(o.t==="marker"&&String(o.n||"").trim())
-    ?`<text x="${o.w*.40}" y="${o.h*.70}" class="k-num"
-    style="font-size:${Math.max(12,o.h*.40)}px">${esc(o.n)}</text>`:"";
+    ?`<text x="${o.w*.50}" y="${o.h*.53}" class="k-num"
+    style="font-size:${Math.max(12,o.h*.44)}px">${esc(o.n)}</text>`:"";
   // a locked layer is part of the picture: nothing to grab, nothing drawn round it
   const locked=skNow?layerLocked(skNow,o):false;
   const live=sel&&!locked;
@@ -4794,7 +4806,7 @@ function renderActive(){
   if(!incs.length&&!loose.length){
     $("#v-active").innerHTML=`<div class="empty"><strong>Nothing open</strong>
       <p>Start an incident and the app keeps its forms and sketches together,
-         then bundles them into one report.</p>
+         then bundles them into one report. Finished ones move to Scenes.</p>
       <button class="btn" data-newinc="1">Start an incident</button></div>`;
     return;
   }
@@ -4875,7 +4887,8 @@ function renderIncident(){
     <div class="editbar">
       <button data-incbundle="1" class="on">Export bundle</button>
       <button data-incedit="1">Incident details</button>
-      <button data-incclose="1">Close incident</button></div>
+      <button data-incclose="1">${inc.closed?"Reopen":"Close incident"}</button>
+      <button data-incdel="1" class="danger">Delete incident</button></div>
     <div class="sect">Documents</div>
     <div class="rows">${plan.map(row).join("")}</div>
     ${extras.length?`<div class="sect">Also attached</div><div class="rows">`
@@ -5234,8 +5247,6 @@ document.addEventListener("click",e=>{
   if(e.target.closest("#syncnow")){
     if(conflict){view="data";$$(".view").forEach(v=>v.classList.toggle("on",v.id==="v-data"));return render()}
     syncErr="";retries=0;renderSyncBar();toast("Retrying");ghPush(false);return}
-  const sc=e.target.closest("[data-scene]");
-  if(sc){sceneTab=sc.dataset.scene;return renderForms()}
   if(e.target.closest("[data-quicksketch]")){
     const sk=newSketch(); curSketch=sk.id; selObj=null; curLayer=null;
     prevView=null; view="sketch"; window.scrollTo&&window.scrollTo(0,0);
@@ -5249,7 +5260,26 @@ document.addEventListener("click",e=>{
     toast("Building the bundle\u2026"); bundleIncident(inc); return}
   if(e.target.closest("[data-incedit]")){
     const inc=incidentOf(curInc); if(inc)incidentSheet(inc); return}
+  if(e.target.closest("[data-incdel]")){
+    const inc=incidentOf(curInc); if(!inc)return;
+    const docs=docsFor(inc.id);
+    return askConfirm("Delete incident",
+      (docs.length? docs.length+" document"+(docs.length===1?"":"s")+" started for "
+        +(inc.caseNo||"this incident")+" will be deleted with it. "
+        : "")+"Anything already exported to the case file is unaffected.",
+      "Delete everything",true,()=>{
+        (S.sketches||[]).forEach(s=>{ if(s.incidentId===inc.id&&s.bg&&s.bg.imgId)
+          photoDel(s.bg.imgId).catch(()=>{});
+          if(s.incidentId===inc.id)(s.objs||[]).forEach(o=>{
+            if(o.photoId)photoDel(o.photoId).catch(()=>{})}) });
+        S.fills=(S.fills||[]).filter(x=>x.incidentId!==inc.id);
+        S.sketches=(S.sketches||[]).filter(x=>x.incidentId!==inc.id);
+        S.incidents=(S.incidents||[]).filter(x=>x.id!==inc.id);
+        curInc=null; save(); view="active"; window.scrollTo&&window.scrollTo(0,0);
+        render(); toast("Incident deleted")})}
   if(e.target.closest("[data-incclose]")){
+    const incR=incidentOf(curInc);
+    if(incR&&incR.closed){ delete incR.closed; save(); renderIncident(); return toast("Reopened") }
     const inc=incidentOf(curInc); if(!inc)return;
     const left=(inc.plan||[]).map(k=>planState(inc,k)).filter(p=>p&&p.state!=="done").length;
     return askConfirm("Close incident",
@@ -5450,7 +5480,13 @@ document.addEventListener("click",e=>{
     const el=document.querySelector(".canvaswrap");if(el&&el.scrollIntoView)el.scrollIntoView({block:"center"});return}
   if(e.target.closest("[data-skdel]")&&skc)
     return askConfirm("Delete sketch","Everything measured for "+(skc.caseNo||"this sketch")+" is removed. Export first if you need it.","Delete sketch",true,()=>{
-      S.sketches=S.sketches.filter(x=>x.id!==skc.id);saveLocal();sceneTab="sketch";go("forms");toast("Deleted")});
+      if(skc.bg&&skc.bg.imgId)photoDel(skc.bg.imgId).catch(()=>{});
+      (skc.objs||[]).forEach(o=>{if(o.photoId)photoDel(o.photoId).catch(()=>{})});
+      const back=skc.incidentId&&incidentOf(skc.incidentId);
+      S.sketches=S.sketches.filter(x=>x.id!==skc.id);saveLocal();
+      if(back){curInc=skc.incidentId;view="incident";render()}
+      else{go("active")}
+      toast("Sketch deleted")});
   if(e.target.closest("#addform"))return formSheet(null);
   if(e.target.closest("#fmfill")){
     const f=curForm; if(!f)return;
@@ -5480,10 +5516,13 @@ document.addEventListener("click",e=>{
     if(r){toast("Building PDF");exportFill(r)}return}
   const dc=e.target.closest("[data-discard]");
   if(dc){const r=S.fills.find(x=>x.id===dc.dataset.discard);if(!r)return;
-    return askConfirm("Discard this form","Nothing is exported and nothing is kept. This can't be undone.","Discard",true,()=>{
+    return askConfirm("Delete this form","Nothing is exported and nothing is kept. This can't be undone.","Delete",true,()=>{
+      const back=r.incidentId&&incidentOf(r.incidentId);
       S.fills=S.fills.filter(x=>x.id!==r.id);saveLocal();
-      view="forms";$$(".view").forEach(v=>v.classList.toggle("on",v.id==="v-forms"));
-      render();toast("Discarded")})}
+      if(back){curInc=r.incidentId;view="incident"}
+      else{view="forms"}
+      $$(".view").forEach(v=>v.classList.toggle("on",v.id==="v-"+view));
+      render();toast("Form deleted")})}
   const fm=e.target.closest("[data-form]");
   if(fm){const f=S.forms.find(x=>x.id===fm.dataset.form); if(f)formSheet(f); return}
   if(e.target.closest("#bulkopen"))return bulkSheet();
@@ -5761,6 +5800,7 @@ function renderView(v){
   if(v==="active")return renderActive();
   if(v==="incident")return renderIncident();
   if(v==="reorder")return renderReorder();
+  if(v==="templates")return renderTemplates();
   if(v==="bay")return renderBay();
   if(v==="compdetail")return renderCompDetail();
   if(v==="data"){renderData();return fitHeader()}
