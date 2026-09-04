@@ -30,7 +30,7 @@ html.theme-light{color-scheme:light}
   --mono:ui-monospace,"SF Mono",Menlo,monospace;
   --cw:1760px;
   --top:calc(100px + env(safe-area-inset-top));
-  --bot:calc(56px + env(safe-area-inset-bottom));
+  --bot:calc(74px + env(safe-area-inset-bottom));
 }
 /* dark applies automatically, unless the person has chosen otherwise */
 @media (prefers-color-scheme:dark){html:not(.theme-light){
@@ -93,19 +93,23 @@ input,select,textarea{font-size:16px}
 .sbox svg{width:17px;height:17px;color:var(--ink3);flex:0 0 auto}
 .sbox button{background:none;border:0;color:var(--blue);font-size:15px;padding:0 2px}
 
-.tabs{position:fixed;bottom:0;left:0;right:0;z-index:40;background:var(--card);
+.tabs{position:fixed;bottom:0;left:0;right:0;z-index:40;background:var(--bg);
   border-top:.5px solid var(--line);display:grid;grid-template-columns:repeat(6,minmax(0,1fr));
-  padding-bottom:env(safe-area-inset-bottom)}
-.tabs button{background:none;border:0;padding:7px 0 8px;color:var(--ink3);
+  gap:5px;padding:6px 6px calc(6px + env(safe-area-inset-bottom))}
+/* each tab reads as a button, like everything else in the app */
+.tabs button{background:var(--card);border:.5px solid var(--line);border-radius:11px;
+  padding:7px 2px 6px;color:var(--ink3);
   font-size:9.5px;display:flex;flex-direction:column;align-items:center;gap:3px;
-  min-width:0;overflow:hidden}
-.tabs button{position:relative}
+  min-width:0;overflow:hidden;min-height:50px;justify-content:center;position:relative}
+.tabs button:active{background:var(--card2)}
 .tdot{position:absolute;top:3px;left:50%;margin-left:5px;min-width:15px;height:15px;
   border-radius:8px;background:var(--amber);color:#1a1200;font-size:9.5px;font-weight:800;
   font-style:normal;display:flex;align-items:center;justify-content:center;padding:0 3px}
 .tabs button span{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-@media (max-width:360px){ .tabs button{font-size:9px} .tabs .g{width:20px;height:20px} }
-.tabs button[aria-current=true]{color:var(--blue)}
+@media (max-width:360px){ .tabs{gap:4px;padding:5px 4px calc(5px + env(safe-area-inset-bottom))}
+  .tabs button{font-size:8.5px;border-radius:9px} .tabs .g{width:19px;height:19px} }
+.tabs button[aria-current=true]{color:var(--blue);background:var(--bluebg);
+  border-color:var(--blue)}
 .g{width:22px;height:22px;display:block}
 
 .side{display:none}
@@ -753,7 +757,7 @@ body.wide .mslot.hit{font-size:13px}
 .filters.wrap{flex-wrap:wrap;overflow:visible}
 .filters::-webkit-scrollbar{display:none}
 .filters button{flex:0 0 auto;background:var(--card);border:.5px solid var(--line);
-  border-radius:20px;padding:8px 15px;font-size:14.5px;font-weight:500;
+  border-radius:20px;padding:10px 15px;font-size:14.5px;font-weight:500;min-height:40px;
   color:var(--ink2);white-space:nowrap}
 .filters button.sel{background:var(--blue);border-color:var(--blue);color:#fff}
 .hint{font-size:13.5px;color:var(--ink2);line-height:1.5;margin:12px 2px 0;max-width:60ch}
@@ -1176,7 +1180,7 @@ const VANWALLS={"Driver side":{"cols":144,"rows":60},"Passenger side":{"cols":14
 const VANCOMPS=[["2A","Evidence bags",0,84,2,14,22],["2B","Shoe / tire impression",0,84,24,14,22],["2C1","Evidence envelopes",0,98,2,20,5],["2C2","Cash envelopes",0,98,7,20,5],["2C3","Drug envelopes",0,98,12,20,5],["2C4","Misc. forms",0,98,17,20,5],["2C5","SEM kits",0,98,22,20,5],["2C6","",0,98,27,20,5],["2C7","",0,98,32,20,5],["2C8","",0,98,37,20,5],["2C9","",0,98,42,20,5],["2D1","",0,118,2,8,5],["2D2","",0,118,7,8,5],["2D3","",0,118,12,8,5],["2D4","Batteries",0,118,17,8,5],["2D5","",0,118,22,8,5],["2D6","",0,118,27,8,5],["2D7","",0,118,32,8,5],["2D8","",0,118,37,8,5],["2D9","",0,118,42,8,5],["2E1","Electrostatic bags",0,126,2,14,5],["2E2","",0,126,7,14,5],["2E3","",0,126,12,14,5],["2E4","Rain suits",0,126,17,14,5],["2E5","",0,126,22,14,5],["2E6","",0,126,27,14,5],["2E7","Hand preservation bags",0,126,32,14,5],["2E8","",0,126,37,14,5],["2E9","",0,126,42,14,5],["1A1","Upper storage",0,4,0,8,10],["1A2","Upper storage",0,12,0,8,10],["1A3","Upper storage",0,20,0,8,10],["1A4","Upper storage",0,28,0,8,10],["1A5","Upper storage",0,36,0,8,10],["1A6","Upper storage",0,44,0,8,10],["1B1","Bin, upper row",0,4,12,6,7],["1B2","Bin, upper row",0,10,12,6,7],["1B3","Bin, upper row",0,16,12,6,7],["1B4","Bin, upper row",0,22,12,6,7],["1B5","Bin, upper row",0,28,12,6,7],["1B6","Bin, upper row",0,34,12,6,7],["1B7","Bin, upper row, double width",0,40,12,12,7],["1C1","Bin, lower row",0,4,22,6,7],["1C2","Bin, lower row",0,10,22,6,7],["1C3","Bin, lower row",0,16,22,6,7],["1C4","Bin, lower row",0,22,22,6,7],["1C5","Bin, lower row",0,28,22,6,7],["1C6","Bin, lower row",0,34,22,6,7],["1C7","Bin, lower row, double width",0,40,22,12,7],["1D1","Evidence tubes / laser trajectory",0,4,31,8,11],["1D2","Evidence tubes / laser trajectory",0,12,31,8,11],["1D3","Evidence tubes / laser trajectory",0,20,31,8,11],["1D4","Evidence tubes / laser trajectory",0,28,31,8,11],["1D5","Evidence tubes / laser trajectory",0,36,31,8,11],["1D6","Evidence tubes / laser trajectory",0,44,31,8,11],["1E","Metal detector",0,4,44,48,11],["3A","Lighting / extension cords",1,40,6,16,48],["3B","Top shelf",1,56,0,88,10],["3C","Shelf 2",1,56,10,88,12],["3D","Shelf 3",1,56,22,88,12],["3E","Shelf 4",1,56,34,88,11],["3F","Bottom shelf",1,56,45,88,11]];
 // a field tool first: the scene comes before the van
 const TABS=[["home","Home"],["active","Active"],["forms","Scenes"],
-["guide","Guide"],["inventory","Inventory"],["compartments","Compartments"]];
+["guide","Guide"],["compartments","Compartments"],["inventory","Inventory"]];
 const FORMCATS=["Scene documentation","Evidence and custody","Photography","Reports and statements","Admin"];
 const ICONS={home:"M3 11l9-8 9 8v9a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1z",
  compartments:"M3 4h7v7H3zM14 4h7v7h-7zM3 13h7v7H3zM14 13h7v7h-7z",
@@ -1512,9 +1516,10 @@ function renderSyncPill(){
 let view="home", query="";
 function buildTabs(){
   const nOpen=openDocs().length;
-  $("#tabs").innerHTML=TABS.map(([v,l])=>
-    `<button data-v="${v}" aria-current="${v===view}">${ic(v)}${
-      v==="active"&&nOpen?`<i class="tdot">${nOpen}</i>`:""}<span>${l}</span></button>`).join("");
+  const SHORT={compartments:"Storage",inventory:"Items"};
+  $("#tabs").innerHTML=TABS.map(([v,l0])=>{const l=SHORT[v]||l0;
+    return `<button data-v="${v}" aria-current="${v===view}">${ic(v)}${
+      v==="active"&&nOpen?`<i class="tdot">${nOpen}</i>`:""}<span>${l}</span></button>`}).join("");
   const L=live();
   const att=L.filter(i=>isOut(i)||isLow(i)||isExpired(i)||isExpiring(i)||isService(i)).length;
   const unchk=comps().filter(c=>compState(c.code).k==="unchecked").length;
