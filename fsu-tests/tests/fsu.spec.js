@@ -250,6 +250,32 @@ test.describe("van flows",()=>{
     await page.click("#sheet #scx");
   });
 
+  test("a bay opens as its own page on a wide screen",async({page})=>{
+    await page.setViewportSize({width:1180,height:820});
+    await page.evaluate(()=>{S.mode="desktop";save();applyMode();go("compartments")});
+    await page.click("#v-compartments .bayhead");
+    await page.waitForFunction(()=>view==="bay");
+    const split=await page.evaluate(()=>document.querySelector(".main.split")!==null);
+    expect(split).toBe(false);
+    await expect(page.locator("#v-bay .back")).toBeVisible();
+  });
+
+  test("freehand ends when a symbol is picked, and rotation can be locked",async({page})=>{
+    await page.evaluate(()=>{const b=document.querySelector("#v-home [data-quicksketch]"); b&&b.click()});
+    await page.waitForFunction(()=>view==="sketch");
+    await page.evaluate(()=>{inkStart()});
+    expect(await page.evaluate(()=>!!inkDraw)).toBe(true);
+    await page.evaluate(()=>placeStart("rect"));
+    expect(await page.evaluate(()=>!!inkDraw)).toBe(false);
+    await page.evaluate(()=>{PLACE=null;addObj("rect");showSet=true;renderSketch()});
+    await expect(page.locator("#skrail .objset [data-orotlock]")).toBeVisible();
+    expect(await page.evaluate(()=>document.querySelectorAll("#skcanvas [data-rot]").length)).toBe(1);
+    await page.click("#skrail .objset [data-orotlock]");
+    expect(await page.evaluate(()=>document.querySelectorAll("#skcanvas [data-rot]").length)).toBe(0);
+    await expect(page.locator("#skrail .objset [data-orot]")).toHaveCount(0);
+    await expect(page.locator("#v-sketch #skedit [data-skfull]")).toBeVisible();
+  });
+
   test("count mode walks the compartments",async({page})=>{
     await page.evaluate(()=>{live().slice(0,3).forEach((i,k)=>{i.loc=comps()[k].code;i.qty="2";i.par="3"}); save(); go("inventory")});
     await page.click("#v-inventory [data-countrun]");

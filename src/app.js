@@ -2834,8 +2834,8 @@ function objSVGRaw(o,sel){
     ${locked?"":`<rect width="${o.w}" height="${o.h}" fill="transparent"/>`}
     ${inner}${num}${tag}
     ${live?`<rect width="${o.w}" height="${o.h}" class="k-sel"/>
-      <line x1="${o.w/2}" y1="0" x2="${o.w/2}" y2="${-hs*.9}" class="k-rotstem"/>
-      <circle data-rot="${o.id}" cx="${o.w/2}" cy="${-hs}" r="${hs/2}" class="k-rot"/>
+      ${o.lockR?"":`<line x1="${o.w/2}" y1="0" x2="${o.w/2}" y2="${-hs*.9}" class="k-rotstem"/>`}
+      ${o.lockR?"":`<circle data-rot="${o.id}" cx="${o.w/2}" cy="${-hs}" r="${hs/2}" class="k-rot"/>`}
       <rect data-handle="${o.id}" x="${o.w-hs/2}" y="${o.h-hs/2}" width="${hs}" height="${hs}" class="k-handle"/>`:""}
     ${live&&o.t==="poly"?polyHandles(o):""}
   </g>`;
@@ -3331,8 +3331,12 @@ function renderSketch(){
          <button data-skgrp="view">View</button>
          <button data-skgrp="scene">Setup</button>
          <button data-sksym="1" class="phoneonly">Symbols</button>
+         <button data-skfull="1">Full screen</button>
          <button data-skexport="1">Export</button>`}</div>
     <div id="skbars">${caseNag(sk)}${polyBar()}${placeBar()}${measPickBar()}${layerMoveBar()}${inkBar()}${multiBar()}</div><div class="canvaswrap">${canvasSVG(sk)}${zoomBar()}</div>
+
+    <p class="kbdhint">Arrow keys nudge, shift for bigger steps. D duplicates, Delete removes, Escape deselects.</p>
+    </div><div class="skrail" id="skrail">
     <div id="skpanel">${(sel&&showSet)?`<div class="objset">
         <div class="oshead"><b>${esc(SHAPENAME(sel.t))}</b>
           <span class="osr">Rotation <span id="rotval">${sel.r||0}\u00b0</span></span>
@@ -3360,17 +3364,16 @@ function renderSketch(){
           ${sel.photoId?`<button data-ophotox="${sel.id}">Remove</button>`:""}</div>
           <div id="photoprev"></div>`:""}
         <div class="objbar">
-          <button data-orot="${sel.id}">Rotate 15&#176;</button>
-          <button data-orot0="${sel.id}">Straighten</button>
+          <button data-orotlock="${sel.id}"${sel.lockR?' class="on"':""}>${sel.lockR?"Rotation locked":"Lock rotation"}</button>
+          ${sel.lockR?"":`<button data-orot="${sel.id}">Rotate 15&#176;</button>
+          <button data-orot0="${sel.id}">Straighten</button>`}
           <button data-odup="${sel.id}">Duplicate</button>
           <button data-ofwd="${sel.id}">Front</button>
           <button data-odel="${sel.id}" class="danger">Delete</button>
         </div>
-        <p class="hint" style="margin:8px 0 0">Drag to move, corner to ${LOCKED.has(sel.t)?"scale":"resize"}, the circle above it to rotate. Hold shift while rotating to snap to 15&#176;.</p>
+        <p class="hint" style="margin:8px 0 0">Drag to move, corner to ${LOCKED.has(sel.t)?"scale":"resize"}, ${sel.lockR?"rotation is locked so it cannot turn by accident.":"the circle above it to rotate. Hold shift while rotating to snap to 15&#176;. Lock rotation keeps a placed object square."}</p>
       </div>`
       :`<p class="hint" style="margin-top:6px">Tap an object to select it. Tap the page to deselect.</p>`}</div>
-    <p class="kbdhint">Arrow keys nudge, shift for bigger steps. D duplicates, Delete removes, Escape deselects.</p>
-    </div><div class="skrail" id="skrail">
     <div class="palsearch"><input type="text" id="palq" placeholder="Search symbols"
       value="${esc(palQ||"")}" autocomplete="off" autocapitalize="off">
       ${palQ?`<button id="palqx" aria-label="Clear">&#215;</button>`:""}</div>
@@ -3503,7 +3506,7 @@ document.addEventListener("pointerdown",e=>{
   const p=canvasPt(e); if(!p)return;
   if(extraPointerDown3(e,svg,p)||extraPointerDown2(e,svg,p)||extraPointerDown(e,svg,p))return;
   const rEl=e.target.closest("[data-rot]");
-  if(rEl){const o=objAt(rEl.dataset.rot); if(!o)return;
+  if(rEl){const o=objAt(rEl.dataset.rot); if(!o)return; if(o.lockR){toast("Rotation is locked");return}
     (()=>{const s=S.sketches.find(x=>x.id===curSketch);if(s&&layerLocked(s,o)){toast("Layer is locked");return}pushUndo(s)})();if((()=>{const s=S.sketches.find(x=>x.id===curSketch);return s&&layerLocked(s,o)})())return;drag={mode:"rot",o,cx:o.x+o.w/2,cy:o.y+o.h/2};
     try{svg.setPointerCapture&&svg.setPointerCapture(e.pointerId)}catch(_){}
     e.preventDefault();return}
@@ -4741,9 +4744,9 @@ document.addEventListener("click",e=>{
   const ik=e.target.closest("[data-ink]");
   if(ik){const o=objAt(selObj); if(o){pushUndo(skc);o.ink=ik.dataset.ink;saveLocal();renderSketch()} return}
   const or0=e.target.closest("[data-orot0]");
-  if(or0){const o=objAt(or0.dataset.orot0);if(o){pushUndo(skc);o.r=0;saveLocal();renderSketch()}return}
+  if(or0){const o=objAt(or0.dataset.orot0);if(o){if(o.lockR)return toast("Rotation is locked");pushUndo(skc);o.r=0;saveLocal();renderSketch()}return}
   const orr=e.target.closest("[data-orot]");
-  if(orr){const o=objAt(orr.dataset.orot);if(o){pushUndo(skc);o.r=((o.r||0)+15)%360;saveLocal();renderSketch()}return}
+  if(orr){const o=objAt(orr.dataset.orot);if(o){if(o.lockR)return toast("Rotation is locked");pushUndo(skc);o.r=((o.r||0)+15)%360;saveLocal();renderSketch()}return}
   const od=e.target.closest("[data-odup]");
   if(od){const o=objAt(od.dataset.odup);if(o&&skc){pushUndo(skc);const c=Object.assign({},o,{id:newId(),x:o.x+24,y:o.y+24});
     if(c.t==="marker")c.n=String(nextMarkerNo(skc));
@@ -5160,7 +5163,7 @@ document.addEventListener("visibilitychange",()=>{
 });
 window.addEventListener("orientationchange",()=>setTimeout(fitHeader,200));
 
-const DETAILS=["itemdetail","compdetail","bay"];
+const DETAILS=["itemdetail","compdetail"];
 const mq=q=>!!(window.matchMedia&&window.matchMedia(q).matches);
 function applyTheme(){
   const t=S.theme||"auto";

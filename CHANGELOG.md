@@ -1,5 +1,13 @@
 # FSU change log
 
+## 2026.09.04.16
+iPad round. A bay from Storage opens as its own page instead of a pane beside the list. Picking a
+symbol or any other tool ends freehand drawing, and the Done button in the freehand bar is now blue.
+Full screen is on the sketch toolbar as well as in View. The object panel moved from under the
+canvas to the top of the rail, so on any wide layout (iPad landscape included) it sits on the right
+beside the drawing. Every object has Lock rotation: the rotate handle and buttons go away until it
+is unlocked, so a placed object cannot be turned by accident.
+
 ## 2026.09.04.15
 Sketch symbol previews (palette, symbols sheet, layer list) were near-black on the dark card when
 dark mode was chosen under Settings, and black-ink objects in the layer list were dark in every dark

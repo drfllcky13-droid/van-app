@@ -155,6 +155,11 @@ package.
    address under Settings › Labels. The in-app scanner (`scanSheet` in ext-van.js) uses `BarcodeDetector`
    where it exists and otherwise loads jsQR from jsdelivr on first use; every device also gets a
    photo route through a file input with `capture`, decoded the same way.
+17. **Sketch layout.** The object panel (`#skpanel`, the `.objset`) renders at the top of `.skrail`, so
+   it is under the canvas on a phone and beside it on any `xwide` layout (two columns from 1000px,
+   iPad landscape included). `o.lockR` locks an object's rotation: no rotate handle, no rotate buttons,
+   typed rotation refused. `placeStart` and any tool hook clear `inkDraw`, so picking a symbol ends
+   freehand. `DETAILS` no longer lists `bay`; a bay is a full page.
 16. **The settings page is a menu.** `renderData` draws `settingsMenu()` when `SET_SEC` is null and
    `settingsSection(SET_SEC)` otherwise; `openSettings(sec)` lands on a section from anywhere
    (Home uses `data-gosec`). Control ids (`#ghconnect`, `#dlj`, `#wipe`, `#whoin`…) are unchanged

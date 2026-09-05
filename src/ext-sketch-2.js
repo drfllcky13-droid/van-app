@@ -84,7 +84,7 @@ document.addEventListener("wheel",e=>{
 
 /* ---- tap to place, and marker mode ---- */
 let PLACE=null;
-function placeStart(t){ PLACE={t,sticky:t==="marker"}; selObj=null; showSet=false; closeSheet(); keepScroll(()=>renderSketch()) }
+function placeStart(t){ PLACE={t,sticky:t==="marker"}; inkDraw=null; selObj=null; showSet=false; closeSheet(); keepScroll(()=>renderSketch()) }
 function placeBar(){
   if(!PLACE)return "";
   const sk=curSk(), nm=SHAPENAME(PLACE.t);

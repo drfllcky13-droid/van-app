@@ -150,8 +150,11 @@ function sketchExtraClick3(e,skc){
   const ip=t.closest("[data-inkpen]"); if(ip){ if(inkDraw)inkDraw.pen=ip.dataset.inkpen==="1"; keepScroll(()=>renderSketch()); return true }
   const ic=t.closest("[data-inkcol]"); if(ic){ if(inkDraw)inkDraw.col=ic.dataset.inkcol; keepScroll(()=>renderSketch()); return true }
   if(!skc)return false;
+  const rl=t.closest("[data-orotlock]"); if(rl){ const o=objAt(rl.dataset.orotlock); if(o){ o.lockR=!o.lockR; saveLocal(); keepScroll(()=>renderSketch()); toast(o.lockR?"Rotation locked":"Rotation unlocked") } return true }
   const ad=t.closest("[data-add]");
   if(ad&&ad.dataset.add==="ink"){ inkStart(); return true }
+  // any other tool ends freehand, so the next tap places rather than draws
+  if(inkDraw&&(ad||t.closest("[data-skmark],[data-skmeas],[data-skwalls],[data-sktpl],[data-skmulti],[data-add]")))inkDraw=null;
   if(t.closest("[data-skink]")){ inkStart(); return true }
   if(t.closest("[data-skmulti]")){ multiStart(); return true }
   if(t.closest("[data-skguide]")){ closeSheet(); guideSheet(); return true }

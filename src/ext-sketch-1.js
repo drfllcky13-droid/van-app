@@ -302,6 +302,7 @@ function applyTypedSize(id,val){
   const sc=scaleOf(sk);
   const toPx=s=>{const n=sc?parseLen(s,sc.unit||"ft"):parseFloat(s); return isNaN(n)?NaN:(sc?realPx(sk,n):n)};
   if(id==="osrot"){const r=parseFloat(val); if(isNaN(r))return toast("Rotation needs a number");
+    if(o.lockR)return toast("Rotation is locked");
     pushUndo(sk);o.r=((Math.round(r)%360)+360)%360;saveLocal();renderSketch();return}
   if(id==="osfp"){pushUndo(sk);o.fp=val;saveLocal();renderSketch();return}
   const px=toPx(val);

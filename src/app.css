@@ -169,7 +169,7 @@ body.skfull .skgrid.full{position:fixed;inset:0;z-index:80;background:var(--bg);
 .inkrow .inklab{font-size:12.5px;color:var(--ink2);margin-right:2px}
 .ink{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);padding:0;flex:0 0 auto}
 .ink.on{border-color:var(--blue);box-shadow:0 0 0 2px var(--bluebg)}
-.objset{flex:0 0 auto;max-height:32vh;overflow-y:auto}
+.skgrid.full .objset{flex:0 0 auto;max-height:40vh;overflow-y:auto}
 .skgrid.full .cdhead,.skgrid.full .back{display:none}
 @media (max-width:899px){ .skgrid.full .skrail{max-height:38vh} }
 body.skfull .skgrid.full.notools{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr)}
@@ -840,9 +840,9 @@ body.xwide .main.split .pane-detail{position:sticky;top:0;max-height:calc(100vh 
     padding-left:24px;padding-top:6px}
 body.xwide .main.split .pane-detail .back{display:none}
 body.xwide .main.split .pane-detail .actbar{position:static}
-body.xwide .skgrid{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:22px;align-items:start}
-/* only when the rail actually sits beside the canvas, not stacked under it */
-@media (min-width:1241px){
+body.xwide .skgrid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:18px;align-items:start}
+/* the rail sits beside the canvas on every wide layout, iPad landscape included */
+@media (min-width:1000px){
   body.xwide .skgrid .skmain{position:sticky;top:12px;align-self:start}
   body.xwide .skgrid .skrail{max-height:calc(100vh - 88px);
     overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;
@@ -920,8 +920,6 @@ body.xwide .dash .wall{margin-bottom:0}
 @media (max-width:1240px){
   body.xwide .dash{grid-template-columns:minmax(0,1fr)}
   body.xwide .dashside{position:static;display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start}
-  body.xwide .skgrid{grid-template-columns:minmax(0,1fr)}
-  body.xwide .skrail{position:static}
   body.xwide .main.split{grid-template-columns:minmax(0,1fr) minmax(300px,340px)}
 }
 @media (max-width:1040px){
@@ -1031,6 +1029,7 @@ body.xwide .cellwrap .sweepcard .ch{display:none}
 .polybar button{min-height:40px;padding:8px 12px;border-radius:9px;border:.5px solid var(--line2);
   background:var(--card2);color:var(--ink);font:inherit;font-size:14px}
 .polybar button[disabled]{opacity:.38}
+.polybar [data-inkx],.polybar [data-multix]{background:var(--blue);color:#fff;border-color:var(--blue);font-weight:600}
 .wallrows{margin-bottom:4px}
 .wallrow{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr) 44px;gap:8px;margin-bottom:8px}
 .wallrow input,.wallrow select{min-height:44px}
@@ -1058,7 +1057,7 @@ body.xwide .cellwrap .sweepcard .ch{display:none}
 .osclose{min-width:40px;min-height:40px;padding:0 4px 0 8px}
 .btn.sec.on{border-color:var(--blue);color:var(--blue)}
 .seg.three{grid-template-columns:1fr 1fr 1fr}
-@media (min-width:1241px){ body.xwide .phoneonly{display:none} }
+@media (min-width:1000px){ body.xwide .phoneonly{display:none} }
 label.btn{cursor:pointer}
 #savefail{position:fixed;left:0;right:0;top:0;z-index:200;background:#C62828;color:#fff;padding:12px 16px;
   font-size:14.5px;line-height:1.45;display:flex;gap:10px;align-items:center;flex-wrap:wrap;
