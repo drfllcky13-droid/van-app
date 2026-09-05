@@ -188,6 +188,9 @@ body.skfull .skgrid.full{position:fixed;inset:0;z-index:80;background:var(--bg);
 .skgrid.full .objset{flex:0 0 auto;max-height:40vh;overflow-y:auto}
 .skgrid.full .cdhead,.skgrid.full .back{display:none}
 @media (max-width:899px){ .skgrid.full .skrail{max-height:38vh} }
+/* full screen: the sticky, start-aligned rules of the normal wide layout must not apply, or the canvas shrinks to its toolbar */
+body.skfull .skgrid.full .skmain{position:static;top:auto;align-self:stretch}
+body.skfull .skgrid.full .skrail{position:static;top:auto;max-height:100%}
 body.skfull .skgrid.full.notools{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr)}
 .skgrid.full.notools .skrail,.skgrid.full.notools .objset{display:none}
 @media (min-width:900px){
@@ -1155,6 +1158,11 @@ label.btn{cursor:pointer}
 .vankey .here{box-shadow:0 0 10px 2px rgba(255,107,94,.45)}
 /* the bay wall */
 .baywrap{position:relative;margin-top:14px}
+/* a tapped bin opens beside the wall on a wide screen, under it on a phone */
+body.wide .baystage.picked{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:14px;align-items:start}
+body.wide .baystage.picked #baypop{position:sticky;top:12px;margin-top:14px}
+body.wide .baystage.picked .baypop{margin-top:0}
+body.wide .baystage.picked .bayzoom{max-height:calc(100vh - 200px)}
 .bayzoom{overflow:auto;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y;border-radius:12px;max-height:78vh}
 .bayplan{margin-top:0;width:calc(var(--k,1)*100%);min-width:100%;aspect-ratio:calc(var(--cols)/var(--rows))}
 .bcell .bc{display:flex;align-items:center;gap:5px;min-width:0}
@@ -2106,7 +2114,7 @@ function renderBay(){
              :vanKey(curBay,false)}
       <div class="cdtags">${bayTally(curBay)}</div>
     </div>
-    <div class="baywrap"><div class="bayzoom" id="bayzoom">
+    <div class="baystage${bayPick?" picked":""}"><div class="baywrap"><div class="bayzoom" id="bayzoom">
       <div class="bayplan" id="bayplan" style="--cols:${W};--rows:${H};--k:${bayZoomK}">
       ${cs.map(c=>{const s=compState(c.code), n=s.items.length;
         return `<button class="bcell s-${s.k}${c.desc?"":" un"}${bayPick===c.code?" sel":""}" data-comp="${esc(c.code)}"
@@ -2120,13 +2128,13 @@ function renderBay(){
         <span class="zoomlvl" id="bayzl">${Math.round(bayZoomK*100)}%</span>
         <button data-bayzoom="in" aria-label="Zoom in">+</button>
         <button data-bayzoom="fit" aria-label="Fit the wall">Fit</button></div></div>
+    <div id="baypop">${bayPopHTML(cs)}</div></div>
     <div class="orient" style="margin:6px 2px 0">
       <span>${capLeft(side)}</span><span>${capRight(side)}</span></div>
     <div class="baylegend">
       <span><i class="lg lg-good"></i>Swept</span><span><i class="lg lg-unchecked"></i>Not checked</span>
       <span><i class="lg lg-attn"></i>Low or expiring</span><span><i class="lg lg-action"></i>Out or expired</span>
       <span><i class="lg lg-un"></i>Not named yet</span></div>
-    <div id="baypop">${bayPopHTML(cs)}</div>
     <div class="sect">Every compartment</div>
     <div class="rows">${cs.slice().sort((a,b)=>a.code.localeCompare(b.code,undefined,{numeric:true}))
       .map(c=>{const s=compState(c.code);
@@ -2198,7 +2206,7 @@ function appExtraClick7(e){
     const code=cell.dataset.comp; if(bayPick===code)return false;
     bayPick=code; const z=document.getElementById("bayzoom"), sl=z?z.scrollLeft:0, st=z?z.scrollTop:0;
     renderBay(); const z2=document.getElementById("bayzoom"); if(z2){z2.scrollLeft=sl;z2.scrollTop=st}
-    const pop=document.getElementById("baypop"); if(pop&&pop.scrollIntoView)pop.scrollIntoView({block:"nearest",behavior:"smooth"});
+    if(!document.body.classList.contains("wide")){const pop=document.getElementById("baypop"); if(pop&&pop.scrollIntoView)pop.scrollIntoView({block:"nearest"})}
     return true }
   if(t.closest("[data-baypopx]")){bayPick=null; renderBay(); return true}
   const bo=t.closest("[data-bayopen]"); if(bo){ rememberScroll(); prevView="bay"; curComp=bo.dataset.bayopen; view="compdetail";
@@ -8380,8 +8388,9 @@ function appExtraClick9(e){
 /* ---------- reports and upkeep, round ten ----------
    report wording, auto-fill, photograph log, Word export, vector PDF, version stamp,
    vehicle check, part numbers, shift handover, service and calibration, help and change log. */
-const APP_VERSION="2026.09.04.19";
+const APP_VERSION="2026.09.04.20";
 const CHANGELOG=[
+  ["2026-09-05","Tapping a bin on the bay wall opens its items in a panel beside the wall on a wide screen, without moving the page. Full screen fills the screen again on an iPad."],
   ["2026-09-05","Every page opens as the main screen; the side-by-side pane is gone. On an iPad the sketch gets the width back: the side bar folds to icons while sketching and the tool rail is narrower."],
   ["2026-09-05","The side bar on wide screens folds to an icon rail with the chevron at its top, and remembers that on this device."],
   ["2026-09-04","Landscape only on the iPad: held upright, the app asks to be turned sideways. On by default on an iPad, off on phones, and switchable under Settings › Display."],

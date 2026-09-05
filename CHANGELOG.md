@@ -1,5 +1,11 @@
 # FSU change log
 
+## 2026.09.04.20
+Tapping a bin on the bay wall no longer moves the page. On a wide screen (iPad, desktop) the bin's
+items open in a panel to the right of the wall and stay in view while the wall scrolls; on a phone
+the panel sits directly under the wall. Full screen on an iPad had shrunk the canvas to the size
+of its toolbar since .16; it fills the screen again.
+
 ## 2026.09.04.19
 Every page opens as the main screen. Compartments and items from Storage or Items no longer open
 in a pane beside the list on wide screens; the split pane is retired. On an iPad in landscape the

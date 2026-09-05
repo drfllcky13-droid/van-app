@@ -303,6 +303,31 @@ test.describe("van flows",()=>{
     await page.evaluate(()=>{S.mode="auto";save();applyMode()});
   });
 
+  test("a tapped bin opens beside the wall without moving the page",async({page})=>{
+    await page.setViewportSize({width:1180,height:820});
+    await page.evaluate(()=>{S.mode="desktop";save();applyMode();go("compartments")});
+    await page.click("#v-compartments .bayhead");
+    await page.waitForFunction(()=>view==="bay");
+    const y0=await page.evaluate(()=>window.scrollY);
+    await page.click("#bayplan [data-comp]");
+    await expect(page.locator("#baypop .baypop")).toBeVisible();
+    const r=await page.evaluate(()=>{const s=document.querySelector(".baystage.picked"); const w=document.querySelector(".baywrap").getBoundingClientRect(), p=document.querySelector("#baypop").getBoundingClientRect(); return {picked:!!s, right:p.left>=w.right-1, scrollY:window.scrollY}});
+    expect(r.picked).toBe(true); expect(r.right).toBe(true); expect(Math.abs(r.scrollY-y0)).toBeLessThan(2);
+    await page.evaluate(()=>{S.mode="auto";save();applyMode()});
+  });
+
+  test("full screen fills the width on a wide screen",async({page})=>{
+    await page.setViewportSize({width:1180,height:820});
+    await page.evaluate(()=>{S.mode="desktop";save();applyMode();const b=document.querySelector("#v-home [data-quicksketch]"); b&&b.click()});
+    await page.waitForFunction(()=>view==="sketch");
+    await page.click("#skedit [data-skfull=\"1\"]");
+    await page.waitForFunction(()=>document.body.classList.contains("skfull"));
+    const w=await page.evaluate(()=>document.querySelector(".skgrid.full .canvaswrap").getBoundingClientRect().width);
+    expect(w).toBeGreaterThan(600);
+    await page.click("#skedit [data-skfull=\"0\"]");
+    await page.evaluate(()=>{S.mode="auto";save();applyMode()});
+  });
+
   test("count mode walks the compartments",async({page})=>{
     await page.evaluate(()=>{live().slice(0,3).forEach((i,k)=>{i.loc=comps()[k].code;i.qty="2";i.par="3"}); save(); go("inventory")});
     await page.click("#v-inventory [data-countrun]");

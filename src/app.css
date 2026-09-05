@@ -172,6 +172,9 @@ body.skfull .skgrid.full{position:fixed;inset:0;z-index:80;background:var(--bg);
 .skgrid.full .objset{flex:0 0 auto;max-height:40vh;overflow-y:auto}
 .skgrid.full .cdhead,.skgrid.full .back{display:none}
 @media (max-width:899px){ .skgrid.full .skrail{max-height:38vh} }
+/* full screen: the sticky, start-aligned rules of the normal wide layout must not apply, or the canvas shrinks to its toolbar */
+body.skfull .skgrid.full .skmain{position:static;top:auto;align-self:stretch}
+body.skfull .skgrid.full .skrail{position:static;top:auto;max-height:100%}
 body.skfull .skgrid.full.notools{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr)}
 .skgrid.full.notools .skrail,.skgrid.full.notools .objset{display:none}
 @media (min-width:900px){
@@ -1139,6 +1142,11 @@ label.btn{cursor:pointer}
 .vankey .here{box-shadow:0 0 10px 2px rgba(255,107,94,.45)}
 /* the bay wall */
 .baywrap{position:relative;margin-top:14px}
+/* a tapped bin opens beside the wall on a wide screen, under it on a phone */
+body.wide .baystage.picked{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:14px;align-items:start}
+body.wide .baystage.picked #baypop{position:sticky;top:12px;margin-top:14px}
+body.wide .baystage.picked .baypop{margin-top:0}
+body.wide .baystage.picked .bayzoom{max-height:calc(100vh - 200px)}
 .bayzoom{overflow:auto;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y;border-radius:12px;max-height:78vh}
 .bayplan{margin-top:0;width:calc(var(--k,1)*100%);min-width:100%;aspect-ratio:calc(var(--cols)/var(--rows))}
 .bcell .bc{display:flex;align-items:center;gap:5px;min-width:0}

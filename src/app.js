@@ -798,7 +798,7 @@ function renderBay(){
              :vanKey(curBay,false)}
       <div class="cdtags">${bayTally(curBay)}</div>
     </div>
-    <div class="baywrap"><div class="bayzoom" id="bayzoom">
+    <div class="baystage${bayPick?" picked":""}"><div class="baywrap"><div class="bayzoom" id="bayzoom">
       <div class="bayplan" id="bayplan" style="--cols:${W};--rows:${H};--k:${bayZoomK}">
       ${cs.map(c=>{const s=compState(c.code), n=s.items.length;
         return `<button class="bcell s-${s.k}${c.desc?"":" un"}${bayPick===c.code?" sel":""}" data-comp="${esc(c.code)}"
@@ -812,13 +812,13 @@ function renderBay(){
         <span class="zoomlvl" id="bayzl">${Math.round(bayZoomK*100)}%</span>
         <button data-bayzoom="in" aria-label="Zoom in">+</button>
         <button data-bayzoom="fit" aria-label="Fit the wall">Fit</button></div></div>
+    <div id="baypop">${bayPopHTML(cs)}</div></div>
     <div class="orient" style="margin:6px 2px 0">
       <span>${capLeft(side)}</span><span>${capRight(side)}</span></div>
     <div class="baylegend">
       <span><i class="lg lg-good"></i>Swept</span><span><i class="lg lg-unchecked"></i>Not checked</span>
       <span><i class="lg lg-attn"></i>Low or expiring</span><span><i class="lg lg-action"></i>Out or expired</span>
       <span><i class="lg lg-un"></i>Not named yet</span></div>
-    <div id="baypop">${bayPopHTML(cs)}</div>
     <div class="sect">Every compartment</div>
     <div class="rows">${cs.slice().sort((a,b)=>a.code.localeCompare(b.code,undefined,{numeric:true}))
       .map(c=>{const s=compState(c.code);
@@ -890,7 +890,7 @@ function appExtraClick7(e){
     const code=cell.dataset.comp; if(bayPick===code)return false;
     bayPick=code; const z=document.getElementById("bayzoom"), sl=z?z.scrollLeft:0, st=z?z.scrollTop:0;
     renderBay(); const z2=document.getElementById("bayzoom"); if(z2){z2.scrollLeft=sl;z2.scrollTop=st}
-    const pop=document.getElementById("baypop"); if(pop&&pop.scrollIntoView)pop.scrollIntoView({block:"nearest",behavior:"smooth"});
+    if(!document.body.classList.contains("wide")){const pop=document.getElementById("baypop"); if(pop&&pop.scrollIntoView)pop.scrollIntoView({block:"nearest"})}
     return true }
   if(t.closest("[data-baypopx]")){bayPick=null; renderBay(); return true}
   const bo=t.closest("[data-bayopen]"); if(bo){ rememberScroll(); prevView="bay"; curComp=bo.dataset.bayopen; view="compdetail";
