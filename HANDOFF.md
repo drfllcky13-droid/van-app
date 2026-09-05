@@ -163,7 +163,8 @@ package.
    it is under the canvas on a phone and beside it on any `xwide` layout (two columns from 1000px,
    iPad landscape included). `o.lockR` locks an object's rotation: no rotate handle, no rotate buttons,
    typed rotation refused. `placeStart` and any tool hook clear `inkDraw`, so picking a symbol ends
-   freehand. `DETAILS` no longer lists `bay`; a bay is a full page.
+   freehand. `DETAILS` is empty: every page is the main screen (the split-pane code in `render` stays
+   but never fires). `applySideMin` folds the side bar while sketching on `xwide` under 1241px.
 16. **The settings page is a menu.** `renderData` draws `settingsMenu()` when `SET_SEC` is null and
    `settingsSection(SET_SEC)` otherwise; `openSettings(sec)` lands on a section from anywhere
    (Home uses `data-gosec`). Control ids (`#ghconnect`, `#dlj`, `#wipe`, `#whoin`…) are unchanged

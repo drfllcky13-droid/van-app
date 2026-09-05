@@ -865,6 +865,7 @@ body.xwide .main.split .pane-detail{position:sticky;top:0;max-height:calc(100vh 
 body.xwide .main.split .pane-detail .back{display:none}
 body.xwide .main.split .pane-detail .actbar{position:static}
 body.xwide .skgrid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:18px;align-items:start}
+@media (max-width:1240px){ body.xwide .skgrid{grid-template-columns:minmax(0,1fr) 268px;gap:14px} body.xwide .palette{grid-template-columns:repeat(auto-fill,minmax(78px,1fr))} }
 /* the rail sits beside the canvas on every wide layout, iPad landscape included */
 @media (min-width:1000px){
   body.xwide .skgrid .skmain{position:sticky;top:12px;align-self:start}
@@ -6476,7 +6477,7 @@ document.addEventListener("visibilitychange",()=>{
 });
 window.addEventListener("orientationchange",()=>setTimeout(fitHeader,200));
 
-const DETAILS=["itemdetail","compdetail"];
+const DETAILS=[];   // every page is the main screen; the split pane is retired
 const mq=q=>!!(window.matchMedia&&window.matchMedia(q).matches);
 function applyTheme(){
   const t=S.theme||"auto";
@@ -6490,9 +6491,14 @@ function applyMode(){
   const w2 = m==="desktop" || (m!=="phone" && mq("(min-width:1000px)"));
   document.body.classList.toggle("wide",w1);
   document.body.classList.toggle("xwide",w2);
-  document.body.classList.toggle("sidemin",!!S.sideMin);
+  applySideMin();
 }
 const wideNow=()=>document.body.classList.contains("xwide");
+// the side bar is an icon rail when asked, and always while sketching on a screen under 1241px
+function applySideMin(){
+  const auto=view==="sketch"&&document.body.classList.contains("xwide")&&window.innerWidth<1241;
+  document.body.classList.toggle("sidemin",!!S.sideMin||auto);
+}
 function renderView(v){
   if(v==="search")return renderSearch();
   if(v==="itemdetail")return renderItemDetail();
@@ -6544,6 +6550,7 @@ function navBack(fallback){
 }
 function render(){
   navRecord();
+  applySideMin();
   buildTabs();renderDemoBar();renderSyncBar();
   const main=document.querySelector(".main");
   const master=DETAILS.includes(view)&&prevView&&prevView!==view
@@ -8373,8 +8380,9 @@ function appExtraClick9(e){
 /* ---------- reports and upkeep, round ten ----------
    report wording, auto-fill, photograph log, Word export, vector PDF, version stamp,
    vehicle check, part numbers, shift handover, service and calibration, help and change log. */
-const APP_VERSION="2026.09.04.18";
+const APP_VERSION="2026.09.04.19";
 const CHANGELOG=[
+  ["2026-09-05","Every page opens as the main screen; the side-by-side pane is gone. On an iPad the sketch gets the width back: the side bar folds to icons while sketching and the tool rail is narrower."],
   ["2026-09-05","The side bar on wide screens folds to an icon rail with the chevron at its top, and remembers that on this device."],
   ["2026-09-04","Landscape only on the iPad: held upright, the app asks to be turned sideways. On by default on an iPad, off on phones, and switchable under Settings › Display."],
   ["2026-09-04","iPad: a bay opens as its own page. Picking any tool or symbol ends freehand drawing. Full screen is on the sketch toolbar. The object panel sits at the top of the right-hand rail beside the canvas. Lock rotation on any object."],

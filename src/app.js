@@ -5169,7 +5169,7 @@ document.addEventListener("visibilitychange",()=>{
 });
 window.addEventListener("orientationchange",()=>setTimeout(fitHeader,200));
 
-const DETAILS=["itemdetail","compdetail"];
+const DETAILS=[];   // every page is the main screen; the split pane is retired
 const mq=q=>!!(window.matchMedia&&window.matchMedia(q).matches);
 function applyTheme(){
   const t=S.theme||"auto";
@@ -5183,9 +5183,14 @@ function applyMode(){
   const w2 = m==="desktop" || (m!=="phone" && mq("(min-width:1000px)"));
   document.body.classList.toggle("wide",w1);
   document.body.classList.toggle("xwide",w2);
-  document.body.classList.toggle("sidemin",!!S.sideMin);
+  applySideMin();
 }
 const wideNow=()=>document.body.classList.contains("xwide");
+// the side bar is an icon rail when asked, and always while sketching on a screen under 1241px
+function applySideMin(){
+  const auto=view==="sketch"&&document.body.classList.contains("xwide")&&window.innerWidth<1241;
+  document.body.classList.toggle("sidemin",!!S.sideMin||auto);
+}
 function renderView(v){
   if(v==="search")return renderSearch();
   if(v==="itemdetail")return renderItemDetail();
@@ -5237,6 +5242,7 @@ function navBack(fallback){
 }
 function render(){
   navRecord();
+  applySideMin();
   buildTabs();renderDemoBar();renderSyncBar();
   const main=document.querySelector(".main");
   const master=DETAILS.includes(view)&&prevView&&prevView!==view

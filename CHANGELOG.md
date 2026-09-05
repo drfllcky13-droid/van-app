@@ -1,5 +1,12 @@
 # FSU change log
 
+## 2026.09.04.19
+Every page opens as the main screen. Compartments and items from Storage or Items no longer open
+in a pane beside the list on wide screens; the split pane is retired. On an iPad in landscape the
+sketch canvas was squeezed by the side bar and the tool rail together, so while sketching on a
+screen under 1241px the side bar folds to its icon rail by itself and the rail beside the canvas
+is narrower.
+
 ## 2026.09.04.18
 The side bar on wide screens (desktop and iPad landscape) folds to an icon rail with the chevron
 at its top, giving the page the width back. The choice is remembered on the device.

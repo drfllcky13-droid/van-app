@@ -849,6 +849,7 @@ body.xwide .main.split .pane-detail{position:sticky;top:0;max-height:calc(100vh 
 body.xwide .main.split .pane-detail .back{display:none}
 body.xwide .main.split .pane-detail .actbar{position:static}
 body.xwide .skgrid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:18px;align-items:start}
+@media (max-width:1240px){ body.xwide .skgrid{grid-template-columns:minmax(0,1fr) 268px;gap:14px} body.xwide .palette{grid-template-columns:repeat(auto-fill,minmax(78px,1fr))} }
 /* the rail sits beside the canvas on every wide layout, iPad landscape included */
 @media (min-width:1000px){
   body.xwide .skgrid .skmain{position:sticky;top:12px;align-self:start}
