@@ -155,6 +155,10 @@ package.
    address under Settings › Labels. The in-app scanner (`scanSheet` in ext-van.js) uses `BarcodeDetector`
    where it exists and otherwise loads jsQR from jsdelivr on first use; every device also gets a
    photo route through a file input with `capture`, decoded the same way.
+18. **Landscape only.** `applyRotLock` (ext-reports.js) puts `rotlock` on `body` when `landscapeOnly()`
+   (default: iPad-like user agent, else `S.landscapeOnly`) and the screen's short side is 700px or
+   more; `#rotgate` then covers everything in portrait. iPadOS ignores `screen.orientation.lock` and
+   the manifest orientation, so the gate is the real mechanism there.
 17. **Sketch layout.** The object panel (`#skpanel`, the `.objset`) renders at the top of `.skrail`, so
    it is under the canvas on a phone and beside it on any `xwide` layout (two columns from 1000px,
    iPad landscape included). `o.lockR` locks an object's rotation: no rotate handle, no rotate buttons,

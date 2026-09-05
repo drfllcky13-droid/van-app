@@ -1,5 +1,12 @@
 # FSU change log
 
+## 2026.09.04.17
+Landscape only on the iPad. iPadOS gives a web app no way to lock the screen, so the app does the
+next best thing: held upright, a full-screen notice asks for it to be turned sideways and nothing
+else is reachable until it is. On by default on an iPad, off on phones, and switchable either way
+under Settings › Display › Orientation. The manifest asks for landscape too, which Android honours
+for the installed app.
+
 ## 2026.09.04.16
 iPad round. A bay from Storage opens as its own page instead of a pane beside the list. Picking a
 symbol or any other tool ends freehand drawing, and the Done button in the freehand bar is now blue.

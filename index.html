@@ -604,6 +604,14 @@ input[type=text],input[type=date],input[type=time],input[type=number],select,tex
   border-radius:9px;padding:9px 12px;color:var(--ink)}
 .chips button.on{background:var(--blue);border-color:var(--blue);color:#fff}
 .scrim{position:fixed;inset:0;background:rgba(0,0,0,.42);z-index:120;display:none}
+/* landscape only on a tablet: a gate covers everything while it is held upright */
+.rotgate{position:fixed;inset:0;z-index:200;background:var(--bg);display:none;align-items:center;justify-content:center;padding:24px}
+.rotgate .rg{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;max-width:320px;color:var(--ink2);font-size:15px;line-height:1.5}
+.rotgate svg{width:64px;height:64px;color:var(--blue);transform:rotate(90deg);animation:rgturn 1.6s ease-in-out infinite alternate}
+.rotgate b{color:var(--ink);font-size:20px;letter-spacing:-.01em}
+.rotgate .lnkbtn{margin-top:10px;font-size:14px}
+@keyframes rgturn{from{transform:rotate(90deg)}to{transform:rotate(0deg)}}
+@media (orientation:portrait){body.rotlock .rotgate{display:flex}}
 .scrim.on{display:block}
 .sheet{position:fixed;left:0;right:0;bottom:0;z-index:121;background:var(--bg);
   pointer-events:none;visibility:hidden;
@@ -1280,6 +1288,7 @@ body.wide .side .sset{margin-top:auto}
 <div class="scrim" id="scrim"></div>
 <div class="sheet" id="sheet"><div class="grab"></div><div id="sheetbody"></div></div>
 <div class="toast" id="toast"></div>
+<div class="rotgate" id="rotgate"><div class="rg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M12 2v2M12 20v2"/></svg><b>Turn the iPad sideways</b><span>FSU runs in landscape so the sketch and the storage wall have room.</span><button class="lnkbtn" data-rotlock="0">Allow portrait on this device</button></div></div>
 
 <script>
 "use strict";
@@ -5464,7 +5473,7 @@ function settingsMenu(){
       row('data-go="templates"',"Form templates",S.forms.length+" blank form"+(S.forms.length===1?"":"s")),
       row('data-snipmanage="1"',"Report wording","Standard sentences for reports")])}
     ${group("This device",[
-      row('id="modebtn"',"Display",themeTxt+", "+modeTxt),
+      row('id="modebtn"',"Display",themeTxt+", "+modeTxt+(landscapeOnly()?", landscape only":"")),
       sec("labels","Labels and web address",appUrl()?esc(appUrl().replace(/^https?:\/\//,"")):"No web address"),
       sec("device","Storage and install",stor+", "+inst,storageState.asked&&!storageState.persisted?"warn":""),
       sec("activity","Activity",lastAct?"Last "+esc(String(lastAct.t||"").slice(0,10)):"Nothing yet"),
@@ -6213,6 +6222,12 @@ document.addEventListener("click",e=>{
         .map(([k,t,dd])=>`<button class="modeopt${cur===k?" on":""}" data-mode="${k}">
           <span class="mt">${t}</span><span class="md">${dd}</span>
           ${cur===k?`<span class="mk">&#10003;</span>`:""}</button>`).join("")}
+      <div class="sect" style="margin:18px 2px 8px">Orientation</div>
+      ${[["1","Landscape only","On an iPad the app asks to be turned sideways; phones are not affected"],
+         ["0","Any orientation","Works whichever way the device is held"]]
+        .map(([k,t,dd])=>`<button class="modeopt${(landscapeOnly()?"1":"0")===k?" on":""}" data-rotlock="${k}">
+          <span class="mt">${t}</span><span class="md">${dd}</span>
+          ${(landscapeOnly()?"1":"0")===k?`<span class="mk">&#10003;</span>`:""}</button>`).join("")}
       <button class="btn sec" id="modex" style="max-width:none;margin-top:14px">Close</button>`);
     $("#modex").onclick=closeSheet;
     return}
@@ -8343,8 +8358,9 @@ function appExtraClick9(e){
 /* ---------- reports and upkeep, round ten ----------
    report wording, auto-fill, photograph log, Word export, vector PDF, version stamp,
    vehicle check, part numbers, shift handover, service and calibration, help and change log. */
-const APP_VERSION="2026.09.04.16";
+const APP_VERSION="2026.09.04.17";
 const CHANGELOG=[
+  ["2026-09-04","Landscape only on the iPad: held upright, the app asks to be turned sideways. On by default on an iPad, off on phones, and switchable under Settings › Display."],
   ["2026-09-04","iPad: a bay opens as its own page. Picking any tool or symbol ends freehand drawing. Full screen is on the sketch toolbar. The object panel sits at the top of the right-hand rail beside the canvas. Lock rotation on any object."],
   ["2026-09-04","Symbol previews in the sketch palette, the symbols sheet and the layer list are readable in dark mode, including when dark is chosen under Settings rather than by the device."],
   ["2026-09-04","Scan a label works on every device: a live camera view where the browser allows it, with a QR reader that loads on first use, and a Use the camera app button that takes a photo of the label and reads it."],
@@ -8616,8 +8632,21 @@ function helpSheet(){
 }
 
 /* ---- hooks ---- */
+/* ---- landscape only on a tablet ---- */
+const isTablet=()=>Math.min(screen.width||innerWidth||0,screen.height||innerHeight||0)>=700;
+const isIPadLike=()=>/iPad/.test(navigator.userAgent)||(/Macintosh/.test(navigator.userAgent)&&navigator.maxTouchPoints>1);
+function landscapeOnly(){ return S.landscapeOnly==null?isIPadLike():!!S.landscapeOnly }
+function applyRotLock(){
+  const on=landscapeOnly()&&isTablet();
+  document.body.classList.toggle("rotlock",on);
+  try{ if(on&&screen.orientation&&screen.orientation.lock)screen.orientation.lock("landscape").catch(()=>{}) }catch(e){}
+}
+window.addEventListener("resize",applyRotLock);
+window.addEventListener("orientationchange",applyRotLock);
+
 function appExtraClick10(e){
   const t=e.target;
+  const rl=t.closest("[data-rotlock]"); if(rl){ S.landscapeOnly=rl.dataset.rotlock==="1"; save(); applyRotLock(); closeSheet(); toast(S.landscapeOnly?"Landscape only":"Any orientation"); return true }
   const sn=t.closest("[data-snip]"); if(sn){snippetSheet(sn.dataset.snip); return true}
   if(t.closest("[data-snipmanage]")){snippetManage(); return true}
   const dx=t.closest("[data-exportdocx]"); if(dx){const r=(S.fills||[]).find(x=>x.id===dx.dataset.exportdocx); if(r)exportFillDocx(r); return true}
@@ -8633,7 +8662,7 @@ document.addEventListener("change",e=>{
   if(id==="whoname"){S.whoName=e.target.value.trim(); save(); toast(S.whoName?"Reports will show "+S.whoName:"Name cleared")}
 });
 
-applyTheme();applyMode();render();fitHeader();
+applyTheme();applyMode();applyRotLock();render();fitHeader();
 if(typeof requestAnimationFrame==='function')requestAnimationFrame(fitHeader);
 claimStorage();
 if(ghOn())ghPull(true).then(()=>renderSyncPill());

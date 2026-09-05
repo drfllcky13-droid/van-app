@@ -588,6 +588,14 @@ input[type=text],input[type=date],input[type=time],input[type=number],select,tex
   border-radius:9px;padding:9px 12px;color:var(--ink)}
 .chips button.on{background:var(--blue);border-color:var(--blue);color:#fff}
 .scrim{position:fixed;inset:0;background:rgba(0,0,0,.42);z-index:120;display:none}
+/* landscape only on a tablet: a gate covers everything while it is held upright */
+.rotgate{position:fixed;inset:0;z-index:200;background:var(--bg);display:none;align-items:center;justify-content:center;padding:24px}
+.rotgate .rg{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;max-width:320px;color:var(--ink2);font-size:15px;line-height:1.5}
+.rotgate svg{width:64px;height:64px;color:var(--blue);transform:rotate(90deg);animation:rgturn 1.6s ease-in-out infinite alternate}
+.rotgate b{color:var(--ink);font-size:20px;letter-spacing:-.01em}
+.rotgate .lnkbtn{margin-top:10px;font-size:14px}
+@keyframes rgturn{from{transform:rotate(90deg)}to{transform:rotate(0deg)}}
+@media (orientation:portrait){body.rotlock .rotgate{display:flex}}
 .scrim.on{display:block}
 .sheet{position:fixed;left:0;right:0;bottom:0;z-index:121;background:var(--bg);
   pointer-events:none;visibility:hidden;

@@ -4180,7 +4180,7 @@ function settingsMenu(){
       row('data-go="templates"',"Form templates",S.forms.length+" blank form"+(S.forms.length===1?"":"s")),
       row('data-snipmanage="1"',"Report wording","Standard sentences for reports")])}
     ${group("This device",[
-      row('id="modebtn"',"Display",themeTxt+", "+modeTxt),
+      row('id="modebtn"',"Display",themeTxt+", "+modeTxt+(landscapeOnly()?", landscape only":"")),
       sec("labels","Labels and web address",appUrl()?esc(appUrl().replace(/^https?:\/\//,"")):"No web address"),
       sec("device","Storage and install",stor+", "+inst,storageState.asked&&!storageState.persisted?"warn":""),
       sec("activity","Activity",lastAct?"Last "+esc(String(lastAct.t||"").slice(0,10)):"Nothing yet"),
@@ -4929,6 +4929,12 @@ document.addEventListener("click",e=>{
         .map(([k,t,dd])=>`<button class="modeopt${cur===k?" on":""}" data-mode="${k}">
           <span class="mt">${t}</span><span class="md">${dd}</span>
           ${cur===k?`<span class="mk">&#10003;</span>`:""}</button>`).join("")}
+      <div class="sect" style="margin:18px 2px 8px">Orientation</div>
+      ${[["1","Landscape only","On an iPad the app asks to be turned sideways; phones are not affected"],
+         ["0","Any orientation","Works whichever way the device is held"]]
+        .map(([k,t,dd])=>`<button class="modeopt${(landscapeOnly()?"1":"0")===k?" on":""}" data-rotlock="${k}">
+          <span class="mt">${t}</span><span class="md">${dd}</span>
+          ${(landscapeOnly()?"1":"0")===k?`<span class="mk">&#10003;</span>`:""}</button>`).join("")}
       <button class="btn sec" id="modex" style="max-width:none;margin-top:14px">Close</button>`);
     $("#modex").onclick=closeSheet;
     return}

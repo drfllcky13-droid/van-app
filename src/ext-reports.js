@@ -1,8 +1,9 @@
 /* ---------- reports and upkeep, round ten ----------
    report wording, auto-fill, photograph log, Word export, vector PDF, version stamp,
    vehicle check, part numbers, shift handover, service and calibration, help and change log. */
-const APP_VERSION="2026.09.04.16";
+const APP_VERSION="2026.09.04.17";
 const CHANGELOG=[
+  ["2026-09-04","Landscape only on the iPad: held upright, the app asks to be turned sideways. On by default on an iPad, off on phones, and switchable under Settings › Display."],
   ["2026-09-04","iPad: a bay opens as its own page. Picking any tool or symbol ends freehand drawing. Full screen is on the sketch toolbar. The object panel sits at the top of the right-hand rail beside the canvas. Lock rotation on any object."],
   ["2026-09-04","Symbol previews in the sketch palette, the symbols sheet and the layer list are readable in dark mode, including when dark is chosen under Settings rather than by the device."],
   ["2026-09-04","Scan a label works on every device: a live camera view where the browser allows it, with a QR reader that loads on first use, and a Use the camera app button that takes a photo of the label and reads it."],
@@ -274,8 +275,21 @@ function helpSheet(){
 }
 
 /* ---- hooks ---- */
+/* ---- landscape only on a tablet ---- */
+const isTablet=()=>Math.min(screen.width||innerWidth||0,screen.height||innerHeight||0)>=700;
+const isIPadLike=()=>/iPad/.test(navigator.userAgent)||(/Macintosh/.test(navigator.userAgent)&&navigator.maxTouchPoints>1);
+function landscapeOnly(){ return S.landscapeOnly==null?isIPadLike():!!S.landscapeOnly }
+function applyRotLock(){
+  const on=landscapeOnly()&&isTablet();
+  document.body.classList.toggle("rotlock",on);
+  try{ if(on&&screen.orientation&&screen.orientation.lock)screen.orientation.lock("landscape").catch(()=>{}) }catch(e){}
+}
+window.addEventListener("resize",applyRotLock);
+window.addEventListener("orientationchange",applyRotLock);
+
 function appExtraClick10(e){
   const t=e.target;
+  const rl=t.closest("[data-rotlock]"); if(rl){ S.landscapeOnly=rl.dataset.rotlock==="1"; save(); applyRotLock(); closeSheet(); toast(S.landscapeOnly?"Landscape only":"Any orientation"); return true }
   const sn=t.closest("[data-snip]"); if(sn){snippetSheet(sn.dataset.snip); return true}
   if(t.closest("[data-snipmanage]")){snippetManage(); return true}
   const dx=t.closest("[data-exportdocx]"); if(dx){const r=(S.fills||[]).find(x=>x.id===dx.dataset.exportdocx); if(r)exportFillDocx(r); return true}

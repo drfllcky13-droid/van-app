@@ -276,6 +276,20 @@ test.describe("van flows",()=>{
     await expect(page.locator("#v-sketch #skedit [data-skfull]")).toBeVisible();
   });
 
+  test("landscape only gates a tablet held upright",async({page})=>{
+    await page.setViewportSize({width:820,height:1180});
+    await page.evaluate(()=>{S.landscapeOnly=true;save();applyRotLock()});
+    await expect(page.locator("#rotgate")).toBeVisible();
+    await page.setViewportSize({width:1180,height:820});
+    await page.evaluate(()=>applyRotLock());
+    await expect(page.locator("#rotgate")).toBeHidden();
+    await page.setViewportSize({width:820,height:1180});
+    await page.evaluate(()=>applyRotLock());
+    await page.click("#rotgate [data-rotlock]");
+    await expect(page.locator("#rotgate")).toBeHidden();
+    await page.evaluate(()=>{S.landscapeOnly=false;save();applyRotLock()});
+  });
+
   test("count mode walks the compartments",async({page})=>{
     await page.evaluate(()=>{live().slice(0,3).forEach((i,k)=>{i.loc=comps()[k].code;i.qty="2";i.par="3"}); save(); go("inventory")});
     await page.click("#v-inventory [data-countrun]");
