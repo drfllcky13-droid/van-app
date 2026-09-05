@@ -1,5 +1,9 @@
 # FSU change log
 
+## 2026.09.04.18
+The side bar on wide screens (desktop and iPad landscape) folds to an icon rail with the chevron
+at its top, giving the page the width back. The choice is remembered on the device.
+
 ## 2026.09.04.17
 Landscape only on the iPad. iPadOS gives a web app no way to lock the screen, so the app does the
 next best thing: held upright, a full-screen notice asks for it to be turned sideways and nothing

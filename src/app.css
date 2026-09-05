@@ -1189,6 +1189,20 @@ label.btn{cursor:pointer}
 .setsec{max-width:640px}
 .setsec textarea{width:100%;box-sizing:border-box}
 body.wide .side .sset{margin-top:auto}
+/* the side bar folds to an icon rail */
+.sidetog{display:none}
+body.wide .sidetog{display:flex;align-items:center;justify-content:center;align-self:flex-end;width:34px;height:34px;margin:0 10px 6px 0;
+  padding:0;border-radius:9px;background:none;border:.5px solid var(--line);color:var(--ink3)}
+body.wide .sidetog svg{width:18px;height:18px}
+@media (hover:hover) and (pointer:fine){body.wide .sidetog:hover{color:var(--blue);border-color:var(--blue)}}
+body.wide.sidemin{grid-template-columns:68px minmax(0,1fr)}
+body.wide.sidemin .sidetog{align-self:center;margin:0 0 6px}
+body.wide.sidemin .side .ident{justify-content:center;padding-left:0;padding-right:0}
+body.wide.sidemin .side .ident>div:last-child{display:none}
+body.wide.sidemin .side button{flex-direction:column;justify-content:center;padding:12px 4px;gap:0}
+body.wide.sidemin .side button .lbl{display:none}
+body.wide.sidemin .side button .pill{position:absolute;top:6px;right:8px;min-width:16px;height:16px;font-size:10px;padding:0 4px;display:flex;align-items:center;justify-content:center}
+body.wide.sidemin .side button{position:relative}
 .stiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:14px}
 @media (max-width:640px){.stiles{grid-template-columns:1fr 1fr}}
 .stile{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;border-radius:14px;padding:12px 14px;

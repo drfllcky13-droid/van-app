@@ -1,8 +1,9 @@
 /* ---------- reports and upkeep, round ten ----------
    report wording, auto-fill, photograph log, Word export, vector PDF, version stamp,
    vehicle check, part numbers, shift handover, service and calibration, help and change log. */
-const APP_VERSION="2026.09.04.17";
+const APP_VERSION="2026.09.04.18";
 const CHANGELOG=[
+  ["2026-09-05","The side bar on wide screens folds to an icon rail with the chevron at its top, and remembers that on this device."],
   ["2026-09-04","Landscape only on the iPad: held upright, the app asks to be turned sideways. On by default on an iPad, off on phones, and switchable under Settings › Display."],
   ["2026-09-04","iPad: a bay opens as its own page. Picking any tool or symbol ends freehand drawing. Full screen is on the sketch toolbar. The object panel sits at the top of the right-hand rail beside the canvas. Lock rotation on any object."],
   ["2026-09-04","Symbol previews in the sketch palette, the symbols sheet and the layer list are readable in dark mode, including when dark is chosen under Settings rather than by the device."],
@@ -289,6 +290,7 @@ window.addEventListener("orientationchange",applyRotLock);
 
 function appExtraClick10(e){
   const t=e.target;
+  if(t.closest("[data-sidetog]")){ S.sideMin=!S.sideMin; saveLocal(); applyMode(); buildTabs(); fitHeader(); return true }
   const rl=t.closest("[data-rotlock]"); if(rl){ S.landscapeOnly=rl.dataset.rotlock==="1"; save(); applyRotLock(); closeSheet(); toast(S.landscapeOnly?"Landscape only":"Any orientation"); return true }
   const sn=t.closest("[data-snip]"); if(sn){snippetSheet(sn.dataset.snip); return true}
   if(t.closest("[data-snipmanage]")){snippetManage(); return true}

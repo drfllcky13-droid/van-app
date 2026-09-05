@@ -290,6 +290,19 @@ test.describe("van flows",()=>{
     await page.evaluate(()=>{S.landscapeOnly=false;save();applyRotLock()});
   });
 
+  test("the side bar folds to an icon rail",async({page})=>{
+    await page.setViewportSize({width:1300,height:800});
+    await page.evaluate(()=>{S.mode="desktop";S.sideMin=false;save();applyMode();buildTabs()});
+    const w1=await page.evaluate(()=>document.getElementById("side").getBoundingClientRect().width);
+    await page.click("#side [data-sidetog]");
+    const w2=await page.evaluate(()=>document.getElementById("side").getBoundingClientRect().width);
+    expect(w2).toBeLessThan(w1-100);
+    await expect(page.locator("#side button[data-v=home] .lbl")).toBeHidden();
+    await page.click("#side [data-sidetog]");
+    await expect(page.locator("#side button[data-v=home] .lbl")).toBeVisible();
+    await page.evaluate(()=>{S.mode="auto";save();applyMode()});
+  });
+
   test("count mode walks the compartments",async({page})=>{
     await page.evaluate(()=>{live().slice(0,3).forEach((i,k)=>{i.loc=comps()[k].code;i.qty="2";i.par="3"}); save(); go("inventory")});
     await page.click("#v-inventory [data-countrun]");

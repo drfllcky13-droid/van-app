@@ -501,7 +501,7 @@ function buildTabs(){
     inventory:L.length?{n:L.length,hot:false}:null,
     active:nOpen?{n:nOpen,hot:true}:null,
     forms:scene?{n:scene,hot:false}:null,guide:null};
-  $("#side").innerHTML=`<div class="ident"><div class="idot">F</div>
+  $("#side").innerHTML=`<button class="sidetog" data-sidetog="1" aria-label="${S.sideMin?"Expand the side bar":"Collapse the side bar"}" title="${S.sideMin?"Expand":"Collapse"}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="${S.sideMin?"M9 6l6 6-6 6":"M15 6l-6 6 6 6"}"/></svg></button><div class="ident"><div class="idot">F</div>
       <div><div class="in1">FSU</div><div class="in2">${esc(S.vanName||"Forensic Services Unit")}</div></div></div>`
     +TABS.map(([v,l])=>{
     const c=count[v];
@@ -522,7 +522,7 @@ function go(v){rememberScroll();
   view=v;query="";$("#q").value="";$("#qclear").style.display="none";
   $$(".view").forEach(s=>s.classList.toggle("on",s.id==="v-"+v));
   render();restoreScroll(v)}
-document.addEventListener("click",e=>{const b=e.target.closest("#tabs button,#side button");if(b)go(b.dataset.v)});
+document.addEventListener("click",e=>{const b=e.target.closest("#tabs button,#side button");if(b&&b.dataset.v)go(b.dataset.v)});
 function fitCanvas(){
   const grid=document.querySelector(".skgrid.full"); if(!grid)return;
   const main=grid.querySelector(".skmain"), wrap=grid.querySelector(".canvaswrap");
@@ -5183,6 +5183,7 @@ function applyMode(){
   const w2 = m==="desktop" || (m!=="phone" && mq("(min-width:1000px)"));
   document.body.classList.toggle("wide",w1);
   document.body.classList.toggle("xwide",w2);
+  document.body.classList.toggle("sidemin",!!S.sideMin);
 }
 const wideNow=()=>document.body.classList.contains("xwide");
 function renderView(v){

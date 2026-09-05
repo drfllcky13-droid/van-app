@@ -1205,6 +1205,20 @@ label.btn{cursor:pointer}
 .setsec{max-width:640px}
 .setsec textarea{width:100%;box-sizing:border-box}
 body.wide .side .sset{margin-top:auto}
+/* the side bar folds to an icon rail */
+.sidetog{display:none}
+body.wide .sidetog{display:flex;align-items:center;justify-content:center;align-self:flex-end;width:34px;height:34px;margin:0 10px 6px 0;
+  padding:0;border-radius:9px;background:none;border:.5px solid var(--line);color:var(--ink3)}
+body.wide .sidetog svg{width:18px;height:18px}
+@media (hover:hover) and (pointer:fine){body.wide .sidetog:hover{color:var(--blue);border-color:var(--blue)}}
+body.wide.sidemin{grid-template-columns:68px minmax(0,1fr)}
+body.wide.sidemin .sidetog{align-self:center;margin:0 0 6px}
+body.wide.sidemin .side .ident{justify-content:center;padding-left:0;padding-right:0}
+body.wide.sidemin .side .ident>div:last-child{display:none}
+body.wide.sidemin .side button{flex-direction:column;justify-content:center;padding:12px 4px;gap:0}
+body.wide.sidemin .side button .lbl{display:none}
+body.wide.sidemin .side button .pill{position:absolute;top:6px;right:8px;min-width:16px;height:16px;font-size:10px;padding:0 4px;display:flex;align-items:center;justify-content:center}
+body.wide.sidemin .side button{position:relative}
 .stiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:14px}
 @media (max-width:640px){.stiles{grid-template-columns:1fr 1fr}}
 .stile{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;border-radius:14px;padding:12px 14px;
@@ -1794,7 +1808,7 @@ function buildTabs(){
     inventory:L.length?{n:L.length,hot:false}:null,
     active:nOpen?{n:nOpen,hot:true}:null,
     forms:scene?{n:scene,hot:false}:null,guide:null};
-  $("#side").innerHTML=`<div class="ident"><div class="idot">F</div>
+  $("#side").innerHTML=`<button class="sidetog" data-sidetog="1" aria-label="${S.sideMin?"Expand the side bar":"Collapse the side bar"}" title="${S.sideMin?"Expand":"Collapse"}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="${S.sideMin?"M9 6l6 6-6 6":"M15 6l-6 6 6 6"}"/></svg></button><div class="ident"><div class="idot">F</div>
       <div><div class="in1">FSU</div><div class="in2">${esc(S.vanName||"Forensic Services Unit")}</div></div></div>`
     +TABS.map(([v,l])=>{
     const c=count[v];
@@ -1815,7 +1829,7 @@ function go(v){rememberScroll();
   view=v;query="";$("#q").value="";$("#qclear").style.display="none";
   $$(".view").forEach(s=>s.classList.toggle("on",s.id==="v-"+v));
   render();restoreScroll(v)}
-document.addEventListener("click",e=>{const b=e.target.closest("#tabs button,#side button");if(b)go(b.dataset.v)});
+document.addEventListener("click",e=>{const b=e.target.closest("#tabs button,#side button");if(b&&b.dataset.v)go(b.dataset.v)});
 function fitCanvas(){
   const grid=document.querySelector(".skgrid.full"); if(!grid)return;
   const main=grid.querySelector(".skmain"), wrap=grid.querySelector(".canvaswrap");
@@ -6476,6 +6490,7 @@ function applyMode(){
   const w2 = m==="desktop" || (m!=="phone" && mq("(min-width:1000px)"));
   document.body.classList.toggle("wide",w1);
   document.body.classList.toggle("xwide",w2);
+  document.body.classList.toggle("sidemin",!!S.sideMin);
 }
 const wideNow=()=>document.body.classList.contains("xwide");
 function renderView(v){
@@ -8358,8 +8373,9 @@ function appExtraClick9(e){
 /* ---------- reports and upkeep, round ten ----------
    report wording, auto-fill, photograph log, Word export, vector PDF, version stamp,
    vehicle check, part numbers, shift handover, service and calibration, help and change log. */
-const APP_VERSION="2026.09.04.17";
+const APP_VERSION="2026.09.04.18";
 const CHANGELOG=[
+  ["2026-09-05","The side bar on wide screens folds to an icon rail with the chevron at its top, and remembers that on this device."],
   ["2026-09-04","Landscape only on the iPad: held upright, the app asks to be turned sideways. On by default on an iPad, off on phones, and switchable under Settings › Display."],
   ["2026-09-04","iPad: a bay opens as its own page. Picking any tool or symbol ends freehand drawing. Full screen is on the sketch toolbar. The object panel sits at the top of the right-hand rail beside the canvas. Lock rotation on any object."],
   ["2026-09-04","Symbol previews in the sketch palette, the symbols sheet and the layer list are readable in dark mode, including when dark is chosen under Settings rather than by the device."],
@@ -8646,6 +8662,7 @@ window.addEventListener("orientationchange",applyRotLock);
 
 function appExtraClick10(e){
   const t=e.target;
+  if(t.closest("[data-sidetog]")){ S.sideMin=!S.sideMin; saveLocal(); applyMode(); buildTabs(); fitHeader(); return true }
   const rl=t.closest("[data-rotlock]"); if(rl){ S.landscapeOnly=rl.dataset.rotlock==="1"; save(); applyRotLock(); closeSheet(); toast(S.landscapeOnly?"Landscape only":"Any orientation"); return true }
   const sn=t.closest("[data-snip]"); if(sn){snippetSheet(sn.dataset.snip); return true}
   if(t.closest("[data-snipmanage]")){snippetManage(); return true}
